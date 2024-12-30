@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+// this is a widget that asks the users either they are patient or doctor used on the selection screen
 
 class Selectoptionscard extends StatelessWidget {
   final String Optiontitle, Optionmessage, buttontext;
@@ -23,7 +24,7 @@ class Selectoptionscard extends StatelessWidget {
       child: Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         color: Colors.white,
-        child: Container(
+        child: SizedBox(
           height: height,
           width: width,
           child: Padding(
@@ -56,6 +57,7 @@ class Selectoptionscard extends StatelessWidget {
                     height: height * 0.16,
                   ),
                   InkWell(
+                    // what action to perform is taken as arguments
                     onTap: onPressed,
                     child: Container(
                       height: height * 0.2,

@@ -1,19 +1,28 @@
 import 'package:flutter/material.dart';
 
+/*dropdown reusable widget that the following items as arguments
+1. categories= list of the text that will be displayed in the dropdown
+2. the one text that is shown when the dropdown is closes
+3.onchanged is used to set the selected item visible on screen
+
+*/
+
+
 class DoctorCategoryDropdown extends StatelessWidget {
   final List<String> categories;
   final String? selectedCategory;
   final ValueChanged<String?> onChanged;
 
   const DoctorCategoryDropdown({
-    Key? key,
+    super.key,
     required this.categories,
     required this.selectedCategory,
     required this.onChanged,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
+    //dropdown button having string list
     return DropdownButtonFormField<String>(
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.symmetric(horizontal: 16),
@@ -30,6 +39,7 @@ class DoctorCategoryDropdown extends StatelessWidget {
         );
       }).toList(),
       onChanged: onChanged,
+      // if a category is not selected then it will raise an error
       validator: (value) {
         if (value == null || value.isEmpty) {
           return "Please select a category";

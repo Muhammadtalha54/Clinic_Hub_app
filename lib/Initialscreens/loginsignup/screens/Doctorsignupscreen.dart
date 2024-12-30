@@ -1,22 +1,24 @@
 import 'dart:io';
 
+import 'package:clinic_hub_app/Doctor_interface/View/requeststatusscreen.dart';
 import 'package:clinic_hub_app/Initialscreens/Verificationscreen/verifyemail.dart';
+import 'package:clinic_hub_app/Initialscreens/loginsignup/components/Imageuploadsignup.dart';
 import 'package:clinic_hub_app/Initialscreens/loginsignup/components/customtextfield.dart';
 import 'package:clinic_hub_app/Initialscreens/loginsignup/components/datepicker.dart';
 import 'package:clinic_hub_app/Initialscreens/loginsignup/components/dropdowndoctor.dart';
+import 'package:clinic_hub_app/Initialscreens/loginsignup/components/genderselection.dart';
 import 'package:clinic_hub_app/Initialscreens/loginsignup/components/imagepickerwidget.dart';
 import 'package:clinic_hub_app/Initialscreens/loginsignup/components/passwordtextfield.dart';
 import 'package:clinic_hub_app/Initialscreens/loginsignup/screens/Loginscreen.dart';
-
+import 'package:clinic_hub_app/User_interface/Resources/Components/widgets/Imagewidget.dart';
 
 import 'package:clinic_hub_app/apptheme/apptransitions/customtransition.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
-// this is the signup screen for the user
+// this is the signup screen for the doctor
 
 class Doctorsignupscreen extends StatefulWidget {
-  // final bool isDoctor;
   const Doctorsignupscreen({
     super.key,
   });
@@ -28,21 +30,33 @@ class Doctorsignupscreen extends StatefulWidget {
 class _DoctorsignupscreenState extends State<Doctorsignupscreen>
     with SingleTickerProviderStateMixin {
   var height, width;
-  late TabController _tabController = TabController(length: 2, vsync: this);
+  // // tabcontroller made for the tabbar haveing 2 tabs
+  // late final TabController _tabController =
+  //     TabController(length: 2, vsync: this);
 
+// signup form key
   final _SignupformKey = GlobalKey<FormState>();
+  //variable for th eobscure text in the password textfield
   bool _passwordVisible = false;
 
-  final bool _check = false;
+  // final bool _check = false;
+  // all the textfields controllers
   final TextEditingController Namecontroller = TextEditingController();
   final TextEditingController Emailcontroller = TextEditingController();
   final TextEditingController Passwordcontroller = TextEditingController();
   final TextEditingController Lisencecontroller = TextEditingController();
   final TextEditingController DOBcontroller = TextEditingController();
+  //variable to store the selected item from the dropdown
   String? selectedCategory;
-  bool isLicenseUploaded = false;
+  late TabController _tabController;
+
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 3, vsync: this);
+  }
 
   @override
+  // used the dispose to dispose all the controllers when not in use to free up space
   void dispose() {
     // TODO: implement dispose
     super.dispose();
@@ -59,10 +73,10 @@ class _DoctorsignupscreenState extends State<Doctorsignupscreen>
     height = MediaQuery.of(context).size.height;
     width = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 203, 236, 248),
+      backgroundColor: const Color.fromARGB(255, 203, 236, 248),
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 203, 236, 248),
-        title: Text(
+        backgroundColor: const Color.fromARGB(255, 203, 236, 248),
+        title: const Text(
           "Sign Up",
           style: TextStyle(
               color: Colors.black, fontSize: 23, fontWeight: FontWeight.bold),
@@ -70,7 +84,7 @@ class _DoctorsignupscreenState extends State<Doctorsignupscreen>
         centerTitle: true,
       ),
       body: Center(
-        child: Container(
+        child: SizedBox(
           height: height,
           width: width * 0.92,
           child: Column(
@@ -86,6 +100,7 @@ class _DoctorsignupscreenState extends State<Doctorsignupscreen>
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
+                //SIgnupform
                 child: Form(
                   key: _SignupformKey,
                   child: Container(
@@ -109,12 +124,13 @@ class _DoctorsignupscreenState extends State<Doctorsignupscreen>
                               text: "Step 1",
                             ),
                             Tab(text: "Step 2"),
+                            Tab(text: "Step 3"),
                           ],
                         ),
                         // TabBarView for content
                         Expanded(
                           child: TabBarView(
-                            physics: NeverScrollableScrollPhysics(),
+                            physics: const NeverScrollableScrollPhysics(),
                             controller: _tabController,
                             children: [
                               // Step 1 content
@@ -124,7 +140,7 @@ class _DoctorsignupscreenState extends State<Doctorsignupscreen>
                                   crossAxisAlignment:
                                       CrossAxisAlignment.stretch,
                                   children: [
-                                    Container(
+                                    SizedBox(
                                       width: width * 0.8,
                                       child: Text(
                                         "Sign Up as a Doctor",
@@ -140,7 +156,7 @@ class _DoctorsignupscreenState extends State<Doctorsignupscreen>
                                     SizedBox(
                                       height: height * 0.00,
                                     ),
-                                    Container(
+                                    SizedBox(
                                       width: width * 0.8,
                                       child: Text(
                                         "Create your account to access health services",
@@ -155,13 +171,16 @@ class _DoctorsignupscreenState extends State<Doctorsignupscreen>
                                     SizedBox(
                                       height: height * 0.03,
                                     ),
+                                    //custom built text field for text data
                                     CustomTextFormField(
+                                      isEditing: true,
                                       hintText: "Full Name",
                                       errorMessage: "Name is required",
                                       controller: Namecontroller,
                                       label: 'Full Name',
                                     ),
                                     CustomTextFormField(
+                                      isEditing: true,
                                       hintText: "john@example.com",
                                       regex:
                                           r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$",
@@ -170,12 +189,15 @@ class _DoctorsignupscreenState extends State<Doctorsignupscreen>
                                       controller: Emailcontroller,
                                       label: 'Email',
                                     ),
+                                    // custom built reusable datetimepicker for date and time
                                     CustomDateTimePicker(
                                       controller: DOBcontroller,
                                       label: "Date of Birth",
                                     ),
                                     SizedBox(height: height * 0.02),
+                                    // custompasswordtextfield having the password options like obscure text
                                     PasswordTextField(
+                                      isEditing: true,
                                       controller: Passwordcontroller,
                                       obscureText: _passwordVisible,
                                       onVisibilityToggle: () {
@@ -186,6 +208,7 @@ class _DoctorsignupscreenState extends State<Doctorsignupscreen>
                                       label: 'Password',
                                     ),
                                     SizedBox(height: height * 0.02),
+                                    // button on the 1 tab to go to the next tab
                                     ElevatedButton(
                                       onPressed: () {
                                         //  if (_SignupformKey.currentState!
@@ -217,6 +240,86 @@ class _DoctorsignupscreenState extends State<Doctorsignupscreen>
                                   crossAxisAlignment:
                                       CrossAxisAlignment.stretch,
                                   children: [
+                                    Text(
+                                      'Profile picture',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: width * 0.04,
+                                      ),
+                                    ),
+                                    Uploadimageonsignup(
+                                      selectedImage: _selectedprofileimageImage,
+                                      ontap: () {
+                                        if (_selectedprofileimageImage !=
+                                            null) {
+                                          _pickImage(
+                                              image:
+                                                  _selectedprofileimageImage!);
+                                        }
+                                      },
+                                    ),
+                                    CustomTextFormField(
+                                      isEditing: true,
+                                      hintText: "5 yrs",
+                                      regex: r"^[a-zA-Z0-9_]{6,}$",
+                                      errorMessage: "Enter YoUr Experience",
+                                      controller: Lisencecontroller,
+                                      label: 'Experience',
+                                    ),
+                                    // SizedBox(height: height * 0.02),
+                                    CustomTextFormField(
+                                      maxlines: 3,
+                                      isEditing: true,
+                                      hintText: "Enter a short description",
+                                      regex: '',
+                                      errorMessage: "Enter your Description",
+                                      controller: Lisencecontroller,
+                                      label: 'Description',
+                                    ),
+                                    SizedBox(height: height * 0.02),
+                                    GenderSelection(
+                                      selectedGender: _selectedGender,
+                                      onGenderChanged: _onGenderChanged,
+                                    ),
+
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        if (_selectedprofileimageImage !=
+                                            null) {
+                                          _tabController.animateTo(2);
+                                        } else {
+                                          _tabController.animateTo(2);
+
+                                          //   _showLicenseDialog();
+                                        }
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.green,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                        ),
+                                      ),
+                                      child: Text("Next",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: width * 0.035)),
+                                    ),
+                                    SizedBox(
+                                      width: width * 0.02,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              // third step
+                              Padding(
+                                padding: EdgeInsets.all(width * 0.05),
+                                child: Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  children: [
+                                    // This is the custom built dropdown button reusable that selects the category of the doctor
                                     DoctorCategoryDropdown(
                                       categories: doctorCategories,
                                       selectedCategory: selectedCategory,
@@ -227,6 +330,7 @@ class _DoctorsignupscreenState extends State<Doctorsignupscreen>
                                       },
                                     ),
                                     CustomTextFormField(
+                                      isEditing: true,
                                       hintText: "00000-X",
                                       regex: r"^[a-zA-Z0-9_]{6,}$",
                                       errorMessage:
@@ -237,13 +341,24 @@ class _DoctorsignupscreenState extends State<Doctorsignupscreen>
                                     SizedBox(height: height * 0.02),
                                     Center(
                                       child: UploadLicenseWidget(
-                                        selectedImage: _selectedImage,
-                                        onTap: _pickImage,
+                                        selectedImage: _selectedLisenceImage,
+                                        onTap: () {
+                                          if (_selectedLisenceImage != null) {
+                                            _pickImage(
+                                                image: _selectedLisenceImage!);
+                                          }
+                                        },
                                       ),
                                     ),
                                     SizedBox(height: height * 0.02),
                                     ElevatedButton(
-                                      onPressed: _submitForm,
+                                      onPressed: () {
+                                        // if (_selectedLisenceImage != null) {
+                                        //   _submitForm(_selectedLisenceImage!);
+                                        // } else {
+                                        //   _showLicenseDialog();
+                                        // }
+                                      },
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor: Colors.green,
                                         shape: RoundedRectangleBorder(
@@ -259,7 +374,7 @@ class _DoctorsignupscreenState extends State<Doctorsignupscreen>
                                     SizedBox(
                                       width: width * 0.02,
                                     ),
-                                    Container(
+                                    SizedBox(
                                       height: height * 0.07,
                                       width: width * 0.8,
                                       child: Row(
@@ -278,7 +393,7 @@ class _DoctorsignupscreenState extends State<Doctorsignupscreen>
                                             onTap: () {
                                               Navigator.of(context).push(
                                                 CustomPageTransition(
-                                                    page: Loginscreen()),
+                                                    page: const Loginscreen()),
                                               );
                                             },
                                             child: Text(
@@ -311,6 +426,7 @@ class _DoctorsignupscreenState extends State<Doctorsignupscreen>
     );
   }
 
+// dropdown displays this list it accepts it as a required named parameter
   final List<String> doctorCategories = [
     "General Physician",
     "Cardiologist",
@@ -325,23 +441,29 @@ class _DoctorsignupscreenState extends State<Doctorsignupscreen>
   ];
 
   //image picker components
-  File? _selectedImage; // Store selected image
+  File? _selectedLisenceImage; // Store selected image
+  File? _selectedprofileimageImage;
 
   final ImagePicker _picker = ImagePicker(); // Image picker instance
 
   // Method to pick an image from the gallery
-  Future<void> _pickImage() async {
+  Future<void> _pickImage({required File image}) async {
     final XFile? pickedFile = await _picker.pickImage(
       source: ImageSource.gallery,
     );
 
     if (pickedFile != null) {
       setState(() {
-        _selectedImage = File(pickedFile.path); // Update the selected image
+        if (image == _selectedprofileimageImage) {
+          _selectedprofileimageImage = File(pickedFile.path);
+        } else if (image == _selectedLisenceImage) {
+          _selectedLisenceImage = File(pickedFile.path);
+        }
       });
     }
   }
 
+//turn on off obscure text on the password textfield
   void _togglePasswordVisibility() {
     setState(() {
       _passwordVisible = !_passwordVisible;
@@ -357,6 +479,9 @@ class _DoctorsignupscreenState extends State<Doctorsignupscreen>
         backgroundColor: Colors.white,
         title: const Text("License Upload Required"),
         content: const Text("Please upload your license image to proceed."),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10), // Custom border radius
+        ),
         actions: [
           TextButton(
             onPressed: () {
@@ -370,27 +495,42 @@ class _DoctorsignupscreenState extends State<Doctorsignupscreen>
   }
 
   // this is the logic for the signup button
-  void _submitForm() {
-    if (_selectedImage == null) {
+  void _submitForm(File selectedImage) {
+    if (selectedImage == null) {
       _showLicenseDialog(); // Show dialog if license image is not uploaded
       return;
     }
+// this is the validation condition for the page
+    // if (_SignupformKey.currentState!.validate()) {
+    // Form validation is successful
+    // ScaffoldMessenger.of(context).showSnackBar(
+    //   SnackBar(
+    //     content: Text(
+    //         "Form submitted successfully. Selected category: $selectedCategory"),
+    //   ),
+    //  );
 
-    if (_SignupformKey.currentState!.validate()) {
-      // Form validation is successful
-      // ScaffoldMessenger.of(context).showSnackBar(
-      //   SnackBar(
-      //     content: Text(
-      //         "Form submitted successfully. Selected category: $selectedCategory"),
-      //   ),
-      //  );
-      Navigator.of(context).push(CustomPageTransition(
-        page: Emailverificationscreen(ontap: () {  }, onpress: () {  },
-          
-        ),
-      ));
+    // going to the next screen that takes the action on its button as the required parameter
+    Navigator.of(context).push(CustomPageTransition(
+      page: Emailverificationscreen(
+        ontap: () {
+          Navigator.of(context)
+              .push(CustomPageTransition(page: const DoctorRequeststatus()));
+        },
+        retryonpress: () {},
+      ),
+    ));
 
-      // Process the form and save data
-    }
+    // Process the form and save data
+    // }
+  }
+
+  // for the radio buttons
+  String _selectedGender = 'Male'; // Default selected gender
+
+  void _onGenderChanged(String gender) {
+    setState(() {
+      _selectedGender = gender;
+    });
   }
 }

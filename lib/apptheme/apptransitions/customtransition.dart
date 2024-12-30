@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// Reusable widget for left-to-right page transition
+/// Reusable widget for right-to-left page transition
 class CustomPageTransition extends PageRouteBuilder {
   final Widget page;
 
@@ -8,7 +8,7 @@ class CustomPageTransition extends PageRouteBuilder {
       : super(
           pageBuilder: (context, animation, secondaryAnimation) => page,
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            const begin = Offset(1.0, 0.0); // Start from the right
+            const begin = Offset(-1.0, 0.0); // Start from the left
             const end = Offset.zero; // End at the center
             const curve = Curves.easeInOut;
 

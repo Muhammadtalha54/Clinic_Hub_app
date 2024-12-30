@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+// this is the custom reusabe textfield for the text inputs
 class CustomTextFormField extends StatelessWidget {
   final TextEditingController controller;
   final String label, hintText, errorMessage; // Added label parameter
   // Only used if obscureText is true
   final String? regex; // Optional parameter for regex validation
+  final bool isEditing;
+  final int? maxlines;
 
   const CustomTextFormField({
     super.key,
@@ -14,7 +17,9 @@ class CustomTextFormField extends StatelessWidget {
     // Only used if obscureText is true
     this.regex,
     required this.hintText,
-    required this.errorMessage, // Optional parameter for regex validation
+    required this.errorMessage,
+    required this.isEditing,
+    this.maxlines, // Optional parameter for regex validation
   });
 
   @override
@@ -32,8 +37,7 @@ class CustomTextFormField extends StatelessWidget {
           // Label above the TextField
           Padding(
             padding: EdgeInsets.only(
-                bottom: width *
-                    0.008), // Space between label and text field
+                bottom: width * 0.008), // Space between label and text field
             child: Text(
               label,
               style: GoogleFonts.inter(
@@ -47,6 +51,8 @@ class CustomTextFormField extends StatelessWidget {
             height: height * 0.06,
             width: width * 0.8,
             child: TextFormField(
+              maxLines: maxlines,
+              readOnly: !isEditing,
               style: GoogleFonts.inter(
                   color: const Color.fromARGB(255, 73, 73, 73)),
               cursorColor: Colors.grey,

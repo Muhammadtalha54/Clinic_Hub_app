@@ -4,6 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
+/* On this screen After the verification of the email on the emailverificationscreen 
+the user/doctorwill set a new password for his/her account so that 
+they can access their account
+*/
+
 class Newpasswordscreen extends StatefulWidget {
   const Newpasswordscreen({super.key});
 
@@ -24,12 +29,12 @@ class _NewpasswordscreenState extends State<Newpasswordscreen> {
         child: Container(
           height: height,
           width: width,
-          color: Color.fromRGBO(248, 248, 248, 1),
+          color: const Color.fromRGBO(248, 248, 248, 1),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Container(
+              SizedBox(
                 height: height! * 0.05,
                 width: width! * 0.9,
                 child:
@@ -40,7 +45,7 @@ class _NewpasswordscreenState extends State<Newpasswordscreen> {
                     },
                     child: Icon(
                       Icons.arrow_back_outlined,
-                      color: Color.fromRGBO(8, 40, 98, 1),
+                      color: const Color.fromRGBO(8, 40, 98, 1),
                       size: width! * 0.06,
                     ),
                   ),
@@ -52,7 +57,7 @@ class _NewpasswordscreenState extends State<Newpasswordscreen> {
               Container(
                 height: height * 0.2,
                 width: width * 0.45,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   image: DecorationImage(
                     fit: BoxFit.contain,
                     image: AssetImage("assets/images/coloredlogo.png"),
@@ -75,20 +80,23 @@ class _NewpasswordscreenState extends State<Newpasswordscreen> {
               Text(
                 "Enter a new password",
                 style: TextStyle(
-                  color: Color.fromRGBO(34, 34, 34, 0.5),
+                  color: const Color.fromRGBO(34, 34, 34, 0.5),
                   fontSize: width! * 0.04,
                 ),
               ),
               SizedBox(
                 height: height! * 0.018,
               ),
+              // this is a reusable component that is used to handle the password textfields
               PasswordTextField(
+                isEditing: true,
                 controller: passwordcontroller,
                 obscureText: _passwordVisible,
                 onVisibilityToggle: _togglePasswordVisibility,
                 label: '',
               ),
               PasswordTextField(
+                isEditing: true,
                 controller: passwordcontroller,
                 obscureText: _passwordVisible,
                 onVisibilityToggle: _togglePasswordVisibility,
@@ -99,7 +107,7 @@ class _NewpasswordscreenState extends State<Newpasswordscreen> {
               ),
               Card(
                 elevation: 5,
-                shadowColor: Color.fromARGB(255, 162, 158, 158),
+                shadowColor: const Color.fromARGB(255, 162, 158, 158),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(40),
                 ),
@@ -122,7 +130,7 @@ class _NewpasswordscreenState extends State<Newpasswordscreen> {
                       child: Text(
                         "Submit",
                         style: TextStyle(
-                            color: Color.fromARGB(255, 255, 255, 255),
+                            color: const Color.fromARGB(255, 255, 255, 255),
                             fontSize: width! * 0.045,
                             fontWeight: FontWeight.bold),
                       ),
@@ -137,6 +145,8 @@ class _NewpasswordscreenState extends State<Newpasswordscreen> {
     );
   }
 
+// this variable  and function is used to make the obscure text visible and not
+//based on the value of the variable
   bool _passwordVisible = false;
   void _togglePasswordVisibility() {
     setState(() {

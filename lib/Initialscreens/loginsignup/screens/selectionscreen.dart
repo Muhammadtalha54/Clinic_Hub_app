@@ -7,6 +7,9 @@ import 'package:clinic_hub_app/apptheme/apptransitions/customtransition.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+/* This is the screen where the user will select that either he want to make a
+doctor profile or a user profile so that they can access thier features
+*/
 class Selectionscreen extends StatefulWidget {
   const Selectionscreen({super.key});
 
@@ -23,7 +26,7 @@ class _SelectionscreenState extends State<Selectionscreen> {
     return Scaffold(
       backgroundColor: Apptheme.mainbackgroundcolor,
       body: Center(
-        child: Container(
+        child: SizedBox(
           height: height,
           width: width * 0.9,
           child: Column(
@@ -58,6 +61,7 @@ class _SelectionscreenState extends State<Selectionscreen> {
                     SizedBox(
                       height: height * 0.03,
                     ),
+                    // this is a reusable widget to make a card  for patient
                     Selectoptionscard(
                       Optiontitle: "For Patients",
                       Optionmessage:
@@ -67,15 +71,17 @@ class _SelectionscreenState extends State<Selectionscreen> {
                       width: width * 0.8,
                       buttoncolor: Colors.blue,
                       titlecolor: Colors.blue,
+                      //navigated to the
                       onPressed: () {
                         Navigator.of(context).push(
-                          CustomPageTransition(page: Usersignupscreen()),
+                          CustomPageTransition(page: const Usersignupscreen()),
                         );
                       },
                     ),
                     SizedBox(
                       height: height * 0.03,
                     ),
+                    // card for doctor
                     Selectoptionscard(
                       Optiontitle: "For Doctors",
                       Optionmessage: "Manage your practice and patient records",
@@ -84,10 +90,11 @@ class _SelectionscreenState extends State<Selectionscreen> {
                       width: width * 0.8,
                       buttoncolor: Colors.green,
                       titlecolor: Colors.green,
+                      // parameter value
                       onPressed: () {
                         Navigator.of(context).push(
                           CustomPageTransition(
-                            page: Doctorsignupscreen(),
+                            page: const Doctorsignupscreen(),
                           ),
                         );
                       },
@@ -95,7 +102,7 @@ class _SelectionscreenState extends State<Selectionscreen> {
                     SizedBox(
                       height: height * 0.03,
                     ),
-                    Container(
+                    SizedBox(
                       height: height * 0.07,
                       width: width * 0.8,
                       child: Row(
@@ -106,10 +113,11 @@ class _SelectionscreenState extends State<Selectionscreen> {
                             style: TextStyle(
                                 color: Colors.white, fontSize: width * 0.04),
                           ),
+                          // if already have an account then login
                           InkWell(
                             onTap: () {
                               Navigator.of(context).push(
-                                CustomPageTransition(page: Loginscreen()),
+                                CustomPageTransition(page: const Loginscreen()),
                               );
                             },
                             child: Text(

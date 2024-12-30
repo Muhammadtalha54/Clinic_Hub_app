@@ -1,11 +1,22 @@
 import 'package:clinic_hub_app/apptheme/Apptheme.dart';
 import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
+/* 
+This screen will verify the code received on the user/doctor provided 
+email address for both sfter the signup and for the forget passcode 
+email verification
 
+*/
 class Emailverificationscreen extends StatefulWidget {
-  final VoidCallback ontap, onpress;
-  Emailverificationscreen(
-      {super.key, required this.ontap, required this.onpress});
+  // ontap for the verify button
+  //retryonpress for resend the code in case user donot get the code
+  final VoidCallback ontap, retryonpress;
+
+  //made the ontap, and retryonpress required so that where ever we use them 
+  //we can give them customized action every time
+
+  const Emailverificationscreen(
+      {super.key, required this.ontap, required this.retryonpress});
 
   @override
   State<Emailverificationscreen> createState() =>
@@ -49,7 +60,7 @@ class _EmailverificationscreenState extends State<Emailverificationscreen> {
                 Container(
                   height: height * 0.11,
                   width: width * 0.45,
-                  decoration: BoxDecoration(),
+                  decoration: const BoxDecoration(),
                   child: Icon(
                     Icons.person_2_sharp,
                     size: width * 0.2,
@@ -68,12 +79,12 @@ class _EmailverificationscreenState extends State<Emailverificationscreen> {
                 SizedBox(
                   height: height! * 0.035,
                 ),
-                Container(
+                SizedBox(
                   width: width * 0.8,
                   child: Text(
                     "Enter the verification code received on\n your provided email address",
                     style: TextStyle(
-                      color: Color.fromRGBO(34, 34, 34, 0.666),
+                      color: const Color.fromRGBO(34, 34, 34, 0.666),
                       fontSize: width! * 0.04,
                     ),
                     textAlign: TextAlign.center,
@@ -82,6 +93,7 @@ class _EmailverificationscreenState extends State<Emailverificationscreen> {
                 SizedBox(
                   height: height! * 0.05,
                 ),
+                //pinput is used to enter the 4 digit code
                 SizedBox(
                   height: height! * 0.12,
                   width: width! * 0.86,
@@ -108,9 +120,10 @@ class _EmailverificationscreenState extends State<Emailverificationscreen> {
                 SizedBox(
                   height: height! * 0.03,
                 ),
+                // this is the verify button
                 Card(
                   elevation: 5,
-                  shadowColor: Color.fromARGB(255, 166, 160, 160),
+                  shadowColor: const Color.fromARGB(255, 166, 160, 160),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(40),
                   ),
@@ -127,7 +140,7 @@ class _EmailverificationscreenState extends State<Emailverificationscreen> {
                         child: Text(
                           "Verify",
                           style: TextStyle(
-                              color: Color.fromARGB(255, 255, 255, 255),
+                              color: const Color.fromARGB(255, 255, 255, 255),
                               fontSize: width! * 0.042,
                               fontWeight: FontWeight.bold),
                         ),
@@ -138,19 +151,19 @@ class _EmailverificationscreenState extends State<Emailverificationscreen> {
                 SizedBox(
                   height: height! * 0.03,
                 ),
-                Container(
+                SizedBox(
                   width: width * 0.3,
                   child: Text(
                     "Not received ?",
                     style: TextStyle(
-                      color: Color.fromRGBO(8, 40, 98, 1),
+                      color: const Color.fromRGBO(8, 40, 98, 1),
                       fontSize: width! * 0.038,
                     ),
                   ),
                 ),
                 InkWell(
-                  onTap: widget.onpress,
-                  child: Container(
+                  onTap: widget.retryonpress,
+                  child: SizedBox(
                     width: width! * 0.38,
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -158,14 +171,14 @@ class _EmailverificationscreenState extends State<Emailverificationscreen> {
                           Text(
                             "Resend Code",
                             style: TextStyle(
-                                color: Color.fromRGBO(211, 47, 47, 1),
+                                color: const Color.fromRGBO(211, 47, 47, 1),
                                 fontSize: width! * 0.046,
                                 fontWeight: FontWeight.bold),
                           ),
                           Center(
                             child: Icon(
                               Icons.keyboard_arrow_right,
-                              color: Color.fromRGBO(211, 47, 47, 1),
+                              color: const Color.fromRGBO(211, 47, 47, 1),
                               size: width! * 0.06,
                             ),
                           )

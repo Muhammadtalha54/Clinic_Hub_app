@@ -25,10 +25,12 @@ class Usersignupscreen extends StatefulWidget {
 
 class _UsersignupscreenState extends State<Usersignupscreen> {
   var height, width;
-
+//form key
   final _Usersignupformkey = GlobalKey<FormState>();
+  //variable used to handle the visibility of the obscure text
   bool _passwordVisible = false;
-  final bool _check = false;
+
+  // text controllers
   final TextEditingController Namecontroller = TextEditingController();
   final TextEditingController Emailcontroller = TextEditingController();
   final TextEditingController Passwordcontroller = TextEditingController();
@@ -36,6 +38,7 @@ class _UsersignupscreenState extends State<Usersignupscreen> {
   final TextEditingController DOBcontroller = TextEditingController();
 
   @override
+  // the controllers are disposed when not in use to free up the space
   void dispose() {
     // TODO: implement dispose
     super.dispose();
@@ -51,10 +54,10 @@ class _UsersignupscreenState extends State<Usersignupscreen> {
     height = MediaQuery.of(context).size.height;
     width = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 203, 236, 248),
+      backgroundColor: const Color.fromARGB(255, 203, 236, 248),
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 203, 236, 248),
-        title: Text(
+        backgroundColor: const Color.fromARGB(255, 203, 236, 248),
+        title: const Text(
           "Sign Up",
           style: TextStyle(
               color: Colors.black, fontSize: 23, fontWeight: FontWeight.bold),
@@ -62,7 +65,7 @@ class _UsersignupscreenState extends State<Usersignupscreen> {
         centerTitle: true,
       ),
       body: Center(
-        child: Container(
+        child: SizedBox(
           height: height,
           width: width * 0.92,
           child: Column(
@@ -77,6 +80,7 @@ class _UsersignupscreenState extends State<Usersignupscreen> {
                 color: Colors.white,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10)),
+                    // form
                 child: Form(
                   key: _Usersignupformkey,
                   child: Container(
@@ -96,7 +100,7 @@ class _UsersignupscreenState extends State<Usersignupscreen> {
                           SizedBox(
                             height: height * 0.03,
                           ),
-                          Container(
+                          SizedBox(
                             width: width * 0.8,
                             child: Text(
                               "Sign Up as a Patient",
@@ -111,7 +115,7 @@ class _UsersignupscreenState extends State<Usersignupscreen> {
                           SizedBox(
                             height: height * 0.00,
                           ),
-                          Container(
+                          SizedBox(
                             width: width * 0.8,
                             child: Text(
                               "Create your account to access health services",
@@ -125,7 +129,9 @@ class _UsersignupscreenState extends State<Usersignupscreen> {
                           SizedBox(
                             height: height * 0.03,
                           ),
+                          // this is a reusable widget for text inputs
                           CustomTextFormField(
+                             isEditing: true,
                             hintText: "Name",
                             // regex: r"^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$",
                             // leadingIcon: Icons.email,
@@ -133,6 +139,7 @@ class _UsersignupscreenState extends State<Usersignupscreen> {
                             controller: Namecontroller, label: 'Full Name',
                           ),
                           CustomTextFormField(
+                             isEditing: true,
                             hintText: "john@example.com",
                             regex:
                                 r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$",
@@ -141,10 +148,13 @@ class _UsersignupscreenState extends State<Usersignupscreen> {
                             errorMessage: "Enter a valid email address",
                             controller: Emailcontroller, label: 'Email',
                           ),
+                             // this is a reusable widget for datetime inputs
                           CustomDateTimePicker(
                               controller: DOBcontroller,
                               label: "Date of Birth "),
+                                 // this is a reusable widget for password inputs
                           PasswordTextField(
+                            isEditing: true,
                             controller: Passwordcontroller,
                             obscureText: _passwordVisible,
                             onVisibilityToggle: _togglePasswordVisibility,
@@ -159,10 +169,11 @@ class _UsersignupscreenState extends State<Usersignupscreen> {
                           InkWell(
                             onTap: () {
                               Navigator.of(context).push(
+                                // the custom page transition is used to make the tranistion as we want
                                 CustomPageTransition(
                                     page: Emailverificationscreen(
                                   ontap: () {},
-                                  onpress: () {},
+                                  retryonpress: () {},
                                 )),
                               );
                             },
@@ -184,7 +195,7 @@ class _UsersignupscreenState extends State<Usersignupscreen> {
                               ),
                             ),
                           ),
-                          Container(
+                          SizedBox(
                             height: height * 0.07,
                             width: width * 0.8,
                             child: Row(
@@ -201,7 +212,7 @@ class _UsersignupscreenState extends State<Usersignupscreen> {
                                 InkWell(
                                   onTap: () {
                                     Navigator.of(context).push(
-                                      CustomPageTransition(page: Loginscreen()),
+                                      CustomPageTransition(page: const Loginscreen()),
                                     );
                                   },
                                   child: Text(
@@ -228,7 +239,7 @@ class _UsersignupscreenState extends State<Usersignupscreen> {
       ),
     );
   }
-
+// hides and shows the text in the password text field
   void _togglePasswordVisibility() {
     setState(() {
       _passwordVisible = !_passwordVisible;

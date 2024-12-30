@@ -5,6 +5,13 @@ import 'package:clinic_hub_app/apptheme/Apptheme.dart';
 import 'package:clinic_hub_app/apptheme/apptransitions/customtransition.dart';
 import 'package:flutter/material.dart';
 
+/*This is the screen that the user will access when he/she will forgot
+ the passcode this will be the used for both the  user and the doctor 
+ the patient/doctor will enter thier email and then a code will be sent on
+ their email to verify thier email address by adding the code on the next screen
+
+*/
+
 class forgetpassword extends StatefulWidget {
   const forgetpassword({super.key});
 
@@ -24,18 +31,19 @@ class _forgetpasswordState extends State<forgetpassword> {
     width = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: Form(
           key: _formKey,
-          child: Container(
+          child: SizedBox(
             height: height,
             width: width,
-            color: Color.fromRGBO(248, 248, 248, 1),
+            //  color: Color.fromRGBO(248, 248, 248, 1),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Container(
+                SizedBox(
                   height: height! * 0.05,
                   width: width! * 0.9,
                   child: Row(
@@ -46,8 +54,8 @@ class _forgetpasswordState extends State<forgetpassword> {
                             Navigator.pop(context);
                           },
                           child: Icon(
-                            Icons.arrow_back_outlined,
-                            color: Color.fromRGBO(8, 40, 98, 1),
+                            Icons.arrow_back_ios,
+                            color: Apptheme.mainbackgroundcolor,
                             size: width! * 0.06,
                           ),
                         ),
@@ -59,7 +67,7 @@ class _forgetpasswordState extends State<forgetpassword> {
                 Container(
                   height: height * 0.3,
                   width: width * 0.45,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     image: DecorationImage(
                       fit: BoxFit.contain,
                       image: AssetImage("assets/images/coloredlogo.png"),
@@ -82,7 +90,7 @@ class _forgetpasswordState extends State<forgetpassword> {
                 Text(
                   "Enter email address to receive a\n      4 digit verification code ",
                   style: TextStyle(
-                    color: Color.fromRGBO(34, 34, 34, 0.5),
+                    color: const Color.fromRGBO(34, 34, 34, 0.5),
                     fontSize: width! * 0.04,
                   ),
                 ),
@@ -90,6 +98,7 @@ class _forgetpasswordState extends State<forgetpassword> {
                   height: height! * 0.018,
                 ),
                 CustomTextFormField(
+                  isEditing: true,
                   hintText: "john@example.com",
                   regex: r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$",
 
@@ -102,7 +111,7 @@ class _forgetpasswordState extends State<forgetpassword> {
                 ),
                 Card(
                   elevation: 5,
-                  shadowColor: Color.fromARGB(255, 170, 168, 168),
+                  shadowColor: const Color.fromARGB(255, 170, 168, 168),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(40),
                   ),
@@ -115,9 +124,9 @@ class _forgetpasswordState extends State<forgetpassword> {
                           page: Emailverificationscreen(
                             ontap: () {
                               Navigator.of(context).push(CustomPageTransition(
-                                  page: Newpasswordscreen()));
+                                  page: const Newpasswordscreen()));
                             },
-                            onpress: () {
+                            retryonpress: () {
                               //                         Navigator.of(context).push(CustomPageTransition(
                               //   page: email()
                               // ));
@@ -137,7 +146,7 @@ class _forgetpasswordState extends State<forgetpassword> {
                         child: Text(
                           "Submit",
                           style: TextStyle(
-                              color: Color.fromARGB(255, 255, 255, 255),
+                              color: const Color.fromARGB(255, 255, 255, 255),
                               fontSize: width! * 0.045,
                               fontWeight: FontWeight.bold),
                         ),

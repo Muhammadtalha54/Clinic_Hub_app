@@ -1,15 +1,18 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+// this is the widget for handling and displaying the lisence that the doctor
+//uploaded
 
 class UploadLicenseWidget extends StatelessWidget {
+  // selected file and the ontap method will be accepted as arguments
   final File? selectedImage;
   final VoidCallback onTap;
 
   const UploadLicenseWidget({
-    Key? key,
+    super.key,
     required this.selectedImage,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +32,7 @@ class UploadLicenseWidget extends StatelessWidget {
         height: height * 0.3,
         width: width * 0.8,
         alignment: Alignment.center,
+        // if no image selected (uploaded by the user)
         child: selectedImage == null
             ? Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -49,6 +53,8 @@ class UploadLicenseWidget extends StatelessWidget {
                   ),
                 ],
               )
+              // displays the image that the doctor uploaded
+              //ClipRect is a widget used to clip its child to a rectangular boundary. 
             : ClipRRect(
                 borderRadius: BorderRadius.circular(8),
                 child: Image.file(

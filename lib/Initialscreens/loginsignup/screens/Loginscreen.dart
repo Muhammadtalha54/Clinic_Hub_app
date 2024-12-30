@@ -1,11 +1,18 @@
+import 'package:clinic_hub_app/Doctor_interface/View/Doctorhomescreen.dart';
+import 'package:clinic_hub_app/Doctor_interface/View/pageviewdoctor.dart';
 import 'package:clinic_hub_app/Initialscreens/Forgotpasscodescreen.dart/forgotpasswordscreen.dart';
 import 'package:clinic_hub_app/Initialscreens/loginsignup/components/customtextfield.dart';
 import 'package:clinic_hub_app/Initialscreens/loginsignup/components/passwordtextfield.dart';
 import 'package:clinic_hub_app/Initialscreens/loginsignup/screens/selectionscreen.dart';
 import 'package:clinic_hub_app/Initialscreens/loginsignup/screens/Usersignupscreen.dart';
+import 'package:clinic_hub_app/User_interface/View/Homescreen.dart';
+import 'package:clinic_hub_app/User_interface/View/pageview.dart';
 import 'package:clinic_hub_app/apptheme/apptransitions/customtransition.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+//Both doctor and the patient have the same screen for login having
+// tabbar for both to see thier options seperately
 
 class Loginscreen extends StatefulWidget {
   const Loginscreen({super.key});
@@ -17,6 +24,7 @@ class Loginscreen extends StatefulWidget {
 class _LoginscreenState extends State<Loginscreen> {
   // Key to manage the Form
   final GlobalKey<FormState> _loginformKey = GlobalKey<FormState>();
+  //textfield controllers
   final TextEditingController Emailcontroller = TextEditingController();
   final TextEditingController Passwordcontroller = TextEditingController();
   bool _passwordVisible = false;
@@ -29,10 +37,10 @@ class _LoginscreenState extends State<Loginscreen> {
     width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 203, 236, 248),
+      backgroundColor: const Color.fromARGB(255, 203, 236, 248),
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 203, 236, 248),
-        title: Text(
+        backgroundColor: const Color.fromARGB(255, 203, 236, 248),
+        title: const Text(
           "Login",
           style: TextStyle(
               color: Colors.black, fontSize: 23, fontWeight: FontWeight.bold),
@@ -45,6 +53,7 @@ class _LoginscreenState extends State<Loginscreen> {
           child: Container(
             height: height,
             width: width * 0.92,
+            decoration: const BoxDecoration(),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -73,7 +82,7 @@ class _LoginscreenState extends State<Loginscreen> {
                               height: height * 0.03,
                             ),
                             TabBar(
-                              tabs: [
+                              tabs: const [
                                 Tab(
                                   text: "Doctor",
                                 ),
@@ -98,6 +107,7 @@ class _LoginscreenState extends State<Loginscreen> {
                                           height: height * 0.05,
                                         ),
                                         CustomTextFormField(
+                                          isEditing: true,
                                           hintText: "john@example.com",
                                           regex:
                                               r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$",
@@ -107,6 +117,7 @@ class _LoginscreenState extends State<Loginscreen> {
                                           label: 'Email',
                                         ),
                                         PasswordTextField(
+                                          isEditing: true,
                                           controller: Passwordcontroller,
                                           obscureText: _passwordVisible,
                                           onVisibilityToggle:
@@ -120,7 +131,7 @@ class _LoginscreenState extends State<Loginscreen> {
                                           onTap: () {
                                             Navigator.of(context).push(
                                               CustomPageTransition(
-                                                  page: forgetpassword()),
+                                                  page: const forgetpassword()),
                                             );
                                           },
                                           child: Text(
@@ -136,7 +147,12 @@ class _LoginscreenState extends State<Loginscreen> {
                                           height: height * 0.01,
                                         ),
                                         InkWell(
-                                          onTap: () {},
+                                          onTap: () {
+                                            Navigator.of(context).push(
+                                                CustomPageTransition(
+                                                    page:
+                                                        Doctor_panel_pageview()));
+                                          },
                                           child: Container(
                                             height: height * 0.06,
                                             width: width * 0.8,
@@ -156,7 +172,7 @@ class _LoginscreenState extends State<Loginscreen> {
                                             ),
                                           ),
                                         ),
-                                        Container(
+                                        SizedBox(
                                           height: height * 0.07,
                                           width: width * 0.8,
                                           child: Row(
@@ -166,7 +182,7 @@ class _LoginscreenState extends State<Loginscreen> {
                                               Text(
                                                 "Don't have an account?",
                                                 style: TextStyle(
-                                                  color: Color.fromARGB(
+                                                  color: const Color.fromARGB(
                                                       255, 120, 120, 120),
                                                   fontSize: width * 0.04,
                                                 ),
@@ -176,14 +192,15 @@ class _LoginscreenState extends State<Loginscreen> {
                                                   Navigator.of(context).push(
                                                     CustomPageTransition(
                                                         page:
-                                                            Selectionscreen()),
+                                                            const Selectionscreen()),
                                                   );
                                                 },
                                                 child: Text(
                                                   " Sign Up",
                                                   style: TextStyle(
-                                                      color: Color.fromARGB(
-                                                          255, 0, 123, 254),
+                                                      color:
+                                                          const Color.fromARGB(
+                                                              255, 0, 123, 254),
                                                       fontSize: width * 0.04,
                                                       fontWeight:
                                                           FontWeight.bold),
@@ -205,6 +222,7 @@ class _LoginscreenState extends State<Loginscreen> {
                                           height: height * 0.05,
                                         ),
                                         CustomTextFormField(
+                                          isEditing: true,
                                           hintText: "john@example.com",
                                           regex:
                                               r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$",
@@ -214,6 +232,7 @@ class _LoginscreenState extends State<Loginscreen> {
                                           label: 'Email',
                                         ),
                                         PasswordTextField(
+                                          isEditing: true,
                                           controller: Passwordcontroller,
                                           obscureText: _passwordVisible,
                                           onVisibilityToggle:
@@ -227,7 +246,7 @@ class _LoginscreenState extends State<Loginscreen> {
                                           onTap: () {
                                             Navigator.of(context).push(
                                               CustomPageTransition(
-                                                  page: forgetpassword()),
+                                                  page: const forgetpassword()),
                                             );
                                           },
                                           child: Text(
@@ -243,7 +262,13 @@ class _LoginscreenState extends State<Loginscreen> {
                                           height: height * 0.02,
                                         ),
                                         InkWell(
-                                          onTap: () {},
+                                          onTap: () {
+                                            Navigator.of(context).push(
+                                              CustomPageTransition(
+                                                  page:
+                                                      const Patient_panel_pageview()),
+                                            );
+                                          },
                                           child: Container(
                                             height: height * 0.06,
                                             width: width * 0.8,
@@ -262,7 +287,7 @@ class _LoginscreenState extends State<Loginscreen> {
                                             ),
                                           ),
                                         ),
-                                        Container(
+                                        SizedBox(
                                           height: height * 0.07,
                                           width: width * 0.8,
                                           child: Row(
@@ -272,7 +297,7 @@ class _LoginscreenState extends State<Loginscreen> {
                                               Text(
                                                 "Don't have an account?",
                                                 style: TextStyle(
-                                                    color: Color.fromARGB(
+                                                    color: const Color.fromARGB(
                                                         255, 120, 120, 120),
                                                     fontSize: width * 0.04),
                                               ),
@@ -281,14 +306,15 @@ class _LoginscreenState extends State<Loginscreen> {
                                                   Navigator.of(context).push(
                                                     CustomPageTransition(
                                                         page:
-                                                            Selectionscreen()),
+                                                            const Selectionscreen()),
                                                   );
                                                 },
                                                 child: Text(
                                                   " Sign Up",
                                                   style: TextStyle(
-                                                      color: Color.fromARGB(
-                                                          255, 0, 123, 254),
+                                                      color:
+                                                          const Color.fromARGB(
+                                                              255, 0, 123, 254),
                                                       fontSize: width * 0.04,
                                                       fontWeight:
                                                           FontWeight.bold),

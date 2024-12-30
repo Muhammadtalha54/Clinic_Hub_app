@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+// this is the  reusable date time picker 
 class CustomDateTimePicker extends StatelessWidget {
   final TextEditingController controller; // Controller to manage selected date
   final String label; // Label to display above the picker
@@ -9,7 +9,7 @@ class CustomDateTimePicker extends StatelessWidget {
     required this.controller,
     required this.label,
   });
-
+// function that sets the the current date and the selected date called on the textfield ontap
   Future<void> _selectDate(BuildContext context) async {
     DateTime currentDate = DateTime.now();
     final DateTime? selectedDate = await showDatePicker(
@@ -18,8 +18,9 @@ class CustomDateTimePicker extends StatelessWidget {
       firstDate: DateTime(1900),
       lastDate: DateTime(2100),
     );
-
+//displays the selected date in the field
     if (selectedDate != null) {
+      // this is the format in which we want to display the date
       String formattedDate =
           "${selectedDate.day}/${selectedDate.month}/${selectedDate.year}";
       controller.text =

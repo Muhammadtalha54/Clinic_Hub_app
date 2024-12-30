@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+//splash screen
+
 class Splashscreen extends StatefulWidget {
   const Splashscreen({super.key});
 
@@ -46,13 +48,13 @@ class _SplashscreenState extends State<Splashscreen> {
       body: Container(
         height: height!,
         width: width!,
-        decoration: BoxDecoration(),
+        decoration: const BoxDecoration(),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Center(
-              child: Container(
+              child: SizedBox(
                 height: height * 0.4,
                 width: width * 0.7,
                 child: Image.asset(
@@ -64,7 +66,7 @@ class _SplashscreenState extends State<Splashscreen> {
             SizedBox(
               height: height * 0.2,
             ),
-            Container(
+            SizedBox(
                 width: width * 0.9,
                 height: height * 0.2,
                 child: AnimatedTextKit(animatedTexts: [
@@ -74,7 +76,7 @@ class _SplashscreenState extends State<Splashscreen> {
                     textStyle: GoogleFonts.montserrat(
                       fontWeight: FontWeight.w700,
                       fontSize: 22,
-                      color: Color.fromRGBO(255, 255, 255, 1),
+                      color: const Color.fromRGBO(255, 255, 255, 1),
                     ),
                     textAlign: TextAlign.center,
                   ),

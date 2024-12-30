@@ -4,6 +4,7 @@ class AppExceptions implements Exception {
 
   AppExceptions([this._prefix, this._message]);
 
+  @override
   String toString() {
     return '$_prefix$_message';
   }
