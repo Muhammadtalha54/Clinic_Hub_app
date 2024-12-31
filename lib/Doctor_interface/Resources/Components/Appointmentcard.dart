@@ -56,13 +56,13 @@ class _AppointmentcarddoctorpanelState
       margin: EdgeInsets.only(bottom: height * 0.02),
       child: Padding(
         padding: EdgeInsets.symmetric(
-            vertical: height * 0.02, horizontal: width * 0.035),
+            vertical: height * 0.01, horizontal: width * 0.02),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
               height: height * 0.03,
-              width: width * 0.8,
+              width: width * 0.87,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -87,14 +87,14 @@ class _AppointmentcarddoctorpanelState
             ),
             SizedBox(
               height: height * 0.23,
-              width: width * 0.9,
+              width: width * 0.85,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(
                     height: height * 0.18,
-                    width: width * 0.3,
+                    width: width * 0.25,
                     decoration: BoxDecoration(
                         color: const Color.fromARGB(139, 77, 73, 13),
                         // color: Colors.grey.shade50,

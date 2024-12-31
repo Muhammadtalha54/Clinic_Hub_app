@@ -1,15 +1,11 @@
 import 'package:clinic_hub_app/Doctor_interface/Resources/Components/profilewidget.dart';
 import 'package:clinic_hub_app/Doctor_interface/View/Doctorprofilescreen.dart';
 import 'package:clinic_hub_app/Doctor_interface/View/Historyscreen.dart';
+import 'package:clinic_hub_app/Doctor_interface/View/scheduleappointment.dart';
 import 'package:clinic_hub_app/Initialscreens/loginsignup/screens/Loginscreen.dart';
 import 'package:clinic_hub_app/User_interface/Resources/Components/widgets/Imagewidget.dart';
-import 'package:clinic_hub_app/User_interface/Resources/Components/widgets/profileoptions.dart';
-
 import 'package:clinic_hub_app/User_interface/View/Privacypolicyscreen.dart';
-import 'package:clinic_hub_app/User_interface/View/Userprofile.dart';
 import 'package:clinic_hub_app/User_interface/View/aboutusscreen.dart';
-import 'package:clinic_hub_app/User_interface/View/favouritedoctors.dart';
-import 'package:clinic_hub_app/User_interface/View/previousappointmentsscreen.dart';
 import 'package:clinic_hub_app/apptheme/Apptheme.dart';
 import 'package:clinic_hub_app/apptheme/apptransitions/customtransition.dart';
 import 'package:flutter/material.dart';
@@ -87,6 +83,18 @@ class _DoctorAccountScreenState extends State<DoctorAccountScreen> {
                   width: width * 0.8,
                   iconcolor: Colors.red,
                   Title: "Profile",
+                ),
+                SizedBox(height: height * 0.01),
+                Doctorprofilewidget(
+                  icon: Icons.timer_outlined,
+                  onpressed: () {
+                    Navigator.of(context).push(
+                        CustomPageTransition(page: ScheduleAppointmentPage()));
+                  },
+                  height: height * 0.07,
+                  width: width * 0.8,
+                  iconcolor: Colors.green,
+                  Title: "Schedule Appointments",
                 ),
                 SizedBox(height: height * 0.01),
                 Doctorprofilewidget(

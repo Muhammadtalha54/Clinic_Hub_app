@@ -1,8 +1,11 @@
 import 'package:clinic_hub_app/Doctor_interface/Resources/Components/Appointmentcard.dart';
+import 'package:clinic_hub_app/Doctor_interface/View/Appointmentrequestscreen.dart';
+import 'package:clinic_hub_app/Doctor_interface/View/DetailsAppointment.dart';
 import 'package:clinic_hub_app/Doctor_interface/View/Notificationsscreen.dart';
 import 'package:clinic_hub_app/apptheme/Apptheme.dart';
 import 'package:clinic_hub_app/apptheme/apptransitions/customtransition.dart';
 import 'package:flutter/material.dart';
+
 // this is the first screen that the doctor panel willhave
 class DoctorHomescreen extends StatefulWidget {
   const DoctorHomescreen({super.key});
@@ -27,102 +30,100 @@ class _DoctorHomescreenState extends State<DoctorHomescreen>
 
     return Scaffold(
       backgroundColor: Apptheme.appbodybackgroundcolor,
-      body: SingleChildScrollView(
-        child: Center(
-          child: Container(
-            height: height,
-            width: width * 0.9,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(
-                  height: height * 0.03,
+      body: Center(
+        child: Container(
+          height: height,
+          width: width * 0.9,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: height * 0.03,
+              ),
+              _myCustomheader(
+                name: 'Ali Khan',
+                ontap: () {
+                  Navigator.of(context).push(CustomPageTransition(
+                    page: DoctorNotificationscreen(),
+                  ));
+                },
+                Notifications_count: 6,
+              ),
+              SizedBox(
+                height: height * 0.03,
+              ),
+              // Title Section
+              Container(
+                height: height * 0.1,
+                alignment: Alignment.center,
+                child: Text(
+                  "Appointments",
+                  style: TextStyle(
+                    fontSize: width * 0.06,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-                _myCustomheader(
-                  name: 'Ali Khan',
-                  ontap: () {
-                    Navigator.of(context).push(CustomPageTransition(
-                      page: DoctorNotificationscreen(),
-                    ));
-                  },
-                  Notifications_count: 6,
-                ),
-                SizedBox(
-                  height: height * 0.03,
-                ),
-                // Title Section
-                Container(
-                  height: height * 0.1,
-                  alignment: Alignment.center,
-                  child: Text(
-                    "Appointments",
-                    style: TextStyle(
-                      fontSize: width * 0.06,
-                      fontWeight: FontWeight.bold,
+              ),
+
+              // Custom TabBar
+              Container(
+                height: height * 0.07,
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(
+                      color: Colors.grey.shade300,
+                      width: 1,
                     ),
                   ),
                 ),
-
-                // Custom TabBar
-                Container(
-                  height: height * 0.07,
-                  decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                        color: Colors.grey.shade300,
-                        width: 1,
+                child: TabBar(
+                  controller: _tabController,
+                  indicatorColor: Apptheme.mainbackgroundcolor,
+                  indicatorWeight: 2.0,
+                  labelColor: Apptheme.mainbackgroundcolor,
+                  unselectedLabelColor: Colors.grey,
+                  tabs: [
+                    Tab(
+                      child: Text(
+                        "Upcoming",
+                        style: TextStyle(fontSize: width * 0.04),
                       ),
                     ),
-                  ),
-                  child: TabBar(
-                    controller: _tabController,
-                    indicatorColor: Apptheme.mainbackgroundcolor,
-                    indicatorWeight: 2.0,
-                    labelColor: Apptheme.mainbackgroundcolor,
-                    unselectedLabelColor: Colors.grey,
-                    tabs: [
-                      Tab(
-                        child: Text(
-                          "Upcoming",
-                          style: TextStyle(fontSize: width * 0.04),
-                        ),
+                    Tab(
+                      child: Text(
+                        "Completed",
+                        style: TextStyle(fontSize: width * 0.04),
                       ),
-                      Tab(
-                        child: Text(
-                          "Completed",
-                          style: TextStyle(fontSize: width * 0.04),
-                        ),
+                    ),
+                    Tab(
+                      child: Text(
+                        "Cancelled",
+                        style: TextStyle(fontSize: width * 0.04),
                       ),
-                      Tab(
-                        child: Text(
-                          "Cancelled",
-                          style: TextStyle(fontSize: width * 0.04),
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
+              ),
 
-                // TabBar Views
-                Expanded(
-                  child: TabBarView(
-                    controller: _tabController,
-                    children: [
-                      // Current Appointments
-                      AppointmentList(
-                          status: 'pending', height: height, width: width),
-                      // Previous Appointments
-                      AppointmentList(
-                          status: 'completed', height: height, width: width),
-                      // Cancelled Appointments
-                      AppointmentList(
-                          status: 'cancelled', height: height, width: width),
-                    ],
-                  ),
+              // TabBar Views
+              Expanded(
+                child: TabBarView(
+                  controller: _tabController,
+                  children: [
+                    // Current Appointments
+                    AppointmentList(
+                        status: 'pending', height: height, width: width),
+                    // Previous Appointments
+                    AppointmentList(
+                        status: 'completed', height: height, width: width),
+                    // Cancelled Appointments
+                    AppointmentList(
+                        status: 'cancelled', height: height, width: width),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
@@ -206,6 +207,7 @@ class AppointmentList extends StatelessWidget {
         'date': '2023-06-15',
         'time': '10:00 AM',
         'id': '76828',
+        'image': 'assets/images/doctor.png'
       },
       {
         'PatientName': 'Dr. Jane Smith',
@@ -213,6 +215,7 @@ class AppointmentList extends StatelessWidget {
         'date': '2023-05-20',
         'time': '2:00 PM',
         'id': '76828',
+        'image': 'assets/images/doctor.png'
       },
     ];
 
@@ -221,34 +224,36 @@ class AppointmentList extends StatelessWidget {
       width: width,
       child: ListView.builder(
         padding: EdgeInsets.symmetric(
-          vertical: height * 0.02,
-          horizontal: width * 0.05,
-        ),
+            // vertical: height * 0.01,
+            // horizontal: width * 0.02,
+            ),
+        physics: BouncingScrollPhysics(),
         scrollDirection: Axis.vertical,
         itemCount: appointments.length,
         itemBuilder: (context, index) {
           final appointment = appointments[index];
-          return Appointmentcarddoctorpanel(
-            PatientName: appointment['PatientName']!,
-            Patientproblem: appointment['Patientproblem']!,
-            date: appointment['date']!,
-            time: appointment['time']!,
-            status: status,
-            Patientimage: 'assets/images/doctor.png',
-            bookingid: appointment['id']!,
-            cancelbuttonclick: () {
-              print("click");
-              // Confirmationpopupdialoguebox(
-              //   onbuttonpress: () {
-              //     Navigator.pop(context);
-              //   },
-              //   buttoncolor: Apptheme.mainbackgroundcolor,
-              //   buttontext: 'Confirm',
-              //   dialogbody: 'You want to cancel your appointment with doctor ALi',
-              //   dialogtitle: 'Are you sure!',
-              // );
-              _cancelappointmentconfirmation(context);
+          return InkWell(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DetailAppoitmentscreen(
+                        appointmentDetails: appointment, index: index),
+                  ));
             },
+            child: Appointmentcarddoctorpanel(
+              PatientName: appointment['PatientName']!,
+              Patientproblem: appointment['Patientproblem']!,
+              date: appointment['date']!,
+              time: appointment['time']!,
+              status: status,
+              Patientimage: appointment['image']!,
+              bookingid: appointment['id']!,
+              cancelbuttonclick: () {
+                print("click");
+                _cancelappointmentconfirmation(context);
+              },
+            ),
           );
         },
       ),
