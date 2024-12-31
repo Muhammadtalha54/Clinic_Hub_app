@@ -1,4 +1,4 @@
-import 'package:clinic_hub_app/Initialscreens/loginsignup/components/customtextfield.dart';
+import 'package:clinic_hub_app/Shared_screens/Resources/components/customtextfield.dart';
 import 'package:clinic_hub_app/User_interface/View/Congratsscreen.dart';
 import 'package:clinic_hub_app/apptheme/Apptheme.dart';
 import 'package:clinic_hub_app/apptheme/apptransitions/customtransition.dart';

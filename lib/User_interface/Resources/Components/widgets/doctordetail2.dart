@@ -1,6 +1,6 @@
 import 'package:clinic_hub_app/apptheme/Apptheme.dart';
 import 'package:flutter/material.dart';
-import 'package:like_button/like_button.dart';
+
 
 class Doctordetailwidget2 extends StatelessWidget {
   final String imagepath, doctorName, specialty;

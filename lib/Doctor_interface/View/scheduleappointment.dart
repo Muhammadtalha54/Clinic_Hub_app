@@ -1,3 +1,4 @@
+import 'package:clinic_hub_app/Doctor_interface/Models/Schedule_model.dart';
 import 'package:clinic_hub_app/Doctor_interface/View_models/Controllers/Schedulecontroller.dart';
 import 'package:clinic_hub_app/apptheme/Apptheme.dart';
 import 'package:flutter/material.dart';
@@ -229,13 +230,17 @@ class _ScheduleAppointmentPageState extends State<ScheduleAppointmentPage> {
                   ),
                 ),
                 onPressed: () {
-                  print('Selected Days: ${controller.selectedDays}');
-                  print(
-                      'Start Time: ${controller.startTime.value.format(context)}');
-                  print(
-                      'End Time: ${controller.endTime.value.format(context)}');
-                  print(
-                      'Slot Duration: ${controller.slotDuration.value} minutes');
+                  ScheduleAppointment schedule = ScheduleAppointment(
+                    selectedDays: controller.selectedDays,
+                    startTime: controller.startTime.value,
+                    endTime: controller.endTime.value,
+                    slotDuration: controller.slotDuration.value,
+                  );
+
+                  print('Selected Days: ${schedule.selectedDays}');
+                  print('Start Time: ${schedule.startTime}');
+                  print('End Time: ${schedule.endTime}');
+                  print('Slot Duration: ${schedule.slotDuration} minutes');
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     backgroundColor: Colors.transparent,
                     content: Text(

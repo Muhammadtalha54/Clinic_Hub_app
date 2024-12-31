@@ -1,4 +1,4 @@
-import 'package:clinic_hub_app/Initialscreens/loginsignup/screens/Loginscreen.dart';
+import 'package:clinic_hub_app/Shared_screens/View/loginsignup/screens/Loginscreen.dart';
 import 'package:clinic_hub_app/User_interface/Resources/Components/widgets/Imagewidget.dart';
 import 'package:clinic_hub_app/User_interface/Resources/Components/widgets/profileoptions.dart';
 

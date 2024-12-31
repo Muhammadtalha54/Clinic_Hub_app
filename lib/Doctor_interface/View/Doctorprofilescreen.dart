@@ -1,5 +1,5 @@
-import 'package:clinic_hub_app/Initialscreens/loginsignup/components/customtextfield.dart';
-import 'package:clinic_hub_app/Initialscreens/loginsignup/components/passwordtextfield.dart';
+import 'package:clinic_hub_app/Shared_screens/Resources/components/customtextfield.dart';
+import 'package:clinic_hub_app/Shared_screens/Resources/components/passwordtextfield.dart';
 import 'package:clinic_hub_app/User_interface/Resources/Components/widgets/Imagewidget.dart';
 import 'package:clinic_hub_app/apptheme/Apptheme.dart';
 

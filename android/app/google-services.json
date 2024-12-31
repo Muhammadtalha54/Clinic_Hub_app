@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "851778994125",
+    "project_id": "clinic-hub-app",
+    "storage_bucket": "clinic-hub-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:851778994125:android:cf49047b87f527c9420e84",
+        "android_client_info": {
+          "package_name": "com.example.clinic_hub_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCx7MbpKsQoRF22M1WUK34tqLHbFJ57tqQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

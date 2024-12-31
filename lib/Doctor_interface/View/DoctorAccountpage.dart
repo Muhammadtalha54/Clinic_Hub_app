@@ -2,7 +2,7 @@ import 'package:clinic_hub_app/Doctor_interface/Resources/Components/profilewidg
 import 'package:clinic_hub_app/Doctor_interface/View/Doctorprofilescreen.dart';
 import 'package:clinic_hub_app/Doctor_interface/View/Historyscreen.dart';
 import 'package:clinic_hub_app/Doctor_interface/View/scheduleappointment.dart';
-import 'package:clinic_hub_app/Initialscreens/loginsignup/screens/Loginscreen.dart';
+import 'package:clinic_hub_app/Shared_screens/View/loginsignup/screens/Loginscreen.dart';
 import 'package:clinic_hub_app/User_interface/Resources/Components/widgets/Imagewidget.dart';
 import 'package:clinic_hub_app/User_interface/View/Privacypolicyscreen.dart';
 import 'package:clinic_hub_app/User_interface/View/aboutusscreen.dart';
