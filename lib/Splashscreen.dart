@@ -1,6 +1,6 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 
-import 'package:clinic_hub_app/Shared_screens/View/onboarding/onboarding.dart';
+import 'package:clinic_hub_app/Shared_interface/Shared_screens/onboarding/onboarding.dart';
 import 'package:clinic_hub_app/apptheme/Apptheme.dart';
 import 'package:clinic_hub_app/apptheme/apptransitions/customtransition.dart';
 

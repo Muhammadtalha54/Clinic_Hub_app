@@ -23,3 +23,19 @@ class MyApp extends StatelessWidget {
         home: const Splashscreen());
   }
 }
+// static String Token = '';
+//   late FirebaseMessaging messaging;
+
+//   /////////////////
+//   // getToken() {
+//   //   messaging = FirebaseMessaging.instance;
+//   //   messaging.getToken().then((value) {
+//   //     if (value != null) {
+//   //       Token = value;
+//   //     }
+//   //     print("token is");
+//   //     print(value);
+//   //   });
+//   // }
+//   /////////////
+//   ///
