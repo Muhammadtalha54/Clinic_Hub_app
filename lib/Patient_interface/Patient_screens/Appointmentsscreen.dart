@@ -1,6 +1,10 @@
+import 'package:clinic_hub_app/Patient_interface/Patient_ViewModel/Controllers/Appointmentscontroller.dart';
 import 'package:clinic_hub_app/Patient_interface/Patient_resources/Components/widgets/Appointmentcard.dart';
 import 'package:clinic_hub_app/apptheme/Apptheme.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+
 /*This screen will show all the user current previous and cancelled appointments
 
  */
@@ -112,9 +116,11 @@ class _AppointmentScreenState extends State<AppointmentScreen>
     );
   }
 }
+
 // this takes the list and make the appointmentcards accordingly
 // this makes the list  of the appointments
-class AppointmentList extends StatelessWidget {
+// this takes the list and make the appointmentcards accordingly
+class AppointmentList extends StatefulWidget {
   final String status;
   final double height;
   final double width;
@@ -127,61 +133,14 @@ class AppointmentList extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    // Replace with dynamic data fetching logic
-    final appointments = [
-      {
-        'doctorName': 'Dr. John Doe',
-        'specialty': 'Cardiologist',
-        'date': '2023-06-15',
-        'time': '10:00 AM',
-        'id': '76828',
-      },
-      {
-        'doctorName': 'Dr. Jane Smith',
-        'specialty': 'Dermatologist',
-        'date': '2023-05-20',
-        'time': '2:00 PM',
-        'id': '76828',
-      },
-    ];
+  State<AppointmentList> createState() => _AppointmentListState();
+}
 
-    return ListView.builder(
-      padding: EdgeInsets.symmetric(
-        vertical: height * 0.02,
-        horizontal: width * 0.05,
-      ),
-      itemCount: appointments.length,
-      itemBuilder: (context, index) {
-        final appointment = appointments[index];
-        return AppointmentCard(
-          doctorName: appointment['doctorName']!,
-          specialty: appointment['specialty']!,
-          date: appointment['date']!,
-          time: appointment['time']!,
-          status: status,
-          doctorimage: 'assets/images/doctor.png',
-          bookingid: appointment['id']!,
-          cancelbuttonclick: () {
-            print("click");
-            // Confirmationpopupdialoguebox(
-            //   onbuttonpress: () {
-            //     Navigator.pop(context);
-            //   },
-            //   buttoncolor: Apptheme.mainbackgroundcolor,
-            //   buttontext: 'Confirm',
-            //   dialogbody: 'You want to cancel your appointment with doctor ALi',
-            //   dialogtitle: 'Are you sure!',
-            // );
-            _cancelappointmentconfirmation(context);
-          },
-        );
-      },
-    );
-  }
-// this is a dialog that appers if the user click to cancel the appointment
-  void _cancelappointmentconfirmation(BuildContext context) {
-    final TextEditingController reasonController = TextEditingController();
+class _AppointmentListState extends State<AppointmentList> {
+  final TextEditingController reasonController = TextEditingController();
+
+  void _cancelAppointmentConfirmation(BuildContext context,
+      PatientAppointmentController controller, String bookingId) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
     showDialog(
@@ -219,28 +178,26 @@ class AppointmentList extends StatelessWidget {
           actions: <Widget>[
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop();
+                Navigator.of(context).pop(); // Close the dialog
               },
-              style: TextButton.styleFrom(
-                backgroundColor: Colors.grey.shade100,
-              ),
               child: const Text(
-                'Close',
-                style: TextStyle(color: Color.fromARGB(255, 57, 57, 57)),
+                'Cancel',
+                style: TextStyle(color: Colors.grey),
               ),
             ),
             OutlinedButton(
               onPressed: () {
                 if (formKey.currentState?.validate() ?? false) {
-                  // Perform the cancellation action
                   final reason = reasonController.text;
-                  debugPrint('Cancellation reason: $reason');
+
+                  // Call the controller's cancellation method
+                  controller.cancelAppointment(bookingId, reason);
 
                   Navigator.of(context).pop(); // Close the dialog
                 }
               },
               style: OutlinedButton.styleFrom(
-                backgroundColor: Apptheme.mainbackgroundcolor,
+                backgroundColor: Colors.red,
               ),
               child: const Text(
                 'Confirm',
@@ -251,5 +208,57 @@ class AppointmentList extends StatelessWidget {
         );
       },
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final controller = Get.put<PatientAppointmentController>(
+      PatientAppointmentController(),
+    );
+
+    return Obx(() {
+      final filteredAppointments = controller.AllAppointments.where(
+              (appointment) => appointment.Appointmentstatus == widget.status)
+          .toList();
+
+      return filteredAppointments.isEmpty
+          ? Center(child: Text("No ${widget.status} appointments"))
+          : SizedBox(
+              height: widget.height * 0.6,
+              width: widget.width,
+              child: ListView.builder(
+                padding: EdgeInsets.symmetric(
+                  vertical: widget.height * 0.01,
+                  horizontal: widget.width * 0.02,
+                ),
+                itemCount: filteredAppointments.length,
+                itemBuilder: (context, index) {
+                  final appointment = filteredAppointments[index];
+                  return AppointmentCardPatient(
+                    doctorName: appointment.doctorName!,
+                    //     Patientproblem: appointment.Patientproblem!,
+                    cancellationreason: appointment.canellationreason!,
+                    date: appointment.date!,
+                    time: appointment.time!,
+                    status: widget.status,
+                    doctorimage: appointment.doctorimageurl ??
+                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvj3m7aqQbQp6jX0EGDRWLGNok8H47-XZnfQ&s',
+                    bookingid: appointment.bookingid!,
+                    cancelbuttonclick: () async {
+                      _cancelAppointmentConfirmation(
+                          context, controller, appointment.bookingid!);
+                    },
+                    completebutton: () async {
+                      controller.completeAppointment(
+                          context, appointment.bookingid!);
+                      // Add complee appointment functionality here if needed
+                    },
+                    specialty: appointment.specialty!,
+                    reviewbuttonclick: () {},
+                  );
+                },
+              ),
+            );
+    });
   }
 }

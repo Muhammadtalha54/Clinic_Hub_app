@@ -18,13 +18,15 @@ class _SplashscreenState extends State<Splashscreen> {
   @override
   void initState() {
     // TODO: implement initState
-    // Future.delayed(const Duration(seconds: 3), () {
+    // Future.delayed(const Duration(seconds: 15), () {
     //   Navigator.push(
     //       context,
     //       MaterialPageRoute(
     //         builder: (context) => const Onboardingscreens(),
     //       ));
     // });
+    Get.put(SplashController());
+
     super.initState();
   }
 

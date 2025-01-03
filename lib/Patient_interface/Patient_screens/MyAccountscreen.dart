@@ -1,4 +1,5 @@
 import 'package:clinic_hub_app/Patient_interface/Patient_models/Staticmodel.dart';
+import 'package:clinic_hub_app/Patient_interface/Patient_screens/Myrequestsscreen.dart';
 import 'package:clinic_hub_app/Shared_interface/Shared_screens/loginsignup/screens/Loginscreen.dart';
 import 'package:clinic_hub_app/Shared_interface/Shared_resources/components/Imagewidget.dart';
 import 'package:clinic_hub_app/Patient_interface/Patient_resources/Components/widgets/profileoptions.dart';
@@ -125,16 +126,30 @@ class _UserAccountscreenState extends State<UserAccountscreen> {
                 // ),
                 SizedBox(height: height * 0.01),
                 Profilescreenoptionwidget(
-                  icon: Icons.timer_outlined,
+                  icon: Icons.person_outline,
                   onpressed: () {
+                    // print('object');
                     Navigator.of(context).push(CustomPageTransition(
-                        page: const AppointmentHistoryScreen()));
+                        page: const PatientRequestsscreen()));
+                    // Navigator.of(context)
+                    //     .push(CustomPageTransition(page: Userprofilescreen()));
                   },
                   height: height * 0.07,
                   width: width * 0.8,
-                  iconcolor: Colors.deepOrange,
-                  Title: "Appointment History ",
+                  iconcolor: Colors.purple,
+                  Title: "Appointment Requests",
                 ),
+                // Profilescreenoptionwidget(
+                //   icon: Icons.timer_outlined,
+                //   onpressed: () {
+                //     Navigator.of(context).push(CustomPageTransition(
+                //         page: const AppointmentHistoryScreen()));
+                //   },
+                //   height: height * 0.07,
+                //   width: width * 0.8,
+                //   iconcolor: Colors.deepOrange,
+                //   Title: "Appointment History ",
+                // ),
 
                 SizedBox(height: height * 0.01),
                 Profilescreenoptionwidget(
@@ -146,7 +161,7 @@ class _UserAccountscreenState extends State<UserAccountscreen> {
                   },
                   height: height * 0.07,
                   width: width * 0.8,
-                  iconcolor: Colors.deepOrange,
+                  iconcolor: Colors.amber,
                   Title: "Logout ",
                 ),
 

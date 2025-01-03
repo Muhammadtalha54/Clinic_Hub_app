@@ -1,6 +1,8 @@
+import 'package:clinic_hub_app/Patient_interface/Patient_screens/pageview.dart';
 import 'package:clinic_hub_app/apptheme/Apptheme.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 /*WHen the user will sucessfully book an appointment 
 then he will navigate to this screen showing a 
 confirmation note
@@ -11,7 +13,8 @@ class Congratsscreen extends StatelessWidget {
   final String appointmentDate;
   final String patientName;
 
-  const Congratsscreen({super.key, 
+  const Congratsscreen({
+    super.key,
     required this.doctorName,
     required this.appointmentTime,
     required this.appointmentDate,
@@ -108,6 +111,11 @@ class Congratsscreen extends StatelessWidget {
                 onPressed: () {
                   // Add your navigation logic here
                   Navigator.pop(context);
+                  // Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //       builder: (context) => Navigator.pop(),
+                  //     ));
                 },
                 style: ElevatedButton.styleFrom(
                     minimumSize: Size(width * 0.8, height * 0.07),

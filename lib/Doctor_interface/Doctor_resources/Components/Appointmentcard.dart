@@ -8,9 +8,11 @@ class Appointmentcarddoctorpanel extends StatefulWidget {
   final String time;
   final String status;
   final String Patientimage;
+  final String cancellationreason;
   final String bookingid;
   final VoidCallback cancelbuttonclick;
 
+  final VoidCallback completebutton;
   const Appointmentcarddoctorpanel({
     super.key,
     required this.PatientName,
@@ -21,6 +23,8 @@ class Appointmentcarddoctorpanel extends StatefulWidget {
     required this.Patientimage,
     required this.bookingid,
     required this.cancelbuttonclick,
+    required this.completebutton,
+    required this.cancellationreason,
   });
 
   @override
@@ -90,21 +94,30 @@ class _AppointmentcarddoctorpanelState
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Container(
-                    height: height * 0.18,
-                    width: width * 0.25,
-                    decoration: BoxDecoration(
-                        color: const Color.fromARGB(139, 77, 73, 13),
-                        // color: Colors.grey.shade50,
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                            image: AssetImage(widget.Patientimage ??
-                                'assets/images/doctor.png'),
-                            fit: BoxFit.fitHeight)),
-                  ),
+                  widget.Patientimage != null
+                      ? Container(
+                          height: height * 0.18,
+                          width: width * 0.2,
+                          decoration: BoxDecoration(
+                              color: const Color.fromARGB(139, 77, 73, 13),
+                              // color: Colors.grey.shade50,
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                  image: NetworkImage(widget.Patientimage),
+                                  fit: BoxFit.fitHeight)),
+                        )
+                      : Container(
+                          height: height * 0.18,
+                          width: width * 0.25,
+                          decoration: BoxDecoration(
+                            color: const Color.fromARGB(139, 77, 73, 13),
+                            // color: Colors.grey.shade50,
+                            shape: BoxShape.circle,
+                          ),
+                        ),
                   SizedBox(
                     height: height * 0.5,
-                    width: width * 0.4,
+                    width: width * 0.5,
                     //  color: Colors.red,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -120,6 +133,7 @@ class _AppointmentcarddoctorpanelState
                         //  SizedBox(height: height * 0.005),
                         Text(
                           'Patientproblem: ${widget.Patientproblem}',
+                          overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                               fontSize: width * 0.035,
                               fontWeight: FontWeight.w500),
@@ -153,28 +167,69 @@ class _AppointmentcarddoctorpanelState
                         SizedBox(
                           height: height * 0.01,
                         ),
-                        if (widget.status == 'pending')
-                          SizedBox(
-                            height: height * 0.048,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color.fromARGB(193, 79,
-                                    196, 238), // Button background color
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(
-                                      12), // Border radius
-                                ),
-                              ),
-                              onPressed: widget.cancelbuttonclick,
-                              child: Text(
-                                'Cancel ',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: width * 0.036),
-                              ),
-                            ),
+                        if (widget.status == 'cancelled')
+                          Text(
+                            maxLines: 2,
+                            'Reason: \n${widget.cancellationreason}',
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                                fontSize: width * 0.035,
+                                fontWeight: FontWeight.w600),
                           ),
+
+                        if (widget.status == 'Pending')
+                          SizedBox(
+                              height: height * 0.035,
+                              width: width * 0.5,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: const Color.fromARGB(
+                                          193,
+                                          79,
+                                          196,
+                                          238), // Button background color
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(
+                                            12), // Border radius
+                                      ),
+                                    ),
+                                    onPressed: widget.completebutton,
+                                    child: Text(
+                                      'Completed',
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: width * 0.03),
+                                    ),
+                                  ),
+                                  ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: const Color.fromARGB(
+                                          193,
+                                          79,
+                                          196,
+                                          238), // Button background color
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(
+                                            12), // Border radius
+                                      ),
+                                    ),
+                                    onPressed: widget.cancelbuttonclick,
+                                    child: Text(
+                                      'Cancel ',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: width * 0.03),
+                                    ),
+                                  ),
+                                ],
+                              )),
                       ],
                     ),
                   )

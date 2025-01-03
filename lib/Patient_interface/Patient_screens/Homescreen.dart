@@ -205,12 +205,28 @@ class _Patient_homescreenState extends State<Patient_homescreen> {
       schedule: 'Nov 3, 9:00am',
       buttoncolor: const Color.fromARGB(255, 255, 255, 255),
       buttontextcolor: Colors.green,
+      message: 'Drink at least 8 glasses of water daily to stay hydrated.',
     ),
     customSchedulecardwidget(
       // Height: height * 0.2,
       // Width: width * 0.9,
 
-      cardtitle: "Dr ALi khan",
+      cardtitle: "Dr Sarfraz",
+      cardbody: "Dermatologist",
+      imageurl: "assets/images/doctor.png",
+      onbuttonpress: () {},
+      textcolor: Colors.white,
+      schedule: 'Nov 3, 9:00am',
+      buttoncolor: const Color.fromARGB(255, 255, 255, 255),
+      buttontextcolor: Colors.green,
+      message:
+          'Eat a balanced diet rich in fruits, vegetables, and whole grains',
+    ),
+    customSchedulecardwidget(
+      // Height: height * 0.2,
+      // Width: width * 0.9,
+
+      cardtitle: "Dr Ali",
       cardbody: "Cardiologist",
       imageurl: "assets/images/doctor.png",
       onbuttonpress: () {},
@@ -218,19 +234,7 @@ class _Patient_homescreenState extends State<Patient_homescreen> {
       schedule: 'Nov 3, 9:00am',
       buttoncolor: const Color.fromARGB(255, 255, 255, 255),
       buttontextcolor: Colors.green,
-    ),
-    customSchedulecardwidget(
-      // Height: height * 0.2,
-      // Width: width * 0.9,
-
-      cardtitle: "Dr ALi khan",
-      cardbody: "Cardiologist",
-      imageurl: "assets/images/doctor.png",
-      onbuttonpress: () {},
-      textcolor: Colors.white,
-      schedule: 'Nov 3, 9:00am',
-      buttoncolor: const Color.fromARGB(255, 255, 255, 255),
-      buttontextcolor: Colors.green,
+      message: 'Practice good posture to avoid back and neck pain.',
     ),
   ];
   // this is the top header

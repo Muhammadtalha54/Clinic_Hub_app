@@ -7,7 +7,7 @@ import 'package:clinic_hub_app/Doctor_interface/Doctor_models/Doctor_model.dart'
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
-class AppointmentController {
+class Appointmentrequestcontroller {
   final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
 
   // Method to create appointment request

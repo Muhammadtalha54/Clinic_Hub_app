@@ -3,9 +3,14 @@ import 'package:clinic_hub_app/Doctor_interface/Doctor_resources/Components/Appo
 import 'package:clinic_hub_app/Doctor_interface/Doctor_screens/AppointmentRequestscreen.dart';
 import 'package:clinic_hub_app/Doctor_interface/Doctor_screens/DetailsAppointment.dart';
 import 'package:clinic_hub_app/Doctor_interface/Doctor_screens/Notificationsscreen.dart';
+import 'package:clinic_hub_app/Doctor_interface/doctor_viewmodel/Controllers/Appointmentcontroller.dart';
+import 'package:clinic_hub_app/Shared_interface/Shared_resources/components/reusabeldialog.dart';
 import 'package:clinic_hub_app/apptheme/Apptheme.dart';
 import 'package:clinic_hub_app/apptheme/apptransitions/customtransition.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 
 // this is the first screen that the doctor panel willhave
 class DoctorHomescreen extends StatefulWidget {
@@ -20,14 +25,11 @@ class _DoctorHomescreenState extends State<DoctorHomescreen>
   var height, width;
   late TabController _tabController;
 
-  String? doctorname= StaticDoctor.doctormodel!.doctorname;
-  String? doctorimageurl=StaticDoctor.doctormodel!.doctorimageurl;
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
   }
-  
 
   @override
   Widget build(BuildContext context) {
@@ -48,8 +50,8 @@ class _DoctorHomescreenState extends State<DoctorHomescreen>
                 height: height * 0.03,
               ),
               _myCustomheader(
-                name: doctorname!,
-                imageurl: doctorimageurl,
+                name: StaticDoctor.doctormodel!.doctorname!,
+                imageurl: StaticDoctor.doctormodel!.doctorimageurl,
                 ontap: () {
                   Navigator.of(context).push(CustomPageTransition(
                     page: DoctorNotificationscreen(),
@@ -118,10 +120,10 @@ class _DoctorHomescreenState extends State<DoctorHomescreen>
                 child: TabBarView(
                   controller: _tabController,
                   children: [
-                    // Current Appointments
+                    // Upcoming Appointments
                     AppointmentList(
-                        status: 'pending', height: height, width: width),
-                    // Previous Appointments
+                        status: 'Pending', height: height, width: width),
+                    // Completed Appointments
                     AppointmentList(
                         status: 'completed', height: height, width: width),
                     // Cancelled Appointments
@@ -136,13 +138,11 @@ class _DoctorHomescreenState extends State<DoctorHomescreen>
       ),
     );
   }
-  // this is the top header
 
   Widget _myCustomheader(
       {required String name,
       required double Notifications_count,
       required String? imageurl,
-      
       required VoidCallback ontap}) {
     return Container(
       height: height * 0.07,
@@ -195,10 +195,11 @@ class _DoctorHomescreenState extends State<DoctorHomescreen>
         ),
       ),
     );
-      }}
-// this takes the list and make the appointmentcards accordingly
+  }
+}
 
-class AppointmentList extends StatelessWidget {
+// this takes the list and make the appointmentcards accordingly
+class AppointmentList extends StatefulWidget {
   final String status;
   final double height;
   final double width;
@@ -211,70 +212,14 @@ class AppointmentList extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    // Replace with dynamic data fetching logic
-    final appointments = [
-      {
-        'PatientName': 'Ali ',
-        'Patientproblem': 'Heart Problem',
-        'date': '2023-06-15',
-        'time': '10:00 AM',
-        'id': '76828',
-        'image': 'assets/images/doctor.png'
-      },
-      {
-        'PatientName': 'Dr. Jane Smith',
-        'Patientproblem': 'Dermatologist',
-        'date': '2023-05-20',
-        'time': '2:00 PM',
-        'id': '76828',
-        'image': 'assets/images/doctor.png'
-      },
-    ];
+  State<AppointmentList> createState() => _AppointmentListState();
+}
 
-    return SizedBox(
-      height: height * 0.6,
-      width: width,
-      child: ListView.builder(
-        padding: const EdgeInsets.symmetric(
-            // vertical: height * 0.01,
-            // horizontal: width * 0.02,
-            ),
-        physics: const BouncingScrollPhysics(),
-        scrollDirection: Axis.vertical,
-        itemCount: appointments.length,
-        itemBuilder: (context, index) {
-          final appointment = appointments[index];
-          return InkWell(
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => DetailAppoitmentscreen(
-                        appointmentDetails: appointment, index: index),
-                  ));
-            },
-            child: Appointmentcarddoctorpanel(
-              PatientName: appointment['PatientName']!,
-              Patientproblem: appointment['Patientproblem']!,
-              date: appointment['date']!,
-              time: appointment['time']!,
-              status: status,
-              Patientimage: appointment['image']!,
-              bookingid: appointment['id']!,
-              cancelbuttonclick: () {
-                print("click");
-                _cancelappointmentconfirmation(context);
-              },
-            ),
-          );
-        },
-      ),
-    );
-  }
+class _AppointmentListState extends State<AppointmentList> {
+  final TextEditingController reasonController = TextEditingController();
 
-  void _cancelappointmentconfirmation(BuildContext context) {
-    final TextEditingController reasonController = TextEditingController();
+  void _cancelAppointmentConfirmation(BuildContext context,
+      AppointmentsController controller, String bookingId) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
     showDialog(
@@ -312,28 +257,26 @@ class AppointmentList extends StatelessWidget {
           actions: <Widget>[
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop();
+                Navigator.of(context).pop(); // Close the dialog
               },
-              style: TextButton.styleFrom(
-                backgroundColor: Colors.grey.shade100,
-              ),
               child: const Text(
-                'Close',
-                style: TextStyle(color: Color.fromARGB(255, 57, 57, 57)),
+                'Cancel',
+                style: TextStyle(color: Colors.grey),
               ),
             ),
             OutlinedButton(
               onPressed: () {
                 if (formKey.currentState?.validate() ?? false) {
-                  // Perform the cancellation action
                   final reason = reasonController.text;
-                  debugPrint('Cancellation reason: $reason');
+
+                  // Call the controller's cancellation method
+                  controller.cancelAppointment(bookingId, reason);
 
                   Navigator.of(context).pop(); // Close the dialog
                 }
               },
               style: OutlinedButton.styleFrom(
-                backgroundColor: Apptheme.mainbackgroundcolor,
+                backgroundColor: Colors.red,
               ),
               child: const Text(
                 'Confirm',
@@ -344,5 +287,55 @@ class AppointmentList extends StatelessWidget {
         );
       },
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final controller = Get.put<AppointmentsController>(
+      AppointmentsController(),
+    );
+
+    return Obx(() {
+      final filteredAppointments = controller.AllAppointments.where(
+              (appointment) => appointment.Appointmentstatus == widget.status)
+          .toList();
+
+      return filteredAppointments.isEmpty
+          ? Center(child: Text("No ${widget.status} appointments"))
+          : SizedBox(
+              height: widget.height * 0.6,
+              width: widget.width,
+              child: ListView.builder(
+                padding: EdgeInsets.symmetric(
+                  vertical: widget.height * 0.01,
+                  horizontal: widget.width * 0.02,
+                ),
+                itemCount: filteredAppointments.length,
+                itemBuilder: (context, index) {
+                  final appointment = filteredAppointments[index];
+                  return Appointmentcarddoctorpanel(
+                    PatientName: appointment.patientname!,
+                    Patientproblem: appointment.Patientproblem!,
+                    cancellationreason: appointment.canellationreason!,
+                    date: appointment.date!,
+                    time: appointment.time!,
+                    status: widget.status,
+                    Patientimage: appointment.Patientimageurl ??
+                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvj3m7aqQbQp6jX0EGDRWLGNok8H47-XZnfQ&s',
+                    bookingid: appointment.bookingid!,
+                    cancelbuttonclick: () async {
+                      _cancelAppointmentConfirmation(
+                          context, controller, appointment.bookingid!);
+                    },
+                    completebutton: () async {
+                      controller.completeAppointment(
+                          context, appointment.bookingid!);
+                      // Add complete appointment functionality here if needed
+                    },
+                  );
+                },
+              ),
+            );
+    });
   }
 }

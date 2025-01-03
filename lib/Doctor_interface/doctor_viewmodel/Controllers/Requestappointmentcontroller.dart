@@ -36,8 +36,10 @@ class AppointmentRequestcontroller extends GetxController {
         for (var doc in snapshot.docs) {
           // Add request data to the list
           //  re  for (var user in query.docs) {
+
           Appointmentmodel model =
               Appointmentmodel.fromMap(doc.data() as Map<String, dynamic>);
+          Appointmentrequests.clear();
           Appointmentrequests.add(model);
         }
       } else {
@@ -105,14 +107,19 @@ class AppointmentRequestcontroller extends GetxController {
         // Add other fields as necessary
       });
 
-
       // Remove from appointment_request
       await _firestore
           .collection('appointment_request')
-          .doc(bookingId)
-          .delete();
-  ReusableDialog.show(
-         context,
+          .where('bookingid', isEqualTo: bookingId)
+          .get()
+          .then((snapshot) {
+        for (var doc in snapshot.docs) {
+          doc.reference.delete();
+        }
+      });
+
+      ReusableDialog.show(
+        context,
         title: "Appointment request Accepted",
         content: 'your appointment request has been accepted',
         buttonText: 'OK',

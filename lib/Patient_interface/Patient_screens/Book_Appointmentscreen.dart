@@ -1,5 +1,6 @@
 import 'package:clinic_hub_app/Doctor_interface/Doctor_models/Doctor_model.dart';
 import 'package:clinic_hub_app/Patient_interface/Patient_ViewModel/Controllers/Book_Appointmentcontroller.dart';
+
 import 'package:clinic_hub_app/Patient_interface/Patient_models/Staticmodel.dart';
 import 'package:clinic_hub_app/Shared_interface/Shared_resources/components/customtextfield.dart';
 import 'package:clinic_hub_app/Patient_interface/Patient_screens/Congratsscreen.dart';
@@ -32,7 +33,7 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
   String patientAge = '';
   String patientGender = 'Male';
   String problemDescription = '';
-  late AppointmentController _appointmentController;
+  late Appointmentrequestcontroller _Appointmentrequestcontroller;
 
   List<DateTime> getDates() {
     List<DateTime> dates = [];
@@ -50,7 +51,7 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
   }
 
   void initState() {
-    _appointmentController = Get.put(AppointmentController());
+    _Appointmentrequestcontroller = Get.put(Appointmentrequestcontroller());
 
     super.initState();
   }
@@ -61,7 +62,7 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
     Namecontroller.dispose();
     agecontroller.dispose();
     problemcontroller.dispose();
-    Get.delete<AppointmentController>();
+    Get.delete<Appointmentrequestcontroller>();
   }
 
   @override
@@ -339,7 +340,9 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
           ),
           actions: <Widget>[
             TextButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pop(context);
+              },
               style: TextButton.styleFrom(
                 backgroundColor: Colors.grey.shade100,
               ),
@@ -352,7 +355,7 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
               onPressed: () {
                 String formattedDate =
                     DateFormat('dd-MM-yyyy').format(selectedDate);
-                _appointmentController.createAppointmentRequest(
+                _Appointmentrequestcontroller.createAppointmentRequest(
                   // Pass selected doctor object
                   // Pass formatted date instead of raw DateTime
                   selectedSlot: selectedSlot, // Pass selected time slot

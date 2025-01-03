@@ -30,12 +30,14 @@ class DoctorScheduleController extends GetxController {
 
       print(StaticDoctor.doctormodel!.doctorid);
       print('function executed');
-      final docRef = FirebaseFirestore.instance
+      final querySnapshot = await FirebaseFirestore.instance
           .collection('doctors')
-          .doc(StaticDoctor.doctormodel!.doctorid)
-          .collection('schedule')
-          .doc(
-              'availability'); // 'availability' is the document where schedule is stored
+          .where('Doctoremail',
+              isEqualTo: StaticDoctor.doctormodel!.Doctoremail)
+          .get();
+
+      final docRef = querySnapshot.docs.first.reference.collection('schedule').doc(
+          'availability'); // 'availability' is the document where schedule is stored
 
       // Check if the document already exists
       final docSnapshot = await docRef.get();

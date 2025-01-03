@@ -1,7 +1,8 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 // this is the appointment card that is shown on the appointment screen
 
-class AppointmentCard extends StatefulWidget {
+class AppointmentCardPatient extends StatefulWidget {
   final String doctorName;
   final String specialty;
   final String date;
@@ -9,10 +10,12 @@ class AppointmentCard extends StatefulWidget {
   final String status;
   final String doctorimage;
   final String bookingid;
+  final String cancellationreason;
   final VoidCallback cancelbuttonclick;
+  final VoidCallback reviewbuttonclick;
 
-  const AppointmentCard({
-    super.key,
+  const AppointmentCardPatient({
+    Key? key,
     required this.doctorName,
     required this.specialty,
     required this.date,
@@ -20,19 +23,22 @@ class AppointmentCard extends StatefulWidget {
     required this.status,
     required this.doctorimage,
     required this.bookingid,
+    required this.cancellationreason,
     required this.cancelbuttonclick,
-  });
+    required this.reviewbuttonclick, required Future<Null> Function() completebutton,
+  }) : super(key: key);
 
   @override
-  _AppointmentCardState createState() => _AppointmentCardState();
+  _AppointmentCardPatientState createState() => _AppointmentCardPatientState();
 }
 
-class _AppointmentCardState extends State<AppointmentCard> {
+class _AppointmentCardPatientState extends State<AppointmentCardPatient> {
   bool _showReview = false;
   int _rating = 0;
   String _review = '';
 
   void _handleSubmitReview() {
+    
     print('Rating: $_rating, Review: $_review');
     setState(() {
       _showReview = false;
@@ -151,6 +157,17 @@ class _AppointmentCardState extends State<AppointmentCard> {
                         SizedBox(
                           height: height * 0.01,
                         ),
+                        if(widget.status=='cancelled')
+                          Text(
+                            
+                            maxLines: 2,
+                          'Reason: \n#${widget.cancellationreason}',
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                              fontSize: width * 0.035,
+                              fontWeight: FontWeight.w600),
+                        ),
+
                         if (widget.status == 'pending')
                           SizedBox(
                             height: height * 0.048,
@@ -232,7 +249,7 @@ class _AppointmentCardState extends State<AppointmentCard> {
                             BorderRadius.circular(12), // Border radius
                       ),
                     ),
-                    onPressed: _handleSubmitReview,
+                    onPressed: widget.reviewbuttonclick,
                     child: Text(
                       'Submit Review',
                       style: TextStyle(

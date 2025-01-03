@@ -9,6 +9,7 @@ class customSchedulecardwidget extends StatelessWidget {
   final Color buttoncolor, textcolor, buttontextcolor;
   final String cardtitle, cardbody, schedule;
   final String imageurl;
+  final String message;
   final VoidCallback onbuttonpress;
 
   customSchedulecardwidget({
@@ -21,6 +22,7 @@ class customSchedulecardwidget extends StatelessWidget {
     required this.textcolor,
     required this.schedule,
     required this.buttontextcolor,
+    required this.message,
   });
   final List<Color> _colors = [
     Colors.red,
@@ -53,7 +55,7 @@ class customSchedulecardwidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(width * 0.03),
       ),
       child: Container(
-        height: height * 0.19,
+        height: height * 0.21,
         width: width,
         decoration: BoxDecoration(
             image: const DecorationImage(
@@ -71,7 +73,7 @@ class customSchedulecardwidget extends StatelessWidget {
               borderRadius: BorderRadius.circular(width * 0.03)),
           child: Padding(
             padding: EdgeInsets.symmetric(
-              horizontal: width * 0.01,
+              horizontal: width * 0.012,
               vertical: height * 0.012,
             ),
             child: Row(
@@ -86,53 +88,32 @@ class customSchedulecardwidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        cardtitle,
-                        style: GoogleFonts.roboto(
-                            color: textcolor,
-                            fontSize: width * 0.054,
-                            fontWeight: FontWeight.w600),
+                      Container(
+                        height: height * 0.09,
+                        child: Text(
+                          maxLines: 3,
+                          message,
+                          overflow: TextOverflow.ellipsis,
+                          style: GoogleFonts.roboto(
+                              color: textcolor,
+                              fontSize: width * 0.035,
+                              fontWeight: FontWeight.w600),
+                        ),
                       ),
                       Text(
-                        cardbody,
+                        cardtitle,
                         style: GoogleFonts.inter(
                             color: textcolor,
                             fontSize: width * 0.043,
-                            fontWeight: FontWeight.w500),
+                            fontWeight: FontWeight.bold),
                       ),
-                      SizedBox(
-                        height: height * 0.02,
-                      ),
-                      InkWell(
-                        // what action to perform is taken as arguments
-                        onTap: onbuttonpress,
-                        child: Container(
-                          height: height * 0.05,
-                          width: width * 0.42,
-                          decoration: BoxDecoration(
-                            color: buttoncolor,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.schedule_outlined,
-                                color: buttontextcolor,
-                                size: width * 0.05,
-                              ),
-                              Text(
-                                schedule,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    color: buttontextcolor,
-                                    fontSize: width * 0.036),
-                              ),
-                            ],
-                          ),
-                        ),
-                      )
+                      // Text(
+                      //   cardbody,
+                      //   style: GoogleFonts.inter(
+                      //       color: textcolor,
+                      //       fontSize: width * 0.035,
+                      //       fontWeight: FontWeight.w500),
+                      // ),
                     ],
                   ),
                 ),
