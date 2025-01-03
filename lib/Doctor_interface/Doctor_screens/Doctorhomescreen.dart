@@ -1,5 +1,6 @@
+import 'package:clinic_hub_app/Doctor_interface/Doctor_models/Staticmodel.dart';
 import 'package:clinic_hub_app/Doctor_interface/Doctor_resources/Components/Appointmentcard.dart';
-import 'package:clinic_hub_app/Doctor_interface/Doctor_screens/Appointmentrequestscreen.dart';
+import 'package:clinic_hub_app/Doctor_interface/Doctor_screens/AppointmentRequestscreen.dart';
 import 'package:clinic_hub_app/Doctor_interface/Doctor_screens/DetailsAppointment.dart';
 import 'package:clinic_hub_app/Doctor_interface/Doctor_screens/Notificationsscreen.dart';
 import 'package:clinic_hub_app/apptheme/Apptheme.dart';
@@ -18,12 +19,17 @@ class _DoctorHomescreenState extends State<DoctorHomescreen>
     with SingleTickerProviderStateMixin {
   var height, width;
   late TabController _tabController;
+
+  String? doctorname= StaticDoctor.doctormodel!.doctorname;
+  String? doctorimageurl=StaticDoctor.doctormodel!.doctorimageurl;
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
   }
+  
 
+  @override
   Widget build(BuildContext context) {
     height = MediaQuery.of(context).size.height;
     width = MediaQuery.of(context).size.width;
@@ -31,7 +37,7 @@ class _DoctorHomescreenState extends State<DoctorHomescreen>
     return Scaffold(
       backgroundColor: Apptheme.appbodybackgroundcolor,
       body: Center(
-        child: Container(
+        child: SizedBox(
           height: height,
           width: width * 0.9,
           child: Column(
@@ -42,7 +48,8 @@ class _DoctorHomescreenState extends State<DoctorHomescreen>
                 height: height * 0.03,
               ),
               _myCustomheader(
-                name: 'Ali Khan',
+                name: doctorname!,
+                imageurl: doctorimageurl,
                 ontap: () {
                   Navigator.of(context).push(CustomPageTransition(
                     page: DoctorNotificationscreen(),
@@ -134,18 +141,25 @@ class _DoctorHomescreenState extends State<DoctorHomescreen>
   Widget _myCustomheader(
       {required String name,
       required double Notifications_count,
+      required String? imageurl,
+      
       required VoidCallback ontap}) {
     return Container(
       height: height * 0.07,
       width: width,
       decoration: const BoxDecoration(),
       child: ListTile(
-        leading: CircleAvatar(
-          radius: width * 0.06,
-          backgroundColor: const Color.fromARGB(255, 114, 0, 0),
-        ),
+        leading: imageurl != null && imageurl.isNotEmpty
+            ? CircleAvatar(
+                radius: width * 0.06,
+                backgroundColor: const Color.fromARGB(255, 114, 0, 0),
+                backgroundImage: NetworkImage(imageurl))
+            : CircleAvatar(
+                radius: width * 0.06,
+                backgroundColor: const Color.fromARGB(255, 114, 0, 0),
+              ),
         title: Text(
-          'Hi, Dr.$name',
+          'Hi, $name',
           style: TextStyle(
               color: Colors.black,
               fontSize: width * 0.04,
@@ -181,8 +195,7 @@ class _DoctorHomescreenState extends State<DoctorHomescreen>
         ),
       ),
     );
-  }
-}
+      }}
 // this takes the list and make the appointmentcards accordingly
 
 class AppointmentList extends StatelessWidget {
@@ -219,15 +232,15 @@ class AppointmentList extends StatelessWidget {
       },
     ];
 
-    return Container(
+    return SizedBox(
       height: height * 0.6,
       width: width,
       child: ListView.builder(
-        padding: EdgeInsets.symmetric(
+        padding: const EdgeInsets.symmetric(
             // vertical: height * 0.01,
             // horizontal: width * 0.02,
             ),
-        physics: BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         scrollDirection: Axis.vertical,
         itemCount: appointments.length,
         itemBuilder: (context, index) {

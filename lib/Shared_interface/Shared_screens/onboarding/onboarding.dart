@@ -3,10 +3,7 @@ import 'package:clinic_hub_app/Shared_interface/Shared_screens/loginsignup/scree
 import 'package:clinic_hub_app/Shared_interface/Shared_screens/onboarding/obsscreens.dart';
 import 'package:clinic_hub_app/apptheme/Apptheme.dart';
 import 'package:clinic_hub_app/apptheme/apptransitions/customtransition.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:google_fonts/google_fonts.dart';
 /*This is the onboarding screen having pageview on it to show all the onboarding
 screens

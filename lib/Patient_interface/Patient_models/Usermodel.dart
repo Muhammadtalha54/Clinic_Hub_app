@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 
 import 'dart:convert';
 
@@ -11,6 +12,7 @@ class Patient_model {
 
   String? Patientphonenumber;
   String? Patientprofilepicture;
+  String? Pdevicetoken;
   Patient_model({
     this.PatientId,
     this.Patientname,
@@ -19,8 +21,10 @@ class Patient_model {
     this.Patientpassword,
     this.Patientphonenumber,
     this.Patientprofilepicture,
+    this.Pdevicetoken,
   });
 
+  
 
   Patient_model copyWith({
     String? PatientId,
@@ -30,6 +34,7 @@ class Patient_model {
     String? Patientpassword,
     String? Patientphonenumber,
     String? Patientprofilepicture,
+    String? Pdevicetoken,
   }) {
     return Patient_model(
       PatientId: PatientId ?? this.PatientId,
@@ -39,6 +44,7 @@ class Patient_model {
       Patientpassword: Patientpassword ?? this.Patientpassword,
       Patientphonenumber: Patientphonenumber ?? this.Patientphonenumber,
       Patientprofilepicture: Patientprofilepicture ?? this.Patientprofilepicture,
+      Pdevicetoken: Pdevicetoken ?? this.Pdevicetoken,
     );
   }
 
@@ -51,6 +57,7 @@ class Patient_model {
       'Patientpassword': Patientpassword,
       'Patientphonenumber': Patientphonenumber,
       'Patientprofilepicture': Patientprofilepicture,
+      'Pdevicetoken': Pdevicetoken,
     };
   }
 
@@ -63,6 +70,7 @@ class Patient_model {
       Patientpassword: map['Patientpassword'] != null ? map['Patientpassword'] as String : null,
       Patientphonenumber: map['Patientphonenumber'] != null ? map['Patientphonenumber'] as String : null,
       Patientprofilepicture: map['Patientprofilepicture'] != null ? map['Patientprofilepicture'] as String : null,
+      Pdevicetoken: map['Pdevicetoken'] != null ? map['Pdevicetoken'] as String : null,
     );
   }
 
@@ -72,7 +80,7 @@ class Patient_model {
 
   @override
   String toString() {
-    return 'Patient_model(PatientId: $PatientId, Patientname: $Patientname, PatientEmail: $PatientEmail, Patientdob: $Patientdob, Patientpassword: $Patientpassword, Patientphonenumber: $Patientphonenumber, Patientprofilepicture: $Patientprofilepicture)';
+    return 'Patient_model(PatientId: $PatientId, Patientname: $Patientname, PatientEmail: $PatientEmail, Patientdob: $Patientdob, Patientpassword: $Patientpassword, Patientphonenumber: $Patientphonenumber, Patientprofilepicture: $Patientprofilepicture, Pdevicetoken: $Pdevicetoken)';
   }
 
   @override
@@ -86,7 +94,8 @@ class Patient_model {
       other.Patientdob == Patientdob &&
       other.Patientpassword == Patientpassword &&
       other.Patientphonenumber == Patientphonenumber &&
-      other.Patientprofilepicture == Patientprofilepicture;
+      other.Patientprofilepicture == Patientprofilepicture &&
+      other.Pdevicetoken == Pdevicetoken;
   }
 
   @override
@@ -97,6 +106,7 @@ class Patient_model {
       Patientdob.hashCode ^
       Patientpassword.hashCode ^
       Patientphonenumber.hashCode ^
-      Patientprofilepicture.hashCode;
+      Patientprofilepicture.hashCode ^
+      Pdevicetoken.hashCode;
   }
 }

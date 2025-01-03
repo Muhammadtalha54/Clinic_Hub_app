@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 // this will display the notifications that the doctor receive
 class DoctorNotificationscreen extends StatefulWidget {
+  const DoctorNotificationscreen({super.key});
+
   @override
   _DoctorNotificationscreenState createState() => _DoctorNotificationscreenState();
 }
@@ -28,13 +30,13 @@ class _DoctorNotificationscreenState extends State<DoctorNotificationscreen> {
     {
       'sender': 'Doctor',
       'message': 'Please bring your previous reports.',
-      'date': DateTime.now().subtract(Duration(days: 1)),
+      'date': DateTime.now().subtract(const Duration(days: 1)),
       'read': true,
     },
     {
       'sender': 'Doctor',
       'message': 'Please bring your previous reports.',
-      'date': DateTime.now().subtract(Duration(days: 5)),
+      'date': DateTime.now().subtract(const Duration(days: 5)),
       'read': true,
     },
     // Add more notifications here
@@ -48,7 +50,7 @@ class _DoctorNotificationscreenState extends State<DoctorNotificationscreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('Notifications'),
+        title: const Text('Notifications'),
         centerTitle: true,
         backgroundColor: Colors.white,
       ),
@@ -91,8 +93,8 @@ class _DoctorNotificationscreenState extends State<DoctorNotificationscreen> {
                   title: Text(notifications[index]['sender']),
                   subtitle: Text(notifications[index]['message']),
                   trailing: isUnread
-                      ? Icon(Icons.markunread)
-                      : Icon(
+                      ? const Icon(Icons.markunread)
+                      : const Icon(
                           Icons.done_all,
                           color: Colors.blue,
                         ),

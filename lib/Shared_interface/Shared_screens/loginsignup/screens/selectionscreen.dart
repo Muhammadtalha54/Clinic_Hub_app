@@ -1,10 +1,12 @@
+import 'package:clinic_hub_app/Shared_interface/Shared_resources/Internet_exception_widget.dart';
 import 'package:clinic_hub_app/Shared_interface/Shared_resources/components/Selectoptioncars.dart';
 import 'package:clinic_hub_app/Shared_interface/Shared_screens/loginsignup/screens/Doctorsignupscreen.dart';
 import 'package:clinic_hub_app/Shared_interface/Shared_screens/loginsignup/screens/Loginscreen.dart';
-import 'package:clinic_hub_app/Shared_interface/Shared_screens/loginsignup/screens/Usersignupscreen.dart';
+import 'package:clinic_hub_app/Shared_interface/Shared_screens/loginsignup/screens/Patientsignupscreen.dart';
 import 'package:clinic_hub_app/apptheme/Apptheme.dart';
 import 'package:clinic_hub_app/apptheme/apptransitions/customtransition.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 /* This is the screen where the user will select that either he want to make a
@@ -19,6 +21,28 @@ class Selectionscreen extends StatefulWidget {
 
 class _SelectionscreenState extends State<Selectionscreen> {
   var height, width;
+  // late InternetcheckController Internetcontroller;
+  @override
+  // void initState() {
+  //   super.initState();
+  //   // Initialize the controller when the screen is created
+  //   Internetcontroller = Get.put(InternetcheckController());
+  // }
+
+  // @override
+  // void dispose() {
+  //   // Delete the controller when leaving the screen
+  //   Get.delete<InternetcheckController>();
+  //   super.dispose();
+  // }
+
+  @override
+  // void dispose() {
+  //   // TODO: implement dispose
+  //   Get.delete<InternetcheckController>();
+  //   super.dispose();
+  // }
+
   @override
   Widget build(BuildContext context) {
     height = MediaQuery.of(context).size.height;
@@ -74,10 +98,18 @@ class _SelectionscreenState extends State<Selectionscreen> {
                       //navigated to the
                       onPressed: () {
                         Navigator.of(context).push(
-                          CustomPageTransition(page:  Usersignupscreen()),
-                        );
+                            CustomPageTransition(page: Usersignupscreen()));
+                        // Internetcontroller.navigateBasedOnInternet(
+                        //     context: context,
+                        //     targetScreen: Usersignupscreen(),
+                        //     fallbackScreen: Internet_exception_widget(
+                        //       onpress: () {
+                        //         Navigator.pop(context);
+                        //       },
+                        //     ));
                       },
                     ),
+
                     SizedBox(
                       height: height * 0.03,
                     ),
@@ -93,12 +125,18 @@ class _SelectionscreenState extends State<Selectionscreen> {
                       // parameter value
                       onPressed: () {
                         Navigator.of(context).push(
-                          CustomPageTransition(
-                            page: const Doctorsignupscreen(),
-                          ),
-                        );
+                            CustomPageTransition(page: const Doctorsignupscreen()));
+                        // Internetcontroller.navigateBasedOnInternet(
+                        //     context: context,
+                        //     targetScreen: Doctorsignupscreen(),
+                        //     fallbackScreen: Internet_exception_widget(
+                        //       onpress: () {
+                        //         Navigator.pop(context);
+                        //       },
+                        //     ));
                       },
                     ),
+
                     SizedBox(
                       height: height * 0.03,
                     ),

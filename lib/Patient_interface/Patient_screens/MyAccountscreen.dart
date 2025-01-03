@@ -1,5 +1,6 @@
+import 'package:clinic_hub_app/Patient_interface/Patient_models/Staticmodel.dart';
 import 'package:clinic_hub_app/Shared_interface/Shared_screens/loginsignup/screens/Loginscreen.dart';
-import 'package:clinic_hub_app/Patient_interface/Patient_resources/Components/widgets/Imagewidget.dart';
+import 'package:clinic_hub_app/Shared_interface/Shared_resources/components/Imagewidget.dart';
 import 'package:clinic_hub_app/Patient_interface/Patient_resources/Components/widgets/profileoptions.dart';
 
 import 'package:clinic_hub_app/Shared_interface/Shared_screens/Privacypolicyscreen.dart';
@@ -10,6 +11,7 @@ import 'package:clinic_hub_app/Patient_interface/Patient_screens/previousappoint
 import 'package:clinic_hub_app/apptheme/Apptheme.dart';
 import 'package:clinic_hub_app/apptheme/apptransitions/customtransition.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // Main screen for user profile
 class UserAccountscreen extends StatefulWidget {
@@ -20,6 +22,10 @@ class UserAccountscreen extends StatefulWidget {
 }
 
 class _UserAccountscreenState extends State<UserAccountscreen> {
+  final String? patientname = StaticPatient.patient_model!.Patientname!;
+
+  // imageurl of patientthat is loggedin
+  String? patientimageurl = StaticPatient.patient_model!.Patientprofilepicture!;
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -28,6 +34,7 @@ class _UserAccountscreenState extends State<UserAccountscreen> {
     return Scaffold(
       backgroundColor: Apptheme.appbodybackgroundcolor,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
         title: Text(
           "Profile",
@@ -48,12 +55,8 @@ class _UserAccountscreenState extends State<UserAccountscreen> {
               children: [
                 SizedBox(height: height * 0.01),
                 ImageUpload(
-                  imageurl:
-                      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9SRRmhH4X5N2e4QalcoxVbzYsD44C-sQv-w&s',
-                  ontap: () {
-                    // Navigator.of(context)
-                    //     .push(CustomPageTransition(page: Userprofilescreen()));
-                  },
+                  ontap: () {},
+                  imageurl: patientimageurl!,
                 ),
                 SizedBox(
                   height: height * 0.02,
@@ -61,7 +64,7 @@ class _UserAccountscreenState extends State<UserAccountscreen> {
 
                 Container(
                   child: Text(
-                    "ALi khan",
+                    patientname!,
                     style: TextStyle(
                         color: const Color.fromARGB(255, 73, 73, 73),
                         fontSize: width * 0.055,
@@ -74,8 +77,8 @@ class _UserAccountscreenState extends State<UserAccountscreen> {
                   icon: Icons.person_outline,
                   onpressed: () {
                     // print('object');
-                    Navigator.of(context)
-                        .push(CustomPageTransition(page: Userprofilescreen()));
+                    Navigator.of(context).push(
+                        CustomPageTransition(page: const Userprofilescreen()));
                     // Navigator.of(context)
                     //     .push(CustomPageTransition(page: Userprofilescreen()));
                   },
@@ -108,24 +111,24 @@ class _UserAccountscreenState extends State<UserAccountscreen> {
                   iconcolor: Colors.green,
                   Title: "About us",
                 ),
-                SizedBox(height: height * 0.01),
-                Profilescreenoptionwidget(
-                  icon: Icons.favorite_outline,
-                  onpressed: () {
-                    Navigator.of(context)
-                        .push(CustomPageTransition(page: FavoriteDoctors()));
-                  },
-                  height: height * 0.07,
-                  width: width * 0.8,
-                  iconcolor: Colors.amber,
-                  Title: "Favourites",
-                ),
+                // SizedBox(height: height * 0.01),
+                // Profilescreenoptionwidget(
+                //   icon: Icons.favorite_outline,
+                //   onpressed: () {
+                //     Navigator.of(context)
+                //         .push(CustomPageTransition(page: const FavoriteDoctors()));
+                //   },
+                //   height: height * 0.07,
+                //   width: width * 0.8,
+                //   iconcolor: Colors.amber,
+                //   Title: "Favourites",
+                // ),
                 SizedBox(height: height * 0.01),
                 Profilescreenoptionwidget(
                   icon: Icons.timer_outlined,
                   onpressed: () {
-                    Navigator.of(context).push(
-                        CustomPageTransition(page: AppointmentHistoryScreen()));
+                    Navigator.of(context).push(CustomPageTransition(
+                        page: const AppointmentHistoryScreen()));
                   },
                   height: height * 0.07,
                   width: width * 0.8,
@@ -137,8 +140,9 @@ class _UserAccountscreenState extends State<UserAccountscreen> {
                 Profilescreenoptionwidget(
                   icon: Icons.logout,
                   onpressed: () {
+                    logout(context);
                     Navigator.of(context)
-                        .push(CustomPageTransition(page: Loginscreen()));
+                        .push(CustomPageTransition(page: const Loginscreen()));
                   },
                   height: height * 0.07,
                   width: width * 0.8,
@@ -153,5 +157,15 @@ class _UserAccountscreenState extends State<UserAccountscreen> {
         ),
       ),
     );
+  }
+
+  Future<void> logout(BuildContext context) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences.getKeys();
+    preferences.clear();
+    StaticPatient.patient_model = null;
+
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => const Loginscreen()));
   }
 }

@@ -5,6 +5,8 @@ doctor and the patient
 
  */
 class PrivacyPolicyPage extends StatelessWidget {
+  const PrivacyPolicyPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     // Define MediaQuery for responsive design

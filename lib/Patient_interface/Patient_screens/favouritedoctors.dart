@@ -55,7 +55,7 @@ class _FavoriteDoctorsState extends State<FavoriteDoctors> {
         centerTitle: true,
       ),
       body: Center(
-        child: Container(
+        child: SizedBox(
           height: height,
           width: width * 0.9,
           child: Column(
@@ -69,13 +69,13 @@ class _FavoriteDoctorsState extends State<FavoriteDoctors> {
               // ),
               const SizedBox(height: 16),
               Expanded(
-                child: Container(
+                child: SizedBox(
                   height: height,
                   width: width,
                   child: ListView.builder(
                     scrollDirection: Axis.vertical,
                     itemCount: 10,
-                    physics: BouncingScrollPhysics(),
+                    physics: const BouncingScrollPhysics(),
                     itemBuilder: (context, index) {
                       return Padding(
                           padding: EdgeInsets.symmetric(

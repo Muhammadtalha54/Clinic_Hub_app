@@ -28,7 +28,7 @@ class DetailAppoitmentscreen extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Center(
-          child: Container(
+          child: SizedBox(
             height: height,
             width: width * 0.8,
             child: Column(

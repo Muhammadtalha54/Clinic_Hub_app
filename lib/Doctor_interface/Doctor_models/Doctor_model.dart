@@ -2,7 +2,10 @@
 import 'dart:convert';
 
 import 'package:get/get.dart';
-// model for the doctor
+
+import 'package:clinic_hub_app/Doctor_interface/Doctor_models/Schedule_model.dart';
+
+///model for the doctor
 class Doctor_Model {
   String? doctorid;
   String? doctorname;
@@ -22,8 +25,7 @@ class Doctor_Model {
   String? doctorlisenceimageurl; //liscenceimgeurl
 
   int? totalappointmentstaken; //total appointments
-
-  RxBool? isfavourite = false.obs;
+  String? docdevicetoken;
   Doctor_Model({
     this.doctorid,
     this.doctorname,
@@ -38,9 +40,8 @@ class Doctor_Model {
     this.doctorlisencenumber,
     this.doctorlisenceimageurl,
     this.totalappointmentstaken,
-    this.isfavourite,
+    this.docdevicetoken,
   });
-  
 
   Doctor_Model copyWith({
     String? doctorid,
@@ -56,7 +57,7 @@ class Doctor_Model {
     String? doctorlisencenumber,
     String? doctorlisenceimageurl,
     int? totalappointmentstaken,
-    RxBool? isfavourite,
+    String? docdevicetoken,
   }) {
     return Doctor_Model(
       doctorid: doctorid ?? this.doctorid,
@@ -70,9 +71,11 @@ class Doctor_Model {
       doctorgender: doctorgender ?? this.doctorgender,
       doctorspecialization: doctorspecialization ?? this.doctorspecialization,
       doctorlisencenumber: doctorlisencenumber ?? this.doctorlisencenumber,
-      doctorlisenceimageurl: doctorlisenceimageurl ?? this.doctorlisenceimageurl,
-      totalappointmentstaken: totalappointmentstaken ?? this.totalappointmentstaken,
-      isfavourite: isfavourite ?? this.isfavourite,
+      doctorlisenceimageurl:
+          doctorlisenceimageurl ?? this.doctorlisenceimageurl,
+      totalappointmentstaken:
+          totalappointmentstaken ?? this.totalappointmentstaken,
+      docdevicetoken: docdevicetoken ?? this.docdevicetoken,
     );
   }
 
@@ -91,74 +94,93 @@ class Doctor_Model {
       'doctorlisencenumber': doctorlisencenumber,
       'doctorlisenceimageurl': doctorlisenceimageurl,
       'totalappointmentstaken': totalappointmentstaken,
-      'isfavourite': isfavourite?.value,
+      'docdevicetoken': docdevicetoken,
     };
   }
 
   factory Doctor_Model.fromMap(Map<String, dynamic> map) {
     return Doctor_Model(
       doctorid: map['doctorid'] != null ? map['doctorid'] as String : null,
-      doctorname: map['doctorname'] != null ? map['doctorname'] as String : null,
-      Doctoremail: map['Doctoremail'] != null ? map['Doctoremail'] as String : null,
+      doctorname:
+          map['doctorname'] != null ? map['doctorname'] as String : null,
+      Doctoremail:
+          map['Doctoremail'] != null ? map['Doctoremail'] as String : null,
       doctorDOB: map['doctorDOB'] != null ? map['doctorDOB'] as String : null,
       password: map['password'] != null ? map['password'] as String : null,
-      doctorimageurl: map['doctorimageurl'] != null ? map['doctorimageurl'] as String : null,
-      doctorexperience: map['doctorexperience'] != null ? map['doctorexperience'] as String : null,
-      doctordescription: map['doctordescription'] != null ? map['doctordescription'] as String : null,
-      doctorgender: map['doctorgender'] != null ? map['doctorgender'] as String : null,
-      doctorspecialization: map['doctorspecialization'] != null ? map['doctorspecialization'] as String : null,
-      doctorlisencenumber: map['doctorlisencenumber'] != null ? map['doctorlisencenumber'] as String : null,
-      doctorlisenceimageurl: map['doctorlisenceimageurl'] != null ? map['doctorlisenceimageurl'] as String : null,
-      totalappointmentstaken: map['totalappointmentstaken'] != null ? map['totalappointmentstaken'] as int : null,
-      isfavourite: map['isfavourite'] != null ? RxBool(map['isfavourite'] as bool) : null,
+      doctorimageurl: map['doctorimageurl'] != null
+          ? map['doctorimageurl'] as String
+          : null,
+      doctorexperience: map['doctorexperience'] != null
+          ? map['doctorexperience'] as String
+          : null,
+      doctordescription: map['doctordescription'] != null
+          ? map['doctordescription'] as String
+          : null,
+      doctorgender:
+          map['doctorgender'] != null ? map['doctorgender'] as String : null,
+      doctorspecialization: map['doctorspecialization'] != null
+          ? map['doctorspecialization'] as String
+          : null,
+      doctorlisencenumber: map['doctorlisencenumber'] != null
+          ? map['doctorlisencenumber'] as String
+          : null,
+      doctorlisenceimageurl: map['doctorlisenceimageurl'] != null
+          ? map['doctorlisenceimageurl'] as String
+          : null,
+      totalappointmentstaken: map['totalappointmentstaken'] != null
+          ? map['totalappointmentstaken'] as int
+          : null,
+      docdevicetoken: map['docdevicetoken'] != null
+          ? map['docdevicetoken'] as String
+          : null,
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory Doctor_Model.fromJson(String source) => Doctor_Model.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory Doctor_Model.fromJson(String source) =>
+      Doctor_Model.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {
-    return 'Doctor_Model(doctorid: $doctorid, doctorname: $doctorname, Doctoremail: $Doctoremail, doctorDOB: $doctorDOB, password: $password, doctorimageurl: $doctorimageurl, doctorexperience: $doctorexperience, doctordescription: $doctordescription, doctorgender: $doctorgender, doctorspecialization: $doctorspecialization, doctorlisencenumber: $doctorlisencenumber, doctorlisenceimageurl: $doctorlisenceimageurl, totalappointmentstaken: $totalappointmentstaken, isfavourite: $isfavourite)';
+    return 'Doctor_Model(doctorid: $doctorid, doctorname: $doctorname, Doctoremail: $Doctoremail, doctorDOB: $doctorDOB, password: $password, doctorimageurl: $doctorimageurl, doctorexperience: $doctorexperience, doctordescription: $doctordescription, doctorgender: $doctorgender, doctorspecialization: $doctorspecialization, doctorlisencenumber: $doctorlisencenumber, doctorlisenceimageurl: $doctorlisenceimageurl, totalappointmentstaken: $totalappointmentstaken, docdevicetoken: $docdevicetoken)';
   }
 
   @override
   bool operator ==(covariant Doctor_Model other) {
     if (identical(this, other)) return true;
-  
-    return 
-      other.doctorid == doctorid &&
-      other.doctorname == doctorname &&
-      other.Doctoremail == Doctoremail &&
-      other.doctorDOB == doctorDOB &&
-      other.password == password &&
-      other.doctorimageurl == doctorimageurl &&
-      other.doctorexperience == doctorexperience &&
-      other.doctordescription == doctordescription &&
-      other.doctorgender == doctorgender &&
-      other.doctorspecialization == doctorspecialization &&
-      other.doctorlisencenumber == doctorlisencenumber &&
-      other.doctorlisenceimageurl == doctorlisenceimageurl &&
-      other.totalappointmentstaken == totalappointmentstaken &&
-      other.isfavourite == isfavourite;
+
+    return other.doctorid == doctorid &&
+        other.doctorname == doctorname &&
+        other.Doctoremail == Doctoremail &&
+        other.doctorDOB == doctorDOB &&
+        other.password == password &&
+        other.doctorimageurl == doctorimageurl &&
+        other.doctorexperience == doctorexperience &&
+        other.doctordescription == doctordescription &&
+        other.doctorgender == doctorgender &&
+        other.doctorspecialization == doctorspecialization &&
+        other.doctorlisencenumber == doctorlisencenumber &&
+        other.doctorlisenceimageurl == doctorlisenceimageurl &&
+        other.totalappointmentstaken == totalappointmentstaken &&
+        other.docdevicetoken == docdevicetoken;
   }
 
   @override
   int get hashCode {
     return doctorid.hashCode ^
-      doctorname.hashCode ^
-      Doctoremail.hashCode ^
-      doctorDOB.hashCode ^
-      password.hashCode ^
-      doctorimageurl.hashCode ^
-      doctorexperience.hashCode ^
-      doctordescription.hashCode ^
-      doctorgender.hashCode ^
-      doctorspecialization.hashCode ^
-      doctorlisencenumber.hashCode ^
-      doctorlisenceimageurl.hashCode ^
-      totalappointmentstaken.hashCode ^
-      isfavourite.hashCode;
+        doctorname.hashCode ^
+        Doctoremail.hashCode ^
+        doctorDOB.hashCode ^
+        password.hashCode ^
+        doctorimageurl.hashCode ^
+        doctorexperience.hashCode ^
+        doctordescription.hashCode ^
+        doctorgender.hashCode ^
+        doctorspecialization.hashCode ^
+        doctorlisencenumber.hashCode ^
+        doctorlisenceimageurl.hashCode ^
+        totalappointmentstaken.hashCode ^
+        docdevicetoken.hashCode;
   }
 }

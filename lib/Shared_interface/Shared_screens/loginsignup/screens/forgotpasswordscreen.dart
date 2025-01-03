@@ -1,3 +1,6 @@
+import 'dart:ffi';
+
+import 'package:clinic_hub_app/Shared_interface/Shared_Viewmodel/Controllers/forgotpasswordcontroller.dart';
 import 'package:clinic_hub_app/Shared_interface/Shared_screens/loginsignup/screens/Newpasswordscreen.dart';
 
 import 'package:clinic_hub_app/Shared_interface/Shared_resources/components/customtextfield.dart';
@@ -5,6 +8,7 @@ import 'package:clinic_hub_app/Shared_interface/Shared_screens/loginsignup/scree
 import 'package:clinic_hub_app/apptheme/Apptheme.dart';
 import 'package:clinic_hub_app/apptheme/apptransitions/customtransition.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 /*This is the screen that the user will access when he/she will forgot
  the passcode this will be the used for both the  user and the doctor 
@@ -22,8 +26,23 @@ class forgetpassword extends StatefulWidget {
 
 class _forgetpasswordState extends State<forgetpassword> {
   final _formKey = GlobalKey<FormState>();
+  late ForgetPasswordController forgetPasswordController;
+  // TextEditingController emailcontroller = TextEditingController();
 
-  TextEditingController emailcontroller = TextEditingController();
+  @override
+  initState() {
+    super.initState();
+    forgetPasswordController = Get.put(ForgetPasswordController());
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+
+    super.dispose();
+
+    Get.delete<ForgetPasswordController>();
+  }
 
   var height, width;
   @override
@@ -89,7 +108,7 @@ class _forgetpasswordState extends State<forgetpassword> {
                   height: height! * 0.035,
                 ),
                 Text(
-                  "Enter email address to receive a\n      4 digit verification code ",
+                  "Enter email address to receive a\n    reset password email",
                   style: TextStyle(
                     color: const Color.fromRGBO(34, 34, 34, 0.5),
                     fontSize: width! * 0.04,
@@ -105,57 +124,61 @@ class _forgetpasswordState extends State<forgetpassword> {
 
                   // leadingIcon: Icons.email,
                   errorMessage: "Enter a valid email address",
-                  controller: emailcontroller, label: '',
+                  controller: forgetPasswordController.emailController,
+                  label: '',
                 ),
                 SizedBox(
                   height: height! * 0.03,
                 ),
-                Card(
-                  elevation: 5,
-                  shadowColor: const Color.fromARGB(255, 170, 168, 168),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(40),
-                  ),
-                  child: InkWell(
-                    onTap: () {
-                      if (_formKey.currentState!.validate()) {
-                        print(emailcontroller.text);
+                Obx(
+                  () => Card(
+                    elevation: 5,
+                    shadowColor: const Color.fromARGB(255, 170, 168, 168),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(40),
+                    ),
+                    child: InkWell(
+                      onTap: () async {
+                        if (_formKey.currentState!.validate()) {
+                          // Only proceed if the form is valid
+                          if (!forgetPasswordController.isLoading.value) {
+                            // Set loading state to true
+                            forgetPasswordController.isLoading.value = true;
 
-                        Navigator.of(context).push(CustomPageTransition(
-                          page: Emailverificationscreen(
-                            ontap: () {
-                              Navigator.of(context).push(CustomPageTransition(
-                                  page: const Newpasswordscreen()));
-                            },
-                            retryonpress: () {
-                              //                         Navigator.of(context).push(CustomPageTransition(
-                              //   page: email()
-                              // ));
-                            },
-                          
-                          ),
-                        ));
-                      }
-                    },
-                    child: Container(
-                      height: height! * 0.066,
-                      width: width! * 0.86,
-                      decoration: BoxDecoration(
-                        color: Apptheme.mainbackgroundcolor,
-                        borderRadius: BorderRadius.circular(40),
-                      ),
-                      child: Center(
-                        child: Text(
-                          "Submit",
-                          style: TextStyle(
-                              color: const Color.fromARGB(255, 255, 255, 255),
-                              fontSize: width! * 0.045,
-                              fontWeight: FontWeight.bold),
+                            // Send reset email
+                            await forgetPasswordController
+                                .sendResetEmail(context);
+
+                            // After the email is sent, set loading back to false
+                            forgetPasswordController.isLoading.value = false;
+                          }
+                        }
+                      },
+                      child: Container(
+                        height: height! * 0.066,
+                        width: width! * 0.86,
+                        decoration: BoxDecoration(
+                          color: Apptheme.mainbackgroundcolor,
+                          borderRadius: BorderRadius.circular(40),
+                        ),
+                        child: Center(
+                          child: forgetPasswordController.isLoading.value
+                              ? const CircularProgressIndicator(
+                                  color: Colors.white,
+                                )
+                              : Text(
+                                  "Submit",
+                                  style: TextStyle(
+                                      color: const Color.fromARGB(
+                                          255, 255, 255, 255),
+                                      fontSize: width! * 0.045,
+                                      fontWeight: FontWeight.bold),
+                                ),
                         ),
                       ),
                     ),
                   ),
-                ),
+                )
               ],
             ),
           ),

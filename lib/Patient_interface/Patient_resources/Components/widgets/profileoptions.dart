@@ -8,7 +8,7 @@ class Profilescreenoptionwidget extends StatelessWidget {
   final double height;
   final double width;
 
-  Profilescreenoptionwidget({
+  const Profilescreenoptionwidget({
     Key? key,
     required this.Title,
     required this.icon,

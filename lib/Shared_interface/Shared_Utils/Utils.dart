@@ -22,6 +22,6 @@ class Utils {
     Get.snackbar(title, message,
         backgroundColor: Apptheme.mainbackgroundcolor.withOpacity(0.3),
         snackPosition: SnackPosition.TOP,
-        animationDuration: Duration(seconds: 3));
+        animationDuration: const Duration(seconds: 3));
   }
 }

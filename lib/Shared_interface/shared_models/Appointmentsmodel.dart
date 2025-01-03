@@ -1,7 +1,8 @@
+import 'dart:convert';
+
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
 // this is the model for the appointments will be used by both the doctor and the patient
-import 'dart:convert';
 
 class Appointmentmodel {
   String? doctorName;
@@ -17,6 +18,7 @@ class Appointmentmodel {
   String? Patientproblem;
   String? patientid;
   String? canellationreason;
+  String? requeststatus;
   Appointmentmodel({
     this.doctorName,
     this.doctorid,
@@ -31,8 +33,8 @@ class Appointmentmodel {
     this.Patientproblem,
     this.patientid,
     this.canellationreason,
+    this.requeststatus,
   });
- 
 
   Appointmentmodel copyWith({
     String? doctorName,
@@ -48,6 +50,7 @@ class Appointmentmodel {
     String? Patientproblem,
     String? patientid,
     String? canellationreason,
+    String? requeststatus,
   }) {
     return Appointmentmodel(
       doctorName: doctorName ?? this.doctorName,
@@ -63,6 +66,7 @@ class Appointmentmodel {
       Patientproblem: Patientproblem ?? this.Patientproblem,
       patientid: patientid ?? this.patientid,
       canellationreason: canellationreason ?? this.canellationreason,
+      requeststatus: requeststatus ?? this.requeststatus,
     );
   }
 
@@ -81,6 +85,7 @@ class Appointmentmodel {
       'Patientproblem': Patientproblem,
       'patientid': patientid,
       'canellationreason': canellationreason,
+      'requeststatus': requeststatus,
     };
   }
 
@@ -99,6 +104,7 @@ class Appointmentmodel {
       Patientproblem: map['Patientproblem'] != null ? map['Patientproblem'] as String : null,
       patientid: map['patientid'] != null ? map['patientid'] as String : null,
       canellationreason: map['canellationreason'] != null ? map['canellationreason'] as String : null,
+      requeststatus: map['requeststatus'] != null ? map['requeststatus'] as String : null,
     );
   }
 
@@ -108,7 +114,7 @@ class Appointmentmodel {
 
   @override
   String toString() {
-    return 'Appointmentmodel(doctorName: $doctorName, doctorid: $doctorid, specialty: $specialty, date: $date, time: $time, Appointmentstatus: $Appointmentstatus, doctorimageurl: $doctorimageurl, bookingid: $bookingid, patientname: $patientname, Patientimageurl: $Patientimageurl, Patientproblem: $Patientproblem, patientid: $patientid, canellationreason: $canellationreason)';
+    return 'Appointmentmodel(doctorName: $doctorName, doctorid: $doctorid, specialty: $specialty, date: $date, time: $time, Appointmentstatus: $Appointmentstatus, doctorimageurl: $doctorimageurl, bookingid: $bookingid, patientname: $patientname, Patientimageurl: $Patientimageurl, Patientproblem: $Patientproblem, patientid: $patientid, canellationreason: $canellationreason, requeststatus: $requeststatus)';
   }
 
   @override
@@ -128,7 +134,8 @@ class Appointmentmodel {
       other.Patientimageurl == Patientimageurl &&
       other.Patientproblem == Patientproblem &&
       other.patientid == patientid &&
-      other.canellationreason == canellationreason;
+      other.canellationreason == canellationreason &&
+      other.requeststatus == requeststatus;
   }
 
   @override
@@ -145,6 +152,7 @@ class Appointmentmodel {
       Patientimageurl.hashCode ^
       Patientproblem.hashCode ^
       patientid.hashCode ^
-      canellationreason.hashCode;
+      canellationreason.hashCode ^
+      requeststatus.hashCode;
   }
 }

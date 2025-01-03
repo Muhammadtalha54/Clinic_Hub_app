@@ -1,14 +1,11 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
-
+import 'package:clinic_hub_app/Shared_interface/Shared_Viewmodel/Controllers/Splashcontroller.dart';
 import 'package:clinic_hub_app/Shared_interface/Shared_screens/onboarding/onboarding.dart';
 import 'package:clinic_hub_app/apptheme/Apptheme.dart';
 import 'package:clinic_hub_app/apptheme/apptransitions/customtransition.dart';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-//splash screen
 
 class Splashscreen extends StatefulWidget {
   const Splashscreen({super.key});
@@ -18,36 +15,32 @@ class Splashscreen extends StatefulWidget {
 }
 
 class _SplashscreenState extends State<Splashscreen> {
-  // SplashServices splashservices = SplashServices();
   @override
-  // void initState() {
-  //   // TODO: implement initState
-  //   super.initState();
-  //   splashservices.isLogin();
-  // }
   void initState() {
+    // TODO: implement initState
+    // Future.delayed(const Duration(seconds: 3), () {
+    //   Navigator.push(
+    //       context,
+    //       MaterialPageRoute(
+    //         builder: (context) => const Onboardingscreens(),
+    //       ));
+    // });
     super.initState();
-    // Start the timer when the screen loads
-    Future.delayed(const Duration(seconds: 3), () {
-     Navigator.pushReplacement(
-  context,
-  CustomPageTransition(page: const Onboardingscreens()),
-);
-
-    });
   }
-
-  var height, width;
 
   @override
   Widget build(BuildContext context) {
-    height = MediaQuery.of(context).size.height;
-    width = MediaQuery.of(context).size.width;
+    // Bind the controller with GetX
+    Get.put(SplashController());
+
+    var height = MediaQuery.of(context).size.height;
+    var width = MediaQuery.of(context).size.width;
+
     return Scaffold(
       backgroundColor: Apptheme.mainbackgroundcolor,
       body: Container(
-        height: height!,
-        width: width!,
+        height: height,
+        width: width,
         decoration: const BoxDecoration(),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -71,7 +64,6 @@ class _SplashscreenState extends State<Splashscreen> {
                 height: height * 0.2,
                 child: AnimatedTextKit(animatedTexts: [
                   TypewriterAnimatedText(
-                    // speed: 2
                     "Clinic Hub - \nSimplifying Healthcare Management!",
                     textStyle: GoogleFonts.montserrat(
                       fontWeight: FontWeight.w700,
@@ -81,6 +73,13 @@ class _SplashscreenState extends State<Splashscreen> {
                     textAlign: TextAlign.center,
                   ),
                 ])),
+            const SizedBox(height: 20),
+            Obx(() {
+              // Observing the isLoading value from SplashController
+              return SplashController().isLoading.value
+                  ? CircularProgressIndicator() // Show loading while data is being fetched
+                  : SizedBox.shrink();
+            }),
           ],
         ),
       ),

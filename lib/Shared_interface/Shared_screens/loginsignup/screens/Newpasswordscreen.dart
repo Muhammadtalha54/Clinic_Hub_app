@@ -1,8 +1,6 @@
 import 'package:clinic_hub_app/Shared_interface/Shared_resources/components/passwordtextfield.dart';
 import 'package:clinic_hub_app/apptheme/Apptheme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 /* On this screen After the verification of the email on the emailverificationscreen 
 the user/doctorwill set a new password for his/her account so that 

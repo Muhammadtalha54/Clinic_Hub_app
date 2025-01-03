@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 // this is the dialog used on the errors of the signup and all the firebase requests
 class ReusableDialog {
   // Method to show the dialog
@@ -13,8 +14,14 @@ class ReusableDialog {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(title),
-          content: Text(content),
+          title: Text(
+            title,
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
+          content: Text(
+            content,
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
           actions: [
             TextButton(
               onPressed: () {
@@ -25,7 +32,10 @@ class ReusableDialog {
                   onPressed();
                 }
               },
-              child: Text(buttonText),
+              child: Text(
+                buttonText,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
             ),
           ],
         );

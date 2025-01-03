@@ -1,4 +1,4 @@
-import 'package:clinic_hub_app/Doctor_interface/Doctor_screens/Appointmentrequestscreen.dart';
+import 'package:clinic_hub_app/Doctor_interface/Doctor_screens/AppointmentRequestscreen.dart';
 import 'package:clinic_hub_app/Doctor_interface/Doctor_screens/DoctorAccountpage.dart';
 import 'package:clinic_hub_app/Doctor_interface/Doctor_screens/Doctorhomescreen.dart';
 import 'package:flutter/material.dart';

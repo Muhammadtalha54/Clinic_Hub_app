@@ -61,8 +61,8 @@ class PasswordTextField extends StatelessWidget {
                 if (text == null || text.isEmpty) {
                   return 'Password required';
                 }
-                if (text.length < 8) {
-                  return 'Must contain at least 8 characters';
+                if (text.length < 5) {
+                  return 'Must contain at least 5 characters';
                 }
                 // if (!RegExp(
                 //         r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$')

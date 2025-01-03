@@ -5,6 +5,8 @@ used by both the patient and the doctor
 
  */
 class AboutUsPage extends StatelessWidget {
+  const AboutUsPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     // Define MediaQuery for responsive design
@@ -67,7 +69,7 @@ class AboutUsPage extends StatelessWidget {
               SizedBox(height: screenHeight * 0.01),
               ListView.builder(
                 shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 itemCount: faqs.length,
                 itemBuilder: (context, index) {
                   return FaqTile(
@@ -92,7 +94,7 @@ class FaqTile extends StatelessWidget {
   final double screenWidth;
   final double screenHeight;
 
-  const FaqTile({
+  const FaqTile({super.key, 
     required this.question,
     required this.answer,
     required this.screenWidth,

@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
  */
 
 class NotificationsScreen extends StatefulWidget {
+  const NotificationsScreen({super.key});
+
   @override
   _NotificationsScreenState createState() => _NotificationsScreenState();
 }
@@ -31,13 +33,13 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     {
       'sender': 'Doctor',
       'message': 'Please bring your previous reports.',
-      'date': DateTime.now().subtract(Duration(days: 1)),
+      'date': DateTime.now().subtract(const Duration(days: 1)),
       'read': true,
     },
     {
       'sender': 'Doctor',
       'message': 'Please bring your previous reports.',
-      'date': DateTime.now().subtract(Duration(days: 5)),
+      'date': DateTime.now().subtract(const Duration(days: 5)),
       'read': true,
     },
     // Add more notifications here
@@ -51,7 +53,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('Notifications'),
+        title: const Text('Notifications'),
         centerTitle: true,
         backgroundColor: Colors.white,
       ),
@@ -94,8 +96,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                   title: Text(notifications[index]['sender']),
                   subtitle: Text(notifications[index]['message']),
                   trailing: isUnread
-                      ? Icon(Icons.markunread)
-                      : Icon(
+                      ? const Icon(Icons.markunread)
+                      : const Icon(
                           Icons.done_all,
                           color: Colors.blue,
                         ),

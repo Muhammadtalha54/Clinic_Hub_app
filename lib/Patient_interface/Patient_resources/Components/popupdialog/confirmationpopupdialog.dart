@@ -30,7 +30,7 @@ class Confirmationpopupdialoguebox extends StatelessWidget {
           // backgroun: Color.fromARGB(207, 211, 80, 80),
           child: Text(
             buttontext!,
-            style: TextStyle(color: Colors.white),
+            style: const TextStyle(color: Colors.white),
           ),
         ),
         OutlinedButton(
@@ -43,9 +43,9 @@ class Confirmationpopupdialoguebox extends StatelessWidget {
           //color: Colors.green,
           //  minSize: width! * 0.03,
           // backgroun: Color.fromARGB(207, 211, 80, 80),
-          child: Text(
+          child: const Text(
             "Cancel",
-            style: TextStyle(color: const Color.fromARGB(255, 38, 38, 38)),
+            style: TextStyle(color: Color.fromARGB(255, 38, 38, 38)),
           ),
         ),
       ],

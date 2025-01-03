@@ -1,6 +1,6 @@
 import 'package:clinic_hub_app/Shared_interface/Shared_resources/components/customtextfield.dart';
 import 'package:clinic_hub_app/Shared_interface/Shared_resources/components/passwordtextfield.dart';
-import 'package:clinic_hub_app/Patient_interface/Patient_resources/Components/widgets/Imagewidget.dart';
+import 'package:clinic_hub_app/Shared_interface/Shared_resources/components/Imagewidget.dart';
 import 'package:clinic_hub_app/apptheme/Apptheme.dart';
 
 import 'package:flutter/material.dart';
@@ -37,7 +37,7 @@ class _DoctorprofilescreenState extends State<Doctorprofilescreen> {
           width: width,
           height: height,
           padding: EdgeInsets.all(width * 0.04),
-          decoration: BoxDecoration(color: Apptheme.appbodybackgroundcolor),
+          decoration: const BoxDecoration(color: Apptheme.appbodybackgroundcolor),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -87,7 +87,7 @@ class _DoctorInfoState extends State<DoctorInfo> {
     width = MediaQuery.of(context).size.width;
     return Form(
       key: _formKey,
-      child: Container(
+      child: SizedBox(
         width: width * 0.8,
         height: height * 0.66,
         child: Column(
@@ -123,7 +123,7 @@ class _DoctorInfoState extends State<DoctorInfo> {
   //Builds a text field widget
   Widget _buildTextField(TextEditingController controller, String label,
       IconData icon, double Height, int maxlines) {
-    return Container(
+    return SizedBox(
       height: Height,
       child: TextFormField(
         controller: controller,
@@ -160,7 +160,7 @@ class _DoctorInfoState extends State<DoctorInfo> {
             ),
             child: const Text(
               'Save',
-              style: const TextStyle(
+              style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.w500,
                   fontSize: 18),
@@ -177,7 +177,7 @@ class _DoctorInfoState extends State<DoctorInfo> {
             ),
             child: const Text(
               'Cancel',
-              style: const TextStyle(
+              style: TextStyle(
                   color: Color.fromARGB(255, 0, 0, 0),
                   fontWeight: FontWeight.w500,
                   fontSize: 18),
@@ -201,7 +201,7 @@ class _DoctorInfoState extends State<DoctorInfo> {
         ),
         child: const Text(
           'Edit Profile',
-          style: const TextStyle(
+          style: TextStyle(
               color: Color.fromARGB(255, 255, 255, 255),
               fontWeight: FontWeight.w500,
               fontSize: 18),

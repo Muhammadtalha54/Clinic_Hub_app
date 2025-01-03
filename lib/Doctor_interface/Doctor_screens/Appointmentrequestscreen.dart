@@ -1,8 +1,10 @@
 import 'package:clinic_hub_app/Doctor_interface/Doctor_resources/Components/requestcomponent.dart';
 import 'package:clinic_hub_app/apptheme/Apptheme.dart';
 import 'package:flutter/material.dart';
-// Import the reusable component
-// this is the screen on which the user appointment requests will be displayed
+import 'package:get/get.dart';
+
+import '../doctor_viewmodel/Controllers/Requestappointmentcontroller.dart';
+
 class AppointmentRequestsPage extends StatefulWidget {
   const AppointmentRequestsPage({super.key});
 
@@ -12,26 +14,19 @@ class AppointmentRequestsPage extends StatefulWidget {
 }
 
 class _AppointmentRequestsPageState extends State<AppointmentRequestsPage> {
-  var height, width;
+  final AppointmentRequestcontroller _controller =
+      Get.put(AppointmentRequestcontroller());
+
+  @override
+  void initState() {
+    super.initState();
+    // Fetch doctors when the screen is initialized
+    _controller.fetchDoctorRequests();
+  }
+
   @override
   Widget build(BuildContext context) {
-    height = MediaQuery.of(context).size.height;
-    width = MediaQuery.of(context).size.width;
-
-    final List<Map<String, String>> appointmentRequests = [
-      {
-        "patientName": "John Doe",
-        "date": "2024-01-15",
-        "time": "10:00 AM",
-        "reason": "Follow-up for flu symptoms",
-      },
-      {
-        "patientName": "Jane Smith",
-        "date": "2024-01-16",
-        "time": "11:30 AM",
-        "reason": "Consultation for skin allergy",
-      },
-    ];
+    // Get the controller
 
     return Scaffold(
       backgroundColor: Apptheme.appbodybackgroundcolor,
@@ -42,49 +37,59 @@ class _AppointmentRequestsPageState extends State<AppointmentRequestsPage> {
           "Appointment Requests",
           style: TextStyle(
               color: Colors.black,
-              fontSize: width * 0.04,
+              fontSize: MediaQuery.of(context).size.width * 0.04,
               fontWeight: FontWeight.w600),
         ),
-        // primary: false,
         centerTitle: true,
       ),
-      body: Center(
-        child: Container(
-          height: height,
-          width: width * 0.9,
+      body: Obx(() {
+        // Show loading indicator while fetching data
+        if (_controller.isLoading.value) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        // If no appointment requests, show a message
+        if (_controller.Appointmentrequests.isEmpty) {
+          return const Center(child: Text('No appointment requests found.'));
+        }
+
+        // Otherwise, display the list of requests
+        return Padding(
+          padding: const EdgeInsets.all(10.0),
           child: ListView.builder(
-            padding: const EdgeInsets.all(10),
-            itemCount: appointmentRequests.length,
+            itemCount: _controller.Appointmentrequests.length,
             itemBuilder: (context, index) {
-              final request = appointmentRequests[index];
+              final request = _controller.Appointmentrequests[index];
               return AppointmentRequestCard(
-                patientName: request["patientName"]!,
-                date: request["date"]!,
-                time: request["time"]!,
-                reason: request["reason"]!,
+                patientName: request.patientname!,
+                date: request.date!,
+                time: request.time.toString(),
+                reason: request.Patientproblem!,
                 onAccept: () {
+                  _controller.acceptAppointment(context, request.bookingid!);
                   // Handle accept logic
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(
-                          "Appointment with ${request["patientName"]} accepted."),
+                          "Appointment with ${request.patientname!} accepted."),
                     ),
                   );
                 },
                 onReject: () {
                   // Handle reject logic
+                  _controller.deleteAppointment(request.bookingid!);
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(
-                          "Appointment with ${request["patientName"]} rejected."),
+                          "Appointment with ${request.patientname!} rejected."),
                     ),
                   );
                 },
               );
             },
           ),
-        ),
-      ),
+        );
+      }),
     );
   }
 }

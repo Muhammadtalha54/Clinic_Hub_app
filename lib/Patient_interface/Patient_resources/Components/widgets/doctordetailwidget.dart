@@ -1,5 +1,6 @@
 import 'package:clinic_hub_app/apptheme/Apptheme.dart';
 import 'package:flutter/material.dart';
+
 // this is the doctor detail widget which shows essential details of the doctor
 // to the pateint and is used on the All doctors screen
 class Doctordetailwidget extends StatelessWidget {
@@ -19,7 +20,7 @@ class Doctordetailwidget extends StatelessWidget {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     return SizedBox(
-      height: height * 0.37,
+      height: height * 0.4,
       width: width * 0.4,
       // color: Colors.red,
       child: Stack(
@@ -37,7 +38,7 @@ class Doctordetailwidget extends StatelessWidget {
                 bottomRight: Radius.circular(width * 0.03),
               )),
               child: SizedBox(
-                height: height * 0.28,
+                height: height * 0.3,
                 width: width * 0.38,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -58,7 +59,7 @@ class Doctordetailwidget extends StatelessWidget {
             child: Align(
               alignment: Alignment.bottomCenter,
               child: SizedBox(
-                height: height * 0.15,
+                height: height * 0.18,
                 width: width * 0.3,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -76,7 +77,7 @@ class Doctordetailwidget extends StatelessWidget {
                         style: TextStyle(
                             overflow: TextOverflow.ellipsis,
                             color: Colors.black,
-                            fontSize: width * 0.045,
+                            fontSize: width * 0.035,
                             fontWeight: FontWeight.w500),
                       ),
                     ),
@@ -94,15 +95,15 @@ class Doctordetailwidget extends StatelessWidget {
                                 fontSize: width * 0.035,
                                 fontWeight: FontWeight.w500),
                           ),
-                          SizedBox(
-                            height: height * 0.04,
-                            width: width * 0.1,
-                            child: Icon(
-                              Icons.favorite_outline,
-                              color: Colors.red,
-                              size: width * 0.05,
-                            ),
-                          )
+                          // SizedBox(
+                          //   height: height * 0.04,
+                          //   width: width * 0.1,
+                          //   child: Icon(
+                          //     Icons.favorite_outline,
+                          //     color: Colors.red,
+                          //     size: width * 0.05,
+                          //   ),
+                          // )
                         ],
                       ),
                     ),
@@ -166,14 +167,22 @@ class Doctordetailwidget extends StatelessWidget {
           ),
           Align(
             alignment: Alignment.topCenter,
-            child: Container(
+            child: imagepath==null?  Container(
+              height: height * 0.18,
+              width: width * 0.333,
+              decoration: BoxDecoration(
+                  color: Colors.grey.shade300,
+                  shape: BoxShape.circle,
+                 ),
+            ):
+            Container(
               height: height * 0.18,
               width: width * 0.333,
               decoration: BoxDecoration(
                   color: Colors.grey.shade300,
                   shape: BoxShape.circle,
                   image: DecorationImage(
-                      fit: BoxFit.fitHeight, image: AssetImage(imagepath))),
+                      fit: BoxFit.fitHeight, image: NetworkImage(imagepath))),
             ),
           )
         ],

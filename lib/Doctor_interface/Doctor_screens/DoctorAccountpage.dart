@@ -1,14 +1,16 @@
+import 'package:clinic_hub_app/Doctor_interface/Doctor_models/Staticmodel.dart';
 import 'package:clinic_hub_app/Doctor_interface/Doctor_resources/Components/profilewidget.dart';
 import 'package:clinic_hub_app/Doctor_interface/Doctor_screens/Doctorprofilescreen.dart';
 import 'package:clinic_hub_app/Doctor_interface/Doctor_screens/Historyscreen.dart';
 import 'package:clinic_hub_app/Doctor_interface/Doctor_screens/scheduleappointment.dart';
 import 'package:clinic_hub_app/Shared_interface/Shared_screens/loginsignup/screens/Loginscreen.dart';
-import 'package:clinic_hub_app/Patient_interface/Patient_resources/Components/widgets/Imagewidget.dart';
+import 'package:clinic_hub_app/Shared_interface/Shared_resources/components/Imagewidget.dart';
 import 'package:clinic_hub_app/Shared_interface/Shared_screens/Privacypolicyscreen.dart';
 import 'package:clinic_hub_app/Shared_interface/Shared_screens/aboutusscreen.dart';
 import 'package:clinic_hub_app/apptheme/Apptheme.dart';
 import 'package:clinic_hub_app/apptheme/apptransitions/customtransition.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // account information screen for Doctor profile
 class DoctorAccountScreen extends StatefulWidget {
@@ -19,6 +21,8 @@ class DoctorAccountScreen extends StatefulWidget {
 }
 
 class _DoctorAccountScreenState extends State<DoctorAccountScreen> {
+  String? doctorname = StaticDoctor.doctormodel?.doctorname ?? 'Unknown Doctor';
+  String? doctorimageurl = StaticDoctor.doctormodel?.doctorimageurl ?? '';
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -47,12 +51,11 @@ class _DoctorAccountScreenState extends State<DoctorAccountScreen> {
               children: [
                 SizedBox(height: height * 0.01),
                 ImageUpload(
-                  imageurl:
-                      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9SRRmhH4X5N2e4QalcoxVbzYsD44C-sQv-w&s',
-                  ontap: () {
-                    // Navigator.of(context)
-                    //     .push(CustomPageTransition(page: Userprofilescreen()));
-                  },
+                  ontap: () {},
+                  imageurl: doctorimageurl!,
+                ),
+                SizedBox(
+                  height: height * 0.02,
                 ),
                 SizedBox(
                   height: height * 0.02,
@@ -60,7 +63,7 @@ class _DoctorAccountScreenState extends State<DoctorAccountScreen> {
 
                 Container(
                   child: Text(
-                    "Dr.ALi khan",
+                    doctorname!,
                     style: TextStyle(
                         color: const Color.fromARGB(255, 73, 73, 73),
                         fontSize: width * 0.055,
@@ -74,8 +77,8 @@ class _DoctorAccountScreenState extends State<DoctorAccountScreen> {
                   icon: Icons.person_outline,
                   onpressed: () {
                     // print('object');
-                    Navigator.of(context).push(
-                        CustomPageTransition(page: Doctorprofilescreen()));
+                    Navigator.of(context).push(CustomPageTransition(
+                        page: const Doctorprofilescreen()));
                     // Navigator.of(context)
                     //     .push(CustomPageTransition(page: Userprofilescreen()));
                   },
@@ -88,8 +91,8 @@ class _DoctorAccountScreenState extends State<DoctorAccountScreen> {
                 Doctorprofilewidget(
                   icon: Icons.timer_outlined,
                   onpressed: () {
-                    Navigator.of(context).push(
-                        CustomPageTransition(page: ScheduleAppointmentPage()));
+                    Navigator.of(context).push(CustomPageTransition(
+                        page: const ScheduleAppointmentPage()));
                   },
                   height: height * 0.07,
                   width: width * 0.8,
@@ -126,7 +129,7 @@ class _DoctorAccountScreenState extends State<DoctorAccountScreen> {
                   icon: Icons.timer_outlined,
                   onpressed: () {
                     Navigator.of(context).push(CustomPageTransition(
-                        page: DoctorAppointmenthistoryscreen()));
+                        page: const DoctorAppointmenthistoryscreen()));
                   },
                   height: height * 0.07,
                   width: width * 0.8,
@@ -138,8 +141,9 @@ class _DoctorAccountScreenState extends State<DoctorAccountScreen> {
                 Doctorprofilewidget(
                   icon: Icons.logout,
                   onpressed: () {
+                    logout(context);
                     Navigator.of(context)
-                        .push(CustomPageTransition(page: Loginscreen()));
+                        .push(CustomPageTransition(page: const Loginscreen()));
                   },
                   height: height * 0.07,
                   width: width * 0.8,
@@ -154,5 +158,15 @@ class _DoctorAccountScreenState extends State<DoctorAccountScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> logout(BuildContext context) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences.getKeys();
+    preferences.clear();
+    StaticDoctor.doctormodel = null;
+
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => const Loginscreen()));
   }
 }

@@ -79,7 +79,7 @@ class UploadLicenseWidget extends StatelessWidget {
                         }
                       },
                       errorBuilder: (context, error, stackTrace) {
-                        return Center(
+                        return const Center(
                           child: Icon(
                             Icons.error,
                             size: 40,

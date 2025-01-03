@@ -10,22 +10,29 @@ import 'package:clinic_hub_app/Shared_interface/Shared_screens/loginsignup/scree
 import 'package:clinic_hub_app/Shared_interface/Shared_screens/loginsignup/screens/verifyemail.dart';
 import 'package:clinic_hub_app/apptheme/apptransitions/customtransition.dart';
 
-// this is the signup screen for the patient 
+// this is the signup screen for the patient
 
 class Usersignupscreen extends StatefulWidget {
-  Usersignupscreen({super.key});
+  const Usersignupscreen({super.key});
 
   @override
   State<Usersignupscreen> createState() => _UsersignupscreenState();
 }
 
 class _UsersignupscreenState extends State<Usersignupscreen> {
-  final PatientSignupController patientcontroller =
-      Get.put(PatientSignupController());
+  late PatientSignupController patientcontroller;
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    patientcontroller = Get.put(PatientSignupController());
+    super.initState();
+  }
+
+  @override
   void dispose() {
     super.dispose();
-    ;
+
     Get.delete<PatientSignupController>();
   }
 
@@ -35,6 +42,7 @@ class _UsersignupscreenState extends State<Usersignupscreen> {
     final width = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: const Color.fromARGB(255, 203, 236, 248),
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 203, 236, 248),
@@ -127,32 +135,39 @@ class _UsersignupscreenState extends State<Usersignupscreen> {
                             ),
                           ),
                           SizedBox(height: height * 0.02),
-                          InkWell(
-                            onTap: () {
-                              patientcontroller.submitForm(context);
-                              Future.delayed(Duration(seconds: 3), () {
-                                // Safely delete the controller after submission logic is complete.
-                                Get.delete<PatientSignupController>();
-                              });
-                            },
-                            child: Container(
-                              height: height * 0.06,
-                              width: width * 0.8,
-                              decoration: BoxDecoration(
-                                color: Colors.blue,
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  "Signup",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: width * 0.04,
-                                  ),
+                          Obx(() {
+                            return InkWell(
+                              onTap: () {
+                                if (!patientcontroller.isLoading.value) {
+                                  // Only trigger the form submission if not loading
+                                  patientcontroller.submitForm(context);
+                                }
+                              },
+                              child: Container(
+                                height: height * 0.06,
+                                width: width * 0.8,
+                                decoration: BoxDecoration(
+                                  color: Colors.blue,
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                child: Center(
+                                  child: patientcontroller.isLoading.value
+                                      ? const CircularProgressIndicator(
+                                          valueColor:
+                                              AlwaysStoppedAnimation<Color>(
+                                                  Colors.white),
+                                        )
+                                      : Text(
+                                          "Signup",
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: width * 0.04,
+                                          ),
+                                        ),
                                 ),
                               ),
-                            ),
-                          ),
+                            );
+                          }),
                           SizedBox(
                             height: height * 0.07,
                             width: width * 0.8,

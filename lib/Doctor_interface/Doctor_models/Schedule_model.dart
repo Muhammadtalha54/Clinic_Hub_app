@@ -1,73 +1,111 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:convert';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
-class ScheduleAppointment {
-  final List<String> selectedDays;
-  final TimeOfDay startTime;
-  final TimeOfDay endTime;
-  final int slotDuration;
 
-  ScheduleAppointment({
-    required this.selectedDays,
-    required this.startTime,
-    required this.endTime,
-    required this.slotDuration,
-  });
-
-  @override
-  String toString() {
-    return 'Selected Days: ${selectedDays.join(', ')}\n'
-        'Start Time: ${startTime.format(Get.context!)}\n'
-        'End Time: ${endTime.format(Get.context!)}\n'
-        'Slot Duration: $slotDuration minutes';
-  }
-
-  ScheduleAppointment copyWith({
-    List<String>? selectedDays,
-    TimeOfDay? startTime,
-    TimeOfDay? endTime,
-    int? slotDuration,
-  }) {
-    return ScheduleAppointment(
-      selectedDays: selectedDays ?? this.selectedDays,
-      startTime: startTime ?? this.startTime,
-      endTime: endTime ?? this.endTime,
-      slotDuration: slotDuration ?? this.slotDuration,
-    );
-  }
-
-  // Convert ScheduleAppointment instance to a map
+extension TimeOfDayExtension on TimeOfDay {
   Map<String, dynamic> toMap() {
     return {
-      'selectedDays': selectedDays,
-      'startTime': startTime.toFormattedString(), // Store formatted time as String
-      'endTime': endTime.toFormattedString(), // Store formatted time as String
-      'slotDuration': slotDuration,
+      'hour': hour,
+      'minute': minute,
     };
   }
 
-  // Create ScheduleAppointment from a map
-  static ScheduleAppointment fromMap(Map<String, dynamic> map) {
-    return ScheduleAppointment(
-      selectedDays: List<String>.from(map['selectedDays']),
-      startTime: TimeOfDayExtension.fromFormattedString(map['startTime']),
-      endTime: TimeOfDayExtension.fromFormattedString(map['endTime']),
-      slotDuration: map['slotDuration'],
+  static TimeOfDay fromMap(Map<String, dynamic> map) {
+    return TimeOfDay(
+      hour: map['hour'] as int,
+      minute: map['minute'] as int,
     );
   }
 }
 
-extension TimeOfDayExtension on TimeOfDay {
-  // Convert TimeOfDay to a formatted string (e.g., "14:30")
-  String toFormattedString() {
-    return '${this.hour.toString().padLeft(2, '0')}:${this.minute.toString().padLeft(2, '0')}';
+class ScheduleAppointmentmodel {
+List<String>? selectedDays;
+  TimeOfDay? startTime;
+   TimeOfDay? endTime;
+   int? slotDuration;
+   String? doctorid;
+   String? doctorname;
+  ScheduleAppointmentmodel({
+    this.selectedDays,
+    this.startTime,
+    this.endTime,
+    this.slotDuration,
+    this.doctorid,
+    this.doctorname,
+  });
+
+
+  ScheduleAppointmentmodel copyWith({
+    List<String>? selectedDays,
+    TimeOfDay? startTime,
+    TimeOfDay? endTime,
+    int? slotDuration,
+    String? doctorid,
+    String? doctorname,
+  }) {
+    return ScheduleAppointmentmodel(
+      selectedDays: selectedDays ?? this.selectedDays,
+      startTime: startTime ?? this.startTime,
+      endTime: endTime ?? this.endTime,
+      slotDuration: slotDuration ?? this.slotDuration,
+      doctorid: doctorid ?? this.doctorid,
+      doctorname: doctorname ?? this.doctorname,);
   }
 
-  // Create TimeOfDay from a formatted string (e.g., "14:30")
-  static TimeOfDay fromFormattedString(String timeString) {
-    List<String> parts = timeString.split(':');
-    int hour = int.parse(parts[0]);
-    int minute = int.parse(parts[1]);
-    return TimeOfDay(hour: hour, minute: minute);
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'selectedDays': selectedDays,
+      'startTime': startTime?.toMap(),
+      'endTime': endTime?.toMap(),
+      'slotDuration': slotDuration,
+      'doctorid': doctorid,
+      'doctorname': doctorname,
+    };
+  }
+
+  factory ScheduleAppointmentmodel.fromMap(Map<String, dynamic> map) {
+    return ScheduleAppointmentmodel(
+      selectedDays: map['selectedDays'] != null ? List<String>.from(map['selectedDays'] as List<String>) : null,
+        startTime: map['startTime'] != null ? TimeOfDayExtension.fromMap(map['startTime'] as Map<String, dynamic>) : null,
+      endTime: map['endTime'] != null ? TimeOfDayExtension.fromMap(map['endTime'] as Map<String, dynamic>) : null,
+      slotDuration: map['slotDuration'] != null ? map['slotDuration'] as int : null,
+      doctorid: map['doctorid'] != null ? map['doctorid'] as String : null,
+      doctorname: map['doctorname'] != null ? map['doctorname'] as String : null,
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory ScheduleAppointmentmodel.fromJson(String source) => ScheduleAppointmentmodel.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  @override
+  String toString() {
+    return 'ScheduleAppointmentmodel(selectedDays: $selectedDays, startTime: $startTime, endTime: $endTime, slotDuration: $slotDuration, doctorid: $doctorid, doctorname: $doctorname)';
+  }
+
+  @override
+  bool operator ==(covariant ScheduleAppointmentmodel other) {
+    if (identical(this, other)) return true;
+  
+    return 
+      listEquals(other.selectedDays, selectedDays) &&
+      other.startTime == startTime &&
+      other.endTime == endTime &&
+      other.slotDuration == slotDuration &&
+      other.doctorid == doctorid &&
+      other.doctorname == doctorname;
+  }
+
+  @override
+  int get hashCode {
+    return selectedDays.hashCode ^
+      startTime.hashCode ^
+      endTime.hashCode ^
+      slotDuration.hashCode ^
+      doctorid.hashCode ^
+      doctorname.hashCode;
   }
 }

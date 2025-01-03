@@ -32,17 +32,19 @@ class _DoctorsignupscreenState extends State<Doctorsignupscreen>
     with SingleTickerProviderStateMixin {
   var height, width;
 
-  final DoctorSignupController doctorSIgnupcotroller =
-      Get.put(DoctorSignupController());
+  late DoctorSignupController doctorSIgnupcotroller;
 
   late TabController _tabController;
 
+  @override
   void initState() {
-    super.initState();
     _tabController = TabController(length: 3, vsync: this);
+    doctorSIgnupcotroller = Get.put(DoctorSignupController());
+    super.initState();
   }
 
   //@override
+  @override
   void dispose() {
     super.dispose();
     _tabController.dispose();
@@ -54,6 +56,7 @@ class _DoctorsignupscreenState extends State<Doctorsignupscreen>
     height = MediaQuery.of(context).size.height;
     width = MediaQuery.of(context).size.width;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: const Color.fromARGB(255, 203, 236, 248),
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 203, 236, 248),
@@ -308,6 +311,7 @@ class _DoctorsignupscreenState extends State<Doctorsignupscreen>
                                               color: Colors.white,
                                               fontSize: width * 0.035)),
                                     ),
+
                                     SizedBox(
                                       width: width * 0.02,
                                     ),
@@ -339,7 +343,7 @@ class _DoctorsignupscreenState extends State<Doctorsignupscreen>
                                     CustomTextFormField(
                                       isEditing: true,
                                       hintText: "00000-X",
-                                      regex: r"^[a-zA-Z0-9_]{6,}$",
+                                      regex: r"^[a-zA-Z0-9_]{3,}$",
                                       errorMessage:
                                           "Enter valid PMC Registration",
                                       controller: doctorSIgnupcotroller
@@ -360,33 +364,44 @@ class _DoctorsignupscreenState extends State<Doctorsignupscreen>
                                       ),
                                     ),
                                     SizedBox(height: height * 0.02),
-                                    ElevatedButton(
-                                      onPressed: () {
-                                        doctorSIgnupcotroller
-                                            .submitForm(context);
-                                        Future.delayed(Duration(seconds: 3),
-                                            () {
-                                          // Safely delete the controller after submission logic is complete.
-                                          Get.delete<DoctorSignupController>();
-                                        });
-                                        // if (_selectedLisenceImage != null) {
-                                        //   _submitForm(_selectedLisenceImage!);
-                                        // } else {
-                                        //   _showLicenseDialog();
-                                        // }
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.green,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(5),
+                                    Obx(() {
+                                      return InkWell(
+                                        onTap: () {
+                                          if (!doctorSIgnupcotroller
+                                              .isLoading.value) {
+                                            // Only trigger the form submission if not loading
+                                            doctorSIgnupcotroller
+                                                .submitForm(context);
+                                          }
+                                        },
+                                        child: Container(
+                                          height: height * 0.06,
+                                          width: width * 0.8,
+                                          decoration: BoxDecoration(
+                                            color: Colors.green,
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                          ),
+                                          child: Center(
+                                            child: doctorSIgnupcotroller
+                                                    .isLoading.value
+                                                ? const CircularProgressIndicator(
+                                                    valueColor:
+                                                        AlwaysStoppedAnimation<
+                                                                Color>(
+                                                            Colors.white),
+                                                  )
+                                                : Text(
+                                                    "Signup",
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: width * 0.04,
+                                                    ),
+                                                  ),
+                                          ),
                                         ),
-                                      ),
-                                      child: Text("Sign Up",
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: width * 0.035)),
-                                    ),
+                                      );
+                                    }),
                                     SizedBox(
                                       width: width * 0.02,
                                     ),
@@ -442,19 +457,19 @@ class _DoctorsignupscreenState extends State<Doctorsignupscreen>
     );
   }
 
-// dropdown displays this list it accepts it as a required named parameter
-  final List<String> doctorCategories = [
-    "General Physician",
-    "Cardiologist",
-    "Dermatologist",
-    "Neurologist",
-    "Orthopedic",
-    "Pediatrician",
-    "Psychiatrist",
-    "Gynecologist",
-    "Dentist",
-    "ENT Specialist",
-  ];
+// // dropdown displays this list it accepts it as a required named parameter
+//   final List<String> doctorCategories = [
+//     "General Physician",
+//     "Cardiologist",
+//     "Dermatologist",
+//     "Neurologist",
+//     "Orthopedic",
+//     "Pediatrician",
+//     "Psychiatrist",
+//     "Gynecologist",
+//     "Dentist",
+//     "ENT Specialist",
+//   ];
 }
 
 //   

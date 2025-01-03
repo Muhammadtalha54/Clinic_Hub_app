@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:clinic_hub_app/apptheme/Apptheme.dart';
-// this is the widget that shows categories of the doctors we will be 
+
+// this is the widget that shows categories of the doctors we will be
 // filtering the doctors based on the category on this widget
 class Categoryiconwidget extends StatelessWidget {
   final String categoryname;
@@ -43,6 +44,7 @@ class Categoryiconwidget extends StatelessWidget {
             Text(
               categoryname,
               style: TextStyle(
+                overflow: TextOverflow.ellipsis,
                 color: const Color.fromARGB(255, 56, 56, 56),
                 fontSize: width * 0.03,
                 fontWeight: FontWeight.w600,

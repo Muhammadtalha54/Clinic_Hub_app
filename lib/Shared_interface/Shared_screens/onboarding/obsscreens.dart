@@ -1,7 +1,5 @@
 import 'package:clinic_hub_app/Shared_interface/Shared_resources/onboardingcomponent.dart';
-import 'package:clinic_hub_app/apptheme/Apptheme.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 /*
 this is the screen that is displayed in the pageview everytime with different data 
 that it got from parametes */

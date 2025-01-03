@@ -1,6 +1,12 @@
+import 'dart:core';
+
+import 'package:clinic_hub_app/Doctor_interface/Doctor_models/Doctor_model.dart';
+import 'package:clinic_hub_app/Patient_interface/Patient_ViewModel/Controllers/Get_doctorscontroller.dart';
+import 'package:clinic_hub_app/Patient_interface/Patient_models/Staticmodel.dart';
 import 'package:clinic_hub_app/Patient_interface/Patient_resources/Components/widgets/Schedulecard.dart';
 import 'package:clinic_hub_app/Patient_interface/Patient_resources/Components/widgets/Searchboxwidget.dart';
 import 'package:clinic_hub_app/Patient_interface/Patient_resources/Components/widgets/doctordetail2.dart';
+import 'package:clinic_hub_app/Patient_interface/Patient_resources/Components/widgets/doctordetailwidget.dart';
 
 import 'package:clinic_hub_app/Patient_interface/Patient_screens/Doctordetailscreen.dart';
 import 'package:clinic_hub_app/Patient_interface/Patient_screens/Notificationsscreen.dart';
@@ -9,10 +15,11 @@ import 'package:clinic_hub_app/apptheme/Apptheme.dart';
 import 'package:clinic_hub_app/apptheme/apptransitions/customtransition.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
+import 'package:get/get.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 
-// this is the home screen for the user he/she 
+// this is the home screen for the user he/she
 //will navigate to this page after the login
 //1st screen in pageview
 class Patient_homescreen extends StatefulWidget {
@@ -23,9 +30,31 @@ class Patient_homescreen extends StatefulWidget {
 }
 
 class _Patient_homescreenState extends State<Patient_homescreen> {
+  final GetDoctorscontroller doctorsController =
+      Get.put(GetDoctorscontroller());
+  List<Doctor_Model> doctorsList = [
+    Doctor_Model(
+        doctorname: 'Ali Khan', doctorimageurl: 'assets/images/doctor.png'),
+    // Add more doctors as needed
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    // Fetch doctors when the screen is initialized
+    doctorsController.getUsers(context);
+  }
+
   int selectedIndex = 0;
   var height, width;
+
   TextEditingController searhcontroller = TextEditingController();
+  // name of patient that is logged in
+  String? patientname = StaticPatient.patient_model!.Patientname!;
+  String? patientid = StaticPatient.patient_model!.PatientId;
+
+  // imageurl of patientthat is loggedin
+  String? patientimageurl = StaticPatient.patient_model!.Patientprofilepicture!;
   @override
   Widget build(BuildContext context) {
     height = MediaQuery.of(context).size.height;
@@ -46,7 +75,8 @@ class _Patient_homescreenState extends State<Patient_homescreen> {
                 height: height * 0.04,
               ),
               _myCustomheader(
-                name: "Talha Rana",
+                name: patientname!,
+                imageurl: patientimageurl,
                 Notifications_count: 2,
                 ontap: () {
                   Navigator.of(context)
@@ -92,16 +122,29 @@ class _Patient_homescreenState extends State<Patient_homescreen> {
                   height: height * 0.033,
                   width: width * 0.85,
                   child: _headings(headingtitle: "Top Doctors")),
-              SizedBox(
-                height: height * 0.65,
-                width: width,
-                //color: Colors.red,
-                child: ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  itemCount: 10,
-                  physics: BouncingScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    return Padding(
+
+              Obx(() {
+                if (doctorsController.isLoading.value) {
+                  return Center(child: CircularProgressIndicator());
+                }
+
+                // Check if there are any doctors in the list
+                if (doctorsController.allUsers.isEmpty) {
+                  return Center(
+                      child: Text("No doctors to show",
+                          style: TextStyle(fontSize: 18)));
+                }
+                return SizedBox(
+                  height: height * 0.65,
+                  width: width,
+                  //color: Colors.red,
+                  child: ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    itemCount: doctorsController.allUsers.length,
+                    physics: const BouncingScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      var doctor = doctorsController.allUsers[index];
+                      return Padding(
                         padding: EdgeInsets.symmetric(
                           //  horizontal: width * 0.01,
                           vertical: height * 0.00,
@@ -110,27 +153,38 @@ class _Patient_homescreenState extends State<Patient_homescreen> {
                           onTap: () {
                             Navigator.of(context).push(
                               CustomPageTransition(
-                                  page: Doctordetailscreen(
-                                index: index,
-                                imagepath: 'assets/images/doctor.png',
-                                doctorname: 'Ali Khan',
-                              )),
+                                page: Doctordetailscreen(
+                                  doctor: doctor,
+                                  imagepath: doctor
+                                      .doctorimageurl!, // Use actual image path from doctor model
+                                  index: index,
+                                  doctorname: doctor
+                                      .doctorname!, // Use actual doctor name
+                                ),
+                              ),
                             );
                           },
                           child: Hero(
                             tag: 'doctor-image-$index',
-                            child: const Doctordetailwidget2(
-                              imagepath: 'assets/images/doctor.png',
-                              doctorName: 'Ali Khan',
-                              reviews: 74,
-                              specialty: 'Dentist',
-                              rating: 4.5,
+                            child: Doctordetailwidget2(
+                              imagepath: doctor
+                                  .doctorimageurl!, // Use actual image path from doctor model
+                              doctorName:
+                                  doctor.doctorname!, // Use actual doctor name
+                              reviews:
+                                  55, // Use actual reviews from doctor model
+                              specialty: doctor
+                                  .doctorspecialization!, // Use actual specialty from doctor model
+                              rating:
+                                  4.5, // Use actual rating from doctor model
                             ),
                           ),
-                        ));
-                  },
-                ),
-              ),
+                        ),
+                      );
+                    },
+                  ),
+                );
+              })
             ],
           ),
         )),
@@ -184,16 +238,22 @@ class _Patient_homescreenState extends State<Patient_homescreen> {
   Widget _myCustomheader(
       {required String name,
       required double Notifications_count,
+      required String? imageurl,
       required VoidCallback ontap}) {
     return Container(
       height: height * 0.07,
       width: width,
       decoration: const BoxDecoration(),
       child: ListTile(
-        leading: CircleAvatar(
-          radius: width * 0.06,
-          backgroundColor: const Color.fromARGB(255, 114, 0, 0),
-        ),
+        leading: imageurl != null && imageurl.isNotEmpty
+            ? CircleAvatar(
+                radius: width * 0.06,
+                backgroundColor: const Color.fromARGB(255, 114, 0, 0),
+                backgroundImage: NetworkImage(imageurl))
+            : CircleAvatar(
+                radius: width * 0.06,
+                backgroundColor: const Color.fromARGB(255, 114, 0, 0),
+              ),
         title: Text(
           'Hi, $name',
           style: TextStyle(
@@ -233,9 +293,10 @@ class _Patient_homescreenState extends State<Patient_homescreen> {
     );
   }
 
-
 // this is the heading widget
-  Widget _headings({required final String headingtitle}) {
+  Widget _headings({
+    required final String headingtitle,
+  }) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -248,14 +309,17 @@ class _Patient_homescreenState extends State<Patient_homescreen> {
             fontWeight: FontWeight.w600,
           ),
         ),
-        Text(
-          "see all",
-          style: GoogleFonts.inter(
-            color: Apptheme.mainbackgroundcolor,
-            fontSize: width * 0.04,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
+        // InkWell(
+        //   onTap:ontap,
+        //   child: Text(
+        //     "see all",
+        //     style: GoogleFonts.inter(
+        //       color: Apptheme.mainbackgroundcolor,
+        //       fontSize: width * 0.04,
+        //       fontWeight: FontWeight.w500,
+        //     ),
+        //   ),
+        // ),
       ],
     );
   } //
@@ -268,21 +332,19 @@ class _Patient_homescreenState extends State<Patient_homescreen> {
   ];
 }
 
-
-
 // this is saved for later use
-  // child: ListWheelScrollView.useDelegate(
-                //     // size of each item in the main axis
-                //     itemExtent: 150,
-                //     diameterRatio: 7,
+// child: ListWheelScrollView.useDelegate(
+//     // size of each item in the main axis
+//     itemExtent: 150,
+//     diameterRatio: 7,
 
-                //     //initial index
-                //     controller: FixedExtentScrollController(initialItem: 1),
-                //     // stops on the nearest item when the user stops scrolling
-                //     physics: const BouncingScrollPhysics(),
-                //     childDelegate: ListWheelChildBuilderDelegate(
-                //       childCount: 10,
-                //       builder: (context, index) {
-                //         return Doctordetailwidget();
-                //       },
-                //     )),
+//     //initial index
+//     controller: FixedExtentScrollController(initialItem: 1),
+//     // stops on the nearest item when the user stops scrolling
+//     physics: const BouncingScrollPhysics(),
+//     childDelegate: ListWheelChildBuilderDelegate(
+//       childCount: 10,
+//       builder: (context, index) {
+//         return Doctordetailwidget();
+//       },
+//     )),

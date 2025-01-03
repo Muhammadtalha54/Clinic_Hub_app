@@ -1,15 +1,22 @@
+import 'package:clinic_hub_app/Doctor_interface/Doctor_models/Doctor_model.dart';
+import 'package:clinic_hub_app/Patient_interface/Patient_ViewModel/Controllers/Book_Appointmentcontroller.dart';
+import 'package:clinic_hub_app/Patient_interface/Patient_models/Staticmodel.dart';
 import 'package:clinic_hub_app/Shared_interface/Shared_resources/components/customtextfield.dart';
 import 'package:clinic_hub_app/Patient_interface/Patient_screens/Congratsscreen.dart';
 import 'package:clinic_hub_app/apptheme/Apptheme.dart';
 import 'package:clinic_hub_app/apptheme/apptransitions/customtransition.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
+
 /*This screen is used for the pateint to select the date ,
 time and slot enter his information and then book an appointment
 
  */
 class BookAppointmentScreen extends StatefulWidget {
-  const BookAppointmentScreen({super.key});
+  final Doctor_Model? selecteddoctor;
+  const BookAppointmentScreen({super.key, this.selecteddoctor});
 
   @override
   State<BookAppointmentScreen> createState() => _BookAppointmentScreenState();
@@ -25,6 +32,7 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
   String patientAge = '';
   String patientGender = 'Male';
   String problemDescription = '';
+  late AppointmentController _appointmentController;
 
   List<DateTime> getDates() {
     List<DateTime> dates = [];
@@ -41,12 +49,19 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
         date1.day == date2.day;
   }
 
+  void initState() {
+    _appointmentController = Get.put(AppointmentController());
+
+    super.initState();
+  }
+
   @override
   void dispose() {
     super.dispose();
     Namecontroller.dispose();
     agecontroller.dispose();
     problemcontroller.dispose();
+    Get.delete<AppointmentController>();
   }
 
   @override
@@ -59,7 +74,7 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
       backgroundColor: Apptheme.appbodybackgroundcolor,
       appBar: AppBar(
         backgroundColor: Apptheme.appbodybackgroundcolor,
-        title: Text('Book Appointment'),
+        title: const Text('Book Appointment'),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -157,10 +172,10 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
                 height: height * 0.2,
                 child: GridView.builder(
                   scrollDirection: Axis.horizontal,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 3, childAspectRatio: 0.4),
-                  itemCount: ((8 * 60) / 30)
-                      .toInt(), // 8 hours * 60 minutes / 30 minutes interval
+                  itemCount: (8 * 60) ~/
+                      30, // 8 hours * 60 minutes / 30 minutes interval
                   itemBuilder: (context, index) {
                     DateTime slotTime = DateTime(selectedDate.year,
                             selectedDate.month, selectedDate.day, 9, 0)
@@ -216,7 +231,7 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
                   errorMessage: "Enter a valid name"),
               CustomTextFormField(
                   isEditing: true,
-                  controller: Namecontroller,
+                  controller: agecontroller,
                   label: 'Age',
                   hintText: "Enter your age",
                   errorMessage: "Enter valid Age"),
@@ -268,6 +283,7 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
               ),
               TextField(
                 maxLines: 3,
+                controller: problemcontroller,
                 decoration: const InputDecoration(
                   labelText: 'Describe your problem',
                   border: OutlineInputBorder(),
@@ -280,7 +296,7 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
               ),
               SizedBox(height: height * 0.02),
               Center(
-                child: Container(
+                child: SizedBox(
                   height: height * 0.07,
                   width: width * 0.6,
                   child: ElevatedButton(
@@ -323,9 +339,7 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
           ),
           actions: <Widget>[
             TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
+              onPressed: () {},
               style: TextButton.styleFrom(
                 backgroundColor: Colors.grey.shade100,
               ),
@@ -336,16 +350,34 @@ class _BookAppointmentScreenState extends State<BookAppointmentScreen> {
             ),
             OutlinedButton(
               onPressed: () {
-                Navigator.of(context).push(CustomPageTransition(
-                  page: Congratsscreen(
-                    doctorName: 'Dr. Smith',
-                    appointmentTime: '10:00 AM',
-                    appointmentDate: '2024-12-30',
-                    patientName: 'John Doe',
-                  ),
-                ));
+                String formattedDate =
+                    DateFormat('dd-MM-yyyy').format(selectedDate);
+                _appointmentController.createAppointmentRequest(
+                  // Pass selected doctor object
+                  // Pass formatted date instead of raw DateTime
+                  selectedSlot: selectedSlot, // Pass selected time slot
+                  // Pass selected slot duration
 
-                ; // Close the dialog
+                  problemDescription:
+                      problemcontroller.text, // Pass problem description
+                  patientgender: patientGender,
+
+                  patientage: agecontroller.text, context: context,
+                  selectedDoctor: widget.selecteddoctor!,
+                  selectedDate: formattedDate,
+
+                  // Patient gender (static model or dynamic)
+                );
+                // Navigator.of(context).push(CustomPageTransition(
+                //   page: const Congratsscreen(
+                //     doctorName: ,
+                //     appointmentTime: '10:00 AM',
+                //     appointmentDate: '2024-12-30',
+                //     patientName: 'John Doe',
+                //   ),
+                // ));
+
+// Close the dialog
               },
               style: OutlinedButton.styleFrom(
                 backgroundColor: Apptheme.mainbackgroundcolor,

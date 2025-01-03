@@ -8,7 +8,7 @@ class Doctorprofilewidget extends StatelessWidget {
   final double height;
   final double width;
 
-  Doctorprofilewidget({
+  const Doctorprofilewidget({
     Key? key,
     required this.Title,
     required this.icon,

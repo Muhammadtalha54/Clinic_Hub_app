@@ -1,4 +1,3 @@
-import 'package:clinic_hub_app/Shared_interface/Shared_screens/loginsignup/screens/Loginscreen.dart';
 import 'package:clinic_hub_app/Patient_interface/Patient_screens/Alldoctorsscreen.dart';
 import 'package:clinic_hub_app/Patient_interface/Patient_screens/Appointmentsscreen.dart';
 import 'package:clinic_hub_app/Patient_interface/Patient_screens/Homescreen.dart';

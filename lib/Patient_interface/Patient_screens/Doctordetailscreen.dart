@@ -1,21 +1,25 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:clinic_hub_app/Patient_interface/Patient_screens/Book_Appointmentscreen.dart';
-import 'package:clinic_hub_app/apptheme/apptransitions/customtransition.dart';
 import 'package:flutter/material.dart';
 
+import 'package:clinic_hub_app/Doctor_interface/Doctor_models/Doctor_model.dart';
+import 'package:clinic_hub_app/Patient_interface/Patient_screens/Book_Appointmentscreen.dart';
 import 'package:clinic_hub_app/apptheme/Apptheme.dart';
+import 'package:clinic_hub_app/apptheme/apptransitions/customtransition.dart';
+
 /*This screen shows the doctor details his description etc and a option o book an 
 appointment
  */
 class Doctordetailscreen extends StatefulWidget {
   final int index;
   String imagepath;
+  final Doctor_Model? doctor;
   String doctorname;
   Doctordetailscreen({
     Key? key,
     required this.index,
     required this.imagepath,
     required this.doctorname,
+    this.doctor,
   }) : super(key: key);
 
   @override
@@ -25,6 +29,7 @@ class Doctordetailscreen extends StatefulWidget {
 class _DoctordetailscreenState extends State<Doctordetailscreen> {
   @override
   var height, width;
+  @override
   Widget build(BuildContext context) {
     height = MediaQuery.of(context).size.height;
     width = MediaQuery.of(context).size.width;
@@ -36,7 +41,7 @@ class _DoctordetailscreenState extends State<Doctordetailscreen> {
         body: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: Center(
-            child: Container(
+            child: SizedBox(
               height: height * 1.5,
               width: width * 0.9,
               //  color: Colors.red,
@@ -46,18 +51,22 @@ class _DoctordetailscreenState extends State<Doctordetailscreen> {
                 children: [
                   Hero(
                     tag: 'doctor-image-${widget.index}',
-                    child: CircleAvatar(
-                      radius: width * 0.2,
-                      backgroundImage: AssetImage(
-                        widget.imagepath,
-                      ),
-                    ),
+                    child: widget.imagepath.isNotEmpty
+                        ? CircleAvatar(
+                            radius: width * 0.2,
+                            backgroundImage: NetworkImage(
+                              widget.doctor!.doctorimageurl!,
+                            ),
+                          )
+                        : CircleAvatar(
+                            radius: width * 0.2,
+                          ),
                   ),
                   SizedBox(
                     height: height * 0.02,
                   ),
                   Text(
-                    "Dr.${widget.doctorname}", // Doctor's name
+                    "Dr.${widget.doctor!.doctorname}", // Doctor's name
                     style: TextStyle(
                       fontSize: width * 0.055,
                       fontWeight: FontWeight.bold,
@@ -71,28 +80,28 @@ class _DoctordetailscreenState extends State<Doctordetailscreen> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          "Cardiologist",
+                          widget.doctor!.doctorspecialization!,
                           style: TextStyle(
                               color: const Color.fromARGB(255, 88, 88, 88),
                               fontSize: width * 0.04,
                               fontWeight: FontWeight.w500),
                         ),
-                        SizedBox(
-                          height: height * 0.04,
-                          width: width * 0.1,
-                          child: Icon(
-                            Icons.favorite_outline,
-                            color: Colors.red,
-                            size: width * 0.065,
-                          ),
-                        )
+                        // SizedBox(
+                        //   height: height * 0.04,
+                        //   width: width * 0.1,
+                        //   child: Icon(
+                        //     Icons.favorite_outline,
+                        //     color: Colors.red,
+                        //     size: width * 0.065,
+                        //   ),
+                        // )
                       ],
                     ),
                   ),
                   SizedBox(
                     height: height * 0.01,
                   ),
-                  Container(
+                  SizedBox(
                     height: height * 0.165,
                     width: width,
                     child: Row(
@@ -102,7 +111,7 @@ class _DoctordetailscreenState extends State<Doctordetailscreen> {
                         _expcard(
                             expicon: Icons.military_tech_outlined,
                             title: "Experience",
-                            value: "10 yrs",
+                            value: widget.doctor!.doctorexperience!,
                             iconcolor: Colors.red),
                         _expcard(
                             expicon: Icons.people_alt_outlined,
@@ -136,7 +145,7 @@ class _DoctordetailscreenState extends State<Doctordetailscreen> {
                     height: height * 0.2,
                     width: width * 0.85,
                     child: Text(
-                      "Dr. John Doe is a highly experienced cardiologist with over 10 years of experience in the field. He has conducted over 500 successful appointments and is known for his compassionate care and expertise",
+                      widget.doctor!.doctordescription!,
                       style: TextStyle(
                         color: const Color.fromARGB(255, 89, 89, 89),
                         fontSize: width * 0.04,
@@ -162,6 +171,7 @@ class _DoctordetailscreenState extends State<Doctordetailscreen> {
                   SizedBox(
                     height: height * 0.04,
                     width: width * 0.85,
+                    // this should be got within some time
                     child: Text(
                       "Mon-Sat: 9:00 AM - 5:00 PM",
                       style: TextStyle(
@@ -178,9 +188,10 @@ class _DoctordetailscreenState extends State<Doctordetailscreen> {
                   SizedBox(
                     height: height * 0.02,
                   ),
-                  Container(
+                  // this is what we will get from the reviews list
+                  SizedBox(
                     width: width * 0.85,
-                    child: Text(
+                    child: const Text(
                       'Reviews',
                       style: TextStyle(
                         fontSize: 20,
@@ -188,7 +199,7 @@ class _DoctordetailscreenState extends State<Doctordetailscreen> {
                       ),
                     ),
                   ),
-                  Container(
+                  SizedBox(
                     height: height * 0.35,
                     width: width * 0.85,
                     child: ListView.builder(
@@ -199,14 +210,14 @@ class _DoctordetailscreenState extends State<Doctordetailscreen> {
                         return Card(
                           elevation: 3,
                           color: const Color.fromARGB(255, 245, 249, 251),
-                          child: Container(
+                          child: SizedBox(
                             height: height * 0.13,
                             width: width * 0.8,
                             child: ListTile(
                               leading: CircleAvatar(
                                 radius: width * 0.055,
                                 // here is the exception occuring
-                                backgroundImage: NetworkImage(
+                                backgroundImage: const NetworkImage(
                                     "https://static.vecteezy.com/system/resources/thumbnails/030/798/365/small_2x/beautiful-asian-girl-wearing-over-size-hoodie-in-casual-style-ai-generative-photo.jpg"),
                               ),
                               title: Text(
@@ -226,7 +237,7 @@ class _DoctordetailscreenState extends State<Doctordetailscreen> {
                                 maxLines: 3,
                                 overflow: TextOverflow.ellipsis,
                               ),
-                              trailing: Container(
+                              trailing: SizedBox(
                                 width: width * 0.13,
                                 child: Row(
                                   children: [
@@ -257,7 +268,7 @@ class _DoctordetailscreenState extends State<Doctordetailscreen> {
                     onPressed: () {
                       // Navigate to see all reviews
                     },
-                    child: Text('See All'),
+                    child: const Text('See All'),
                   ),
 
                   SizedBox(
@@ -266,8 +277,10 @@ class _DoctordetailscreenState extends State<Doctordetailscreen> {
                   InkWell(
                     // what action to perform is taken as arguments
                     onTap: () {
-                      Navigator.of(context).push(
-                          CustomPageTransition(page: BookAppointmentScreen()));
+                      Navigator.of(context).push(CustomPageTransition(
+                          page: BookAppointmentScreen(
+                        selecteddoctor: widget.doctor,
+                      )));
                     },
                     child: Card(
                       shape: RoundedRectangleBorder(

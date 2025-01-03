@@ -1,11 +1,16 @@
+import 'dart:io';
+
 import 'package:clinic_hub_app/Splashscreen.dart';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 void main() async {
- WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(MyApp());
+
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -13,7 +18,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: ThemeData(
@@ -23,19 +28,3 @@ class MyApp extends StatelessWidget {
         home: const Splashscreen());
   }
 }
-// static String Token = '';
-//   late FirebaseMessaging messaging;
-
-//   /////////////////
-//   // getToken() {
-//   //   messaging = FirebaseMessaging.instance;
-//   //   messaging.getToken().then((value) {
-//   //     if (value != null) {
-//   //       Token = value;
-//   //     }
-//   //     print("token is");
-//   //     print(value);
-//   //   });
-//   // }
-//   /////////////
-//   ///

@@ -20,7 +20,7 @@ class UploadImageOnSignup extends StatelessWidget {
     final width = MediaQuery.of(context).size.width;
 
     return Center(
-      child: Container(
+      child: SizedBox(
         height: height * 0.18,
         width: width * 0.3,
         child: Stack(
@@ -30,7 +30,7 @@ class UploadImageOnSignup extends StatelessWidget {
               child: Container(
                 height: height,
                 width: width * 0.28,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Colors.amber,
                   shape: BoxShape.circle,
                 ),
@@ -42,15 +42,15 @@ class UploadImageOnSignup extends StatelessWidget {
                             fit: BoxFit.fitHeight,
                           )
                         : (isloading == false)
-                            ? CircleAvatar()
-                            : Center(child: CircularProgressIndicator()),
+                            ? const CircleAvatar()
+                            : const Center(child: CircularProgressIndicator()),
 
                 // }),
               ),
             ),
             Align(
               alignment: Alignment.bottomRight,
-              child: Container(
+              child: SizedBox(
                 height: height * 0.05,
                 width: width * 0.1,
                 child: Row(
@@ -64,16 +64,16 @@ class UploadImageOnSignup extends StatelessWidget {
                         width: width * 0.1,
                         decoration: BoxDecoration(
                           border: Border.all(
-                            color: Color.fromARGB(255, 237, 237, 237),
+                            color: const Color.fromARGB(255, 237, 237, 237),
                             width: 2.5,
                           ),
                           shape: BoxShape.circle,
-                          color: Color.fromARGB(255, 21, 139, 235),
+                          color: const Color.fromARGB(255, 21, 139, 235),
                         ),
                         child: Center(
                           child: Icon(
                             Icons.add,
-                            color: Color.fromARGB(255, 255, 255, 255),
+                            color: const Color.fromARGB(255, 255, 255, 255),
                             size: width * 0.05,
                           ),
                         ),

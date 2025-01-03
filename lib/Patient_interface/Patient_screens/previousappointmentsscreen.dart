@@ -47,7 +47,7 @@ class _AppointmentHistoryScreenState extends State<AppointmentHistoryScreen> {
         centerTitle: true,
       ),
       body: Center(
-        child: Container(
+        child: SizedBox(
           height: height,
           width: width * 0.9,
           child: Column(
@@ -61,7 +61,7 @@ class _AppointmentHistoryScreenState extends State<AppointmentHistoryScreen> {
               ),
               const SizedBox(height: 16),
               Expanded(
-                child: Container(
+                child: SizedBox(
                   height: height,
                   width: width * 0.9,
                   child: Column(
@@ -75,7 +75,7 @@ class _AppointmentHistoryScreenState extends State<AppointmentHistoryScreen> {
                         border: TableBorder.all(color: Colors.grey),
                         children: [
                           TableRow(
-                            decoration: BoxDecoration(color: Colors.grey),
+                            decoration: const BoxDecoration(color: Colors.grey),
                             children: [
                               Padding(
                                 padding: EdgeInsets.all(width * 0.02),

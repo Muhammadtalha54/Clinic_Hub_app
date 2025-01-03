@@ -11,7 +11,7 @@ class Congratsscreen extends StatelessWidget {
   final String appointmentDate;
   final String patientName;
 
-  const Congratsscreen({
+  const Congratsscreen({super.key, 
     required this.doctorName,
     required this.appointmentTime,
     required this.appointmentDate,
@@ -30,11 +30,11 @@ class Congratsscreen extends StatelessWidget {
       backgroundColor: Apptheme.appbodybackgroundcolor,
       appBar: AppBar(
         backgroundColor: Apptheme.appbodybackgroundcolor,
-        title: Text('Appointment Booked'),
+        title: const Text('Appointment Booked'),
         centerTitle: true,
       ),
       body: Center(
-        child: Container(
+        child: SizedBox(
           width: width * 0.9,
           height: height,
           child: Column(
@@ -47,7 +47,7 @@ class Congratsscreen extends StatelessWidget {
                 size: width * 0.4,
                 color: Colors.green,
               ),
-              Container(
+              SizedBox(
                 height: height * 0.1,
                 width: width * 0.8,
                 child: Text(

@@ -1,5 +1,3 @@
-import 'package:clinic_hub_app/Patient_interface/Patient_resources/Components/popupdialog/confirmationpopupdialog.dart';
-import 'package:clinic_hub_app/apptheme/Apptheme.dart';
 import 'package:flutter/material.dart';
 // this is the appointment card that is shown on the appointment screen
 

@@ -1,9 +1,12 @@
-import 'package:clinic_hub_app/Shared_interface/Shared_resources/components/customtextfield.dart';
+import 'package:clinic_hub_app/Patient_interface/Patient_ViewModel/Controllers/Updateprofilecontroller.dart';
+import 'package:clinic_hub_app/Patient_interface/Patient_models/Staticmodel.dart';
+import 'package:clinic_hub_app/Shared_interface/Shared_resources/components/Imagewidget.dart';
 import 'package:clinic_hub_app/Shared_interface/Shared_resources/components/passwordtextfield.dart';
-import 'package:clinic_hub_app/Patient_interface/Patient_resources/Components/widgets/Imagewidget.dart';
 import 'package:clinic_hub_app/apptheme/Apptheme.dart';
-
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 
 class Userprofilescreen extends StatefulWidget {
   const Userprofilescreen({super.key});
@@ -13,11 +16,31 @@ class Userprofilescreen extends StatefulWidget {
 }
 
 class _UserprofilescreenState extends State<Userprofilescreen> {
+  final ProfileUpdateController _controller =
+      Get.put(ProfileUpdateController());
+
+  final String? patientname = StaticPatient.patient_model!.Patientname!;
+  String? patientimageurl = StaticPatient.patient_model!.Patientprofilepicture!;
   var height, width;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Initialize controller with static patient data
+    _controller.name.value = patientname!;
+    _controller.email.value = StaticPatient.patient_model!.PatientEmail!;
+    _controller.phone.value = StaticPatient.patient_model!.Patientphonenumber!;
+    _controller.password.value = StaticPatient.patient_model!.Patientpassword!;
+    _controller.selectedprofileimageurl.value =
+        patientimageurl!; // Initialize profile image URL
+  }
+
   @override
   Widget build(BuildContext context) {
     height = MediaQuery.of(context).size.height;
     width = MediaQuery.of(context).size.width;
+
     return Scaffold(
       backgroundColor: Apptheme.appbodybackgroundcolor,
       appBar: AppBar(
@@ -32,32 +55,42 @@ class _UserprofilescreenState extends State<Userprofilescreen> {
         ),
         centerTitle: true,
       ),
-      body: Container(
-        width: width,
-        height: height,
-        padding: EdgeInsets.all(width * 0.04),
-        decoration: BoxDecoration(color: Apptheme.appbodybackgroundcolor),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(height: height * 0.02),
-            ImageUpload(
-              ontap: () {},
-              imageurl:
-                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9SRRmhH4X5N2e4QalcoxVbzYsD44C-sQv-w&s',
-            ),
-            SizedBox(height: height * 0.05),
-            const UserInfo(),
-          ],
-        ),
-      ),
+      body: Obx(() {
+        // Wrap your widget tree with Obx to observe changes from the controller
+        return Container(
+          width: width,
+          height: height,
+          padding: EdgeInsets.all(width * 0.04),
+          decoration:
+              const BoxDecoration(color: Apptheme.appbodybackgroundcolor),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(height: height * 0.02),
+              ImageUpload(
+                ontap: () {
+                  _controller
+                      .pickImage('userprofile'); // Use controller to pick image
+                },
+                imageurl: _controller.selectedprofileimageurl.value.isNotEmpty
+                    ? _controller.selectedprofileimageurl.value
+                    : patientimageurl!,
+              ),
+              SizedBox(height: height * 0.05),
+              UserInfo(controller: _controller), // Pass controller to UserInfo
+            ],
+          ),
+        );
+      }),
     );
   }
 }
 
 // Widget for displaying user information with edit functionality
 class UserInfo extends StatefulWidget {
-  const UserInfo({super.key});
+  final ProfileUpdateController controller; // Receive controller as a parameter
+
+  const UserInfo({super.key, required this.controller});
 
   @override
   _UserInfoState createState() => _UserInfoState();
@@ -65,12 +98,26 @@ class UserInfo extends StatefulWidget {
 
 class _UserInfoState extends State<UserInfo> {
   bool _isEditing = false;
+
   final _formKey = GlobalKey<FormState>();
-  final _nameController = TextEditingController(text: 'John Doe');
-  final _emailController = TextEditingController(text: 'john@example.com');
-  final _phoneController = TextEditingController(text: '123-456-7890');
-  final _passwordcontroller = TextEditingController(text: '1Myiub.com');
+  late TextEditingController _nameController;
+  late TextEditingController _emailController;
+  late TextEditingController _phoneController;
+  late TextEditingController _passwordController;
   bool _passwordVisible = true;
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize TextEditingController with the static data
+    _nameController = TextEditingController(text: widget.controller.name.value);
+    _emailController =
+        TextEditingController(text: widget.controller.email.value);
+    _phoneController =
+        TextEditingController(text: widget.controller.phone.value);
+    _passwordController =
+        TextEditingController(text: widget.controller.password.value);
+  }
 
   void _togglePasswordVisibility() {
     setState(() {
@@ -84,19 +131,17 @@ class _UserInfoState extends State<UserInfo> {
     double width = MediaQuery.of(context).size.width;
     return Form(
       key: _formKey,
-      child: Container(
+      child: SizedBox(
         width: width * 0.8,
         height: height * 0.5,
         child: Column(
           children: [
             _buildTextField(_nameController, 'Name', Icons.person),
             SizedBox(height: height * 0.03),
-            _buildTextField(_emailController, 'Email', Icons.email),
-            SizedBox(height: height * 0.03),
             _buildTextField(_phoneController, 'Phone', Icons.phone),
             PasswordTextField(
               isEditing: _isEditing,
-              controller: _passwordcontroller,
+              controller: _passwordController,
               obscureText: _passwordVisible,
               onVisibilityToggle: _togglePasswordVisibility,
               label: 'Password',
@@ -109,7 +154,7 @@ class _UserInfoState extends State<UserInfo> {
     );
   }
 
-  //Builds a text field widget
+  // Builds a text field widget
   Widget _buildTextField(
       TextEditingController controller, String label, IconData icon) {
     return TextFormField(
@@ -141,11 +186,10 @@ class _UserInfoState extends State<UserInfo> {
             onPressed: _saveChanges,
             style: ElevatedButton.styleFrom(
               backgroundColor: Apptheme.mainbackgroundcolor,
-              // foregroundColor: const Color.fromARGB(255, 253, 253, 253),
             ),
             child: const Text(
               'Save',
-              style: const TextStyle(
+              style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.w500,
                   fontSize: 18),
@@ -162,7 +206,7 @@ class _UserInfoState extends State<UserInfo> {
             ),
             child: const Text(
               'Cancel',
-              style: const TextStyle(
+              style: TextStyle(
                   color: Color.fromARGB(255, 0, 0, 0),
                   fontWeight: FontWeight.w500,
                   fontSize: 18),
@@ -186,7 +230,7 @@ class _UserInfoState extends State<UserInfo> {
         ),
         child: const Text(
           'Edit Profile',
-          style: const TextStyle(
+          style: TextStyle(
               color: Color.fromARGB(255, 255, 255, 255),
               fontWeight: FontWeight.w500,
               fontSize: 18),
@@ -196,8 +240,14 @@ class _UserInfoState extends State<UserInfo> {
   }
 
   // Saves the changes made to the user information
-  void _saveChanges() {
+  void _saveChanges() async {
     if (_formKey.currentState!.validate()) {
+      widget.controller.name.value = _nameController.text;
+      widget.controller.email.value = _emailController.text;
+      widget.controller.phone.value = _phoneController.text;
+      widget.controller.password.value = _passwordController.text;
+
+      bool? confirmed = await widget.controller.showConfirmationDialog(context);
       setState(() => _isEditing = false);
     }
   }

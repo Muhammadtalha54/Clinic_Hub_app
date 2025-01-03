@@ -1,97 +1,157 @@
 import 'package:clinic_hub_app/Doctor_interface/Doctor_models/Schedule_model.dart';
+import 'package:clinic_hub_app/Doctor_interface/Doctor_models/Staticmodel.dart';
+import 'package:clinic_hub_app/Shared_interface/Shared_resources/components/reusabeldialog.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:clinic_hub_app/apptheme/Apptheme.dart';
-  // Make sure you import the ScheduleAppointment class
-//controller through which doctor will make his schedule
-class ScheduleAppointmentController extends GetxController {
-  final List<String> daysOfWeek = [
-    'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'
-  ];
-  
-  // List of selected days and other necessary states
-  final selectedDays = <String>[].obs;
-  final startTime = TimeOfDay.now().obs;
-  final endTime = TimeOfDay.now().obs;
-  final slotDuration = 30.obs;
-  
-  // Available slot durations
-  final List<int> slotDurations = [15, 30, 45, 60];
-  
-  // Create an instance of ScheduleAppointment
-  ScheduleAppointment schedule = ScheduleAppointment(
-    selectedDays: [],  // Initially empty
-    startTime: TimeOfDay.now(),
-    endTime: TimeOfDay.now(),
-    slotDuration: 30,
-  );
-  
-  // Function to select time using a time picker
-  Future<void> selectTime(BuildContext context, bool isStartTime) async {
-    final TimeOfDay? picked = await showTimePicker(
-      context: context,
-      initialTime: isStartTime ? startTime.value : endTime.value,
-      builder: (BuildContext context, Widget? child) {
-        return Theme(
-          data: ThemeData.light().copyWith(
-            primaryColor: Apptheme.mainbackgroundcolor,
-            colorScheme: ColorScheme.light(
-              primary: Apptheme.mainbackgroundcolor,
-              secondary: Apptheme.mainbackgroundcolor,
-            ),
-            buttonTheme: ButtonThemeData(
-              textTheme: ButtonTextTheme.primary,
-            ),
-          ),
-          child: child!,
-        );
-      },
-    );
-    
-    if (picked != null) {
-      if (isStartTime) {
-        startTime.value = picked;
-        schedule = schedule.copyWith(startTime: picked); // Update the schedule
+
+class DoctorScheduleController extends GetxController {
+  // Controller for schedule data
+  var selectedDays =
+      <String>['Sunday', 'Monday'].obs; // List to store selected days
+  var startTime = const TimeOfDay(hour: 9, minute: 0).obs;
+  var endTime = const TimeOfDay(hour: 17, minute: 0).obs;
+  var slotDuration = 30.obs; // Slot duration in minutes
+  var isLoading = false.obs; // To show loading indicator
+  var isError = false.obs; // Error flag for handling errors
+  var errorMessage = ''.obs; // Error message to show
+  var isSuccess = false.obs; // To trigger the success dialog
+
+  // Doctor ID (static value, replace with dynamic if needed)
+  String? doctorId = StaticDoctor.doctormodel!.doctorid;
+
+  DoctorScheduleController(this.doctorId);
+
+  // Update schedule function
+
+  Future<void> updateSchedule() async {
+    try {
+      isLoading = true.obs;
+
+      print(StaticDoctor.doctormodel!.doctorid);
+      print('function executed');
+      final docRef = FirebaseFirestore.instance
+          .collection('doctors')
+          .doc(StaticDoctor.doctormodel!.doctorid)
+          .collection('schedule')
+          .doc(
+              'availability'); // 'availability' is the document where schedule is stored
+
+      // Check if the document already exists
+      final docSnapshot = await docRef.get();
+
+      if (docSnapshot.exists) {
+        print('already');
+        // If the schedule exists, update the existing document
+        await docRef.update({
+          'days': selectedDays,
+          'startTime': {
+            'hour': startTime.value.hour,
+            'minute': startTime.value.minute
+          },
+          'endTime': {
+            'hour': endTime.value.hour,
+            'minute': endTime.value.minute
+          },
+          'slotDuration': slotDuration.value,
+        });
+        isLoading.value = false;
+        isSuccess.value = true; // Indicating the update was successful
       } else {
-        endTime.value = picked;
-        schedule = schedule.copyWith(endTime: picked); // Update the schedule
+        print('not already');
+        // If no schedule exists, create a new document
+        await docRef.set({
+          'days': selectedDays,
+          'startTime': {
+            'hour': startTime.value.hour,
+            'minute': startTime.value.minute
+          },
+          'endTime': {
+            'hour': endTime.value.hour,
+            'minute': endTime.value.minute
+          },
+          'slotDuration': slotDuration.value,
+        });
+        ReusableDialog.show(
+          Get.context!,
+          title: "Schedule updated sucessfully",
+          content: "Your schedule was updated sucessfully",
+          buttonText: "OK",
+        );
+        isSuccess.value =
+            true; // Indicating the document was created successfully
       }
+    } catch (error) {
+      // If an error occurs during the update
+      isError.value = true;
+      errorMessage.value = error.toString();
+
+      // Show error dialog
+      ReusableDialog.show(
+        Get.context!,
+        title: "Network Error",
+        content: "Please check your internet connection and try again.",
+        buttonText: "OK",
+      );
+    } finally {
+      // Hide loading indicator
+      isLoading.value = false;
     }
-  }
-
-  // Function to toggle day selection
-  void toggleDaySelection(String day) {
-    if (selectedDays.contains(day)) {
-      selectedDays.remove(day);
-      schedule = schedule.copyWith(selectedDays: selectedDays); // Update the schedule
-    } else {
-      selectedDays.add(day);
-      schedule = schedule.copyWith(selectedDays: selectedDays); // Update the schedule
-    }
-  }
-
-  // Function to change the slot duration
-  void changeSlotDuration(int newDuration) {
-    slotDuration.value = newDuration;
-    schedule = schedule.copyWith(slotDuration: newDuration); // Update the schedule
-  }
-  
-  // Function to get the current schedule data as a map (useful for saving to database)
-  Map<String, dynamic> getScheduleMap() {
-    return schedule.toMap(); // Convert the schedule to a map
-  }
-
-  // Function to reset the schedule data
-  void resetSchedule() {
-    schedule = schedule.copyWith(
-      selectedDays: [],
-      startTime: TimeOfDay.now(),
-      endTime: TimeOfDay.now(),
-      slotDuration: 30,
-    );
-    selectedDays.clear();
-    startTime.value = TimeOfDay.now();
-    endTime.value = TimeOfDay.now();
-    slotDuration.value = 30;
   }
 }
+//   Future<void> updateSchedule() async {
+//     try {isLoading = true.obs;
+      
+//       print(StaticDoctor.doctormodel!.doctorid);
+//       print('function executed');
+//       final docRef = FirebaseFirestore.instance
+//           .collection('doctors')
+//           .doc(StaticDoctor.doctormodel!.doctorid)
+//           .collection('schedule')
+//           .doc(
+//               'availability'); // 'availability' is the document where schedule is stored
+
+//       // Check if the document already exists
+//       final docSnapshot = await docRef.get();
+
+//       if (docSnapshot.exists) {
+//         print('already');
+//         // If the schedule exists, update the existing document
+//         await docRef.update({
+//           'days': selectedDays,
+//           'startTime': {
+//             'hour': startTime.value.hour,
+//             'minute': startTime.value.minute
+//           },
+//           'endTime': {
+//             'hour': endTime.value.hour,
+//             'minute': endTime.value.minute
+//           },
+//           'slotDuration': slotDuration.value,
+//         });
+//         isLoading.value=false;
+//         isSuccess.value = true; // Indicating the update was successful
+//       } else {
+//         print('not already');
+//         // If no schedule exists, create a new document
+//         await docRef.set({
+//           'days': selectedDays,
+//           'startTime': {
+//             'hour': startTime.value.hour,
+//             'minute': startTime.value.minute
+//           },
+//           'endTime': {
+//             'hour': endTime.value.hour,
+//             'minute': endTime.value.minute
+//           },
+//           'slotDuration': slotDuration.value,
+//         });
+//         isSuccess.value =
+//             true; // Indicating the document was created successfully
+//       }
+//     } catch (e) {
+//       isError.value = true; // If there's an error, show the error message
+//       errorMessage.value = e.toString();
+//     }
+//   }
+// }
